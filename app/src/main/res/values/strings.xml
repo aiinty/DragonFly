@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">DragonFly</string>
+    <string name="loading_first_title">Easy to manage money</string>
+    <string name="loading_first_desc">Transfer and receive your money easily with dragonfly bank</string>
+    <string name="loading_second_title">Transfers between accounts</string>
+    <string name="loading_second_desc">Transferring balances is very easy between dragonfly bank accounts</string>
+    <string name="loading_third_title">Choose as needed</string>
+    <string name="loading_third_desc">Choose the savings you want to open, we have lots of services according to what you need</string>
+    <string name="login_title">Welcome</string>
+    <string name="login_desc">Enjoy all the features that make it easy for you to manage your finances</string>
+    <string name="login_email_hint">Email / Username</string>
+    <string name="login_passoword_hint">Password</string>
+    <string name="login_remember_me">Remember me</string>
+    <string name="login_forgot">Forgot password?</string>
+    <string name="login">Login</string>
+    <string name="loading_next">Get Started</string>
+    <string name="login_other">Other</string>
+    <string name="login_with_gmail">Login with Gmail</string>
+    <string name="login_register_hint">Don\'t have an account?</string>
+    <string name="register">Register</string>
+</resources>
