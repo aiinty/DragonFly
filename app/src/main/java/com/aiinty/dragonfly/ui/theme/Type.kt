@@ -11,15 +11,21 @@ import androidx.compose.ui.unit.sp
 import com.aiinty.dragonfly.R
 
 @OptIn(ExperimentalTextApi::class)
-val default = FontFamily(
+private val default = FontFamily(
     Font(
         R.font.montserrat,
         variationSettings = FontVariation.Settings(
             FontVariation.weight(400),
+        )
+    ),
+    Font(
+        R.font.montserrat,
+        variationSettings = FontVariation.Settings(
             FontVariation.weight(500),
         )
-    )
+    ),
 )
+
 
 val Typography = Typography(
     titleMedium = TextStyle(

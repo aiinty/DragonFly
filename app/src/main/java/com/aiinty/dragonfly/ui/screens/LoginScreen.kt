@@ -2,6 +2,7 @@ package com.aiinty.dragonfly.ui.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -27,9 +28,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,14 +44,15 @@ import kotlinx.serialization.Serializable
 @Serializable
 object Login
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LoginScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(10.dp, 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
 
         val email = remember { mutableStateOf("") }
@@ -55,27 +60,42 @@ fun LoginScreen() {
         val isRememberMe = remember { mutableStateOf(false) }
 
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            //HEADER
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Image(
+                    modifier = Modifier.size(24.dp),
+                    imageVector = ImageVector.vectorResource(R.drawable.logo),
+                    colorFilter = ColorFilter.tint(Color(0xFF202020)),
+                    contentDescription = stringResource(R.string.app_name),
+                )
+                Image(
+                    modifier = Modifier.size(24.dp),
+                    imageVector = ImageVector.vectorResource(R.drawable.translate),
+                    contentDescription = stringResource(R.string.app_name),
+                )
+            }
+
             Text(
                 text = stringResource(R.string.login_title),
                 style = MaterialTheme.typography.titleMedium
             )
 
             Text(
-                modifier = Modifier.padding(vertical = 16.dp),
                 text = stringResource(R.string.login_desc),
                 style = MaterialTheme.typography.bodySmall
             )
         }
 
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp)
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = email.value,
@@ -83,9 +103,7 @@ fun LoginScreen() {
                 label = { Text(text = stringResource(id = R.string.login_email_hint)) }
             )
             OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
+                modifier = Modifier.fillMaxWidth(),
                 value = password.value,
                 onValueChange = { password.value = it },
                 label = { Text(text = stringResource(id = R.string.login_passoword_hint)) }
@@ -102,7 +120,6 @@ fun LoginScreen() {
                 ) {
                     Checkbox(
                         checked = isRememberMe.value,
-                        paddi,
                         onCheckedChange = {isRememberMe.value = it}
                     )
                     Text(
@@ -120,10 +137,9 @@ fun LoginScreen() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp)
                 .weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally,
-
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Button(
                 onClick = { },
