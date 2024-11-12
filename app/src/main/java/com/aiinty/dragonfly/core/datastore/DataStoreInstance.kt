@@ -3,6 +3,7 @@ package com.aiinty.dragonfly.core.datastore
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -22,8 +23,23 @@ object DataStoreInstance {
             }
     }
 
+    fun readBooleanValue(context: Context, keyValue: String): Flow<Boolean?> {
+        val key = booleanPreferencesKey(keyValue)
+        return context.dataStore.data
+            .map { preferences ->
+                preferences[key]
+            }
+    }
+
     suspend fun writeStringValue(context: Context, keyValue: String, value: String) {
         val key = stringPreferencesKey(keyValue)
+        context.dataStore.edit { preferences ->
+            preferences[key] = value
+        }
+    }
+
+    suspend fun writeBooleanValue(context: Context, keyValue: String, value: Boolean) {
+        val key = booleanPreferencesKey(keyValue)
         context.dataStore.edit { preferences ->
             preferences[key] = value
         }

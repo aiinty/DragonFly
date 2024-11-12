@@ -54,22 +54,26 @@ fun DragonFlyApp(
                                 launchSingleTop = true
                             }
                         },
-                        onUserCredentialsNotFound = {
-                            navController.navigate(Onboarding) {
+                        onUserCredentialsNotFound = { user ->
+                            navController.navigate(Onboarding(user)) {
                                 launchSingleTop = true
                             }
                         }
                     )
                 }
-                composable<Onboarding> {
-                    OnboardingScreen(onNavigateToNext = {
-                        navController.navigate(route = Login) {
-                            launchSingleTop = true
-                        }
+                composable<Onboarding> { backStack ->
+                    val user = backStack.toRoute<User>()
+                    OnboardingScreen(
+                        user,
+                        onNavigateToNext = {
+                            navController.navigate(Login(user)) {
+                                launchSingleTop = true
+                            }
                     })
                 }
-                composable<Login> {
-                    LoginScreen()
+                composable<Login> { backStack ->
+                    val user = backStack.toRoute<User>()
+                    LoginScreen(user)
                 }
                 composable<Auth> { backStack ->
                     val user = backStack.toRoute<User>()

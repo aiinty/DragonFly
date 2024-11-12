@@ -31,18 +31,23 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aiinty.dragonfly.R
-import com.aiinty.dragonfly.ui.theme.*
+import com.aiinty.dragonfly.core.entity.User
+import com.aiinty.dragonfly.ui.theme.Outline
+import com.aiinty.dragonfly.ui.theme.Primary
+import com.aiinty.dragonfly.ui.theme.PrimaryContainer
+import com.aiinty.dragonfly.ui.theme.Secondary
+import com.aiinty.dragonfly.ui.theme.SecondaryContainer
 import kotlinx.serialization.Serializable
 
 @Serializable
-object Login
+data class Login(val user: User)
 
-@Preview(showBackground = true)
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    user: User
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -195,7 +200,9 @@ fun LoginScreen() {
 
             TextButton(
                 contentPadding = PaddingValues(0.dp),
-                onClick = { /*TODO*/ }
+                onClick = {
+
+                }
             ) {
                 Text(
                     text = stringResource(id = R.string.register),

@@ -20,6 +20,7 @@ import com.aiinty.dragonfly.core.datastore.DataStoreInstance
 import com.aiinty.dragonfly.core.entity.USER_LOGIN_KEY
 import com.aiinty.dragonfly.core.entity.USER_PASSCODE_KEY
 import com.aiinty.dragonfly.core.entity.USER_PASSWORD_KEY
+import com.aiinty.dragonfly.core.entity.USER_REMEMBER_ME_KEY
 import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
 import kotlinx.coroutines.delay
@@ -31,8 +32,8 @@ object Loading
 
 @Composable
 fun LoadingScreen(
-    onUserCredentialsFound: (user: User) -> Unit,
-    onUserCredentialsNotFound: () -> Unit,
+    onUserCredentialsFound: (User) -> Unit,
+    onUserCredentialsNotFound: (User) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -58,13 +59,15 @@ fun LoadingScreen(
             val login = DataStoreInstance.readStringValue(context, USER_LOGIN_KEY).first()
             val password = DataStoreInstance.readStringValue(context, USER_PASSWORD_KEY).first()
             val passcode = DataStoreInstance.readStringValue(context, USER_PASSCODE_KEY).first()
+            val rememberMe = DataStoreInstance.readBooleanValue(context, USER_REMEMBER_ME_KEY).first()
 
-            if (login != null && password != null && passcode != null) {
-                val user = User(login, password, passcode)
+            val user = User(login, password, passcode, rememberMe)
+
+            if (login != null && password != null && passcode != null && rememberMe != null) {
                 onUserCredentialsFound(user)
                 return@LaunchedEffect
             }
-            onUserCredentialsNotFound()
+            onUserCredentialsNotFound(user)
         }
     }
 }

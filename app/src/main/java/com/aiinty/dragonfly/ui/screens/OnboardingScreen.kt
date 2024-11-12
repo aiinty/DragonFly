@@ -2,7 +2,6 @@ package com.aiinty.dragonfly.ui.screens
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
@@ -55,6 +54,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.aiinty.dragonfly.R
+import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.components.AnimateInvisibility
 import com.aiinty.dragonfly.ui.theme.Primary
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
@@ -63,7 +63,7 @@ import kotlinx.serialization.Serializable
 import kotlin.math.absoluteValue
 
 @Serializable
-object Onboarding
+data class Onboarding(val user: User)
 
 private enum class OnboardingScreenState{
     INIT,
@@ -79,7 +79,8 @@ private data class OnboardingItem(
 
 @Composable
 fun OnboardingScreen(
-    onNavigateToNext: () -> Unit
+    user: User,
+    onNavigateToNext: (User) -> Unit,
 ) {
     val items = mapOf(
         OnboardingScreenState.INIT to OnboardingItem(null, null),
@@ -296,7 +297,7 @@ fun OnboardingScreen(
         }
 
         Button(
-            onClick = onNavigateToNext,
+            onClick = { onNavigateToNext(user) },
             Modifier
                 .fillMaxWidth()
                 .height(53.dp),
