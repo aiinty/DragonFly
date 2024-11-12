@@ -52,6 +52,14 @@ val Typography = Typography(
         letterSpacing = 0.5.sp,
         color = Tertiary
     ),
+    labelMedium = TextStyle(
+        fontFamily = default,
+        fontWeight = FontWeight.W400,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.sp,
+        color = Secondary
+    ),
     labelSmall = TextStyle(
         fontFamily = default,
         fontWeight = FontWeight.W400,

@@ -18,4 +18,5 @@
     <string name="login_with_gmail">Login with Gmail</string>
     <string name="login_register_hint">Don\'t have an account?</string>
     <string name="register">Register</string>
+    <string name="enter_security_code">Enter Security Code</string>
 </resources>
