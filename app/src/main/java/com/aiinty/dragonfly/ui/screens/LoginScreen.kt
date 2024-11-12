@@ -2,9 +2,7 @@ package com.aiinty.dragonfly.ui.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -27,14 +25,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -42,6 +36,7 @@ import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.core.datastore.DataStoreInstance
 import com.aiinty.dragonfly.core.entity.USER_REMEMBER_ME_KEY
 import com.aiinty.dragonfly.core.entity.User
+import com.aiinty.dragonfly.ui.components.DefaultHeader
 import com.aiinty.dragonfly.ui.theme.Outline
 import com.aiinty.dragonfly.ui.theme.Primary
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
@@ -77,29 +72,12 @@ fun LoginScreen(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            //HEADER
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Image(
-                    modifier = Modifier.size(24.dp),
-                    imageVector = ImageVector.vectorResource(R.drawable.logo),
-                    colorFilter = ColorFilter.tint(Color(0xFF202020)),
-                    contentDescription = stringResource(R.string.app_name),
-                )
-                Image(
-                    modifier = Modifier.size(24.dp),
-                    imageVector = ImageVector.vectorResource(R.drawable.translate),
-                    contentDescription = stringResource(R.string.app_name),
-                )
-            }
+            DefaultHeader()
 
             Text(
                 text = stringResource(R.string.login_title),
                 style = MaterialTheme.typography.titleMedium
             )
-
             Text(
                 text = stringResource(R.string.login_desc),
                 style = MaterialTheme.typography.bodySmall

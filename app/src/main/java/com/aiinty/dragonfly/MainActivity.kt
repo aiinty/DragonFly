@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DragonFlyApp(
     navController: NavHostController = rememberNavController(),
-    startDestination: Any = Loading
+    startDestination: Any = Register
 ){
     DragonFlyTheme {
         Surface(modifier = Modifier.fillMaxSize()) {

@@ -1,24 +1,34 @@
 <resources>
     <string name="app_name">DragonFly</string>
-    <string name="loading_first_title">Easy to manage money</string>
-    <string name="loading_first_desc">Transfer and receive your money easily with dragonfly bank</string>
-    <string name="loading_second_title">Transfers between accounts</string>
-    <string name="loading_second_desc">Transferring balances is very easy between dragonfly bank accounts</string>
-    <string name="loading_third_title">Choose as needed</string>
-    <string name="loading_third_desc">Choose the savings you want to open, we have lots of services according to what you need</string>
+    <!--OTHER-->
+    <string name="Google">Google</string>
+    <string name="line">Line</string>
+    <string name="arrow">Arrow</string>
+    <string name="credit_card">Credit card</string>
+    <!--ONBOARDING-->
+    <string name="onboarding_first_title">Easy to manage money</string>
+    <string name="onboarding_first_desc">Transfer and receive your money easily with dragonfly bank</string>
+    <string name="onboarding_second_title">Transfers between accounts</string>
+    <string name="onboarding_second_desc">Transferring balances is very easy between dragonfly bank accounts</string>
+    <string name="onboarding_third_title">Choose as needed</string>
+    <string name="onboarding_third_desc">Choose the savings you want to open, we have lots of services according to what you need</string>
+    <string name="onboarding_get_started">Get Started</string>
+    <string name="onboarding_swipe">Swipe for more</string>
+    <!--LOGIN-->
+    <string name="login">Login</string>
     <string name="login_title">Welcome</string>
     <string name="login_desc">Enjoy all the features that make it easy for you to manage your finances</string>
     <string name="login_email_hint">Email / Username</string>
-    <string name="login_passoword_hint">Password</string>
+    <string name="login_password_hint">Password</string>
     <string name="login_remember_me">Remember me</string>
     <string name="login_forgot">Forgot password?</string>
-    <string name="login">Login</string>
-    <string name="loading_next">Get Started</string>
     <string name="login_other">Other</string>
     <string name="login_with_gmail">Login with Gmail</string>
     <string name="login_register_hint">Don\'t have an account?</string>
+    <!--AUTH-->
+    <string name="auth_enter_code">Enter Security Code</string>
+    <!--REGISTER-->
     <string name="register">Register</string>
-    <string name="enter_security_code">Enter Security Code</string>
     <string name="register_desc">Create an account and enjoy the benefits we provide for you</string>
     <string name="register_with_gmail">Register with Gmail</string>
     <string name="register_other">Other</string>

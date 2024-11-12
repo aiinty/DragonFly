@@ -20,7 +20,6 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -42,8 +41,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
@@ -56,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.components.AnimateInvisibility
+import com.aiinty.dragonfly.ui.components.DefaultHeader
 import com.aiinty.dragonfly.ui.theme.Primary
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
 import kotlinx.coroutines.delay
@@ -124,23 +122,7 @@ fun OnboardingScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        //HEADER
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Image(
-                modifier = Modifier.size(24.dp),
-                imageVector = ImageVector.vectorResource(R.drawable.logo),
-                colorFilter = ColorFilter.tint(Color(0xFF202020)),
-                contentDescription = stringResource(R.string.app_name),
-            )
-            Image(
-                modifier = Modifier.size(24.dp),
-                imageVector = ImageVector.vectorResource(R.drawable.translate),
-                contentDescription = stringResource(R.string.app_name),
-            )
-        }
+        DefaultHeader()
 
         //ANIMATION
         val transition = updateTransition(targetState = screenState, label = "transition")
