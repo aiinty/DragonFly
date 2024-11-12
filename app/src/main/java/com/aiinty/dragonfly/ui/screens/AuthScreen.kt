@@ -5,7 +5,7 @@ import com.aiinty.dragonfly.core.entity.User
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Auth(val user: User)
+object Auth
 
 @Composable
 fun AuthScreen(

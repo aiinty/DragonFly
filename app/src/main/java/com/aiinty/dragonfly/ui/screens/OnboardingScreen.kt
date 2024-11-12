@@ -63,7 +63,7 @@ import kotlinx.serialization.Serializable
 import kotlin.math.absoluteValue
 
 @Serializable
-data class Onboarding(val user: User)
+object Onboarding
 
 private enum class OnboardingScreenState{
     INIT,

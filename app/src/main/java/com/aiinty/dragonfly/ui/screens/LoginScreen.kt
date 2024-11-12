@@ -42,7 +42,7 @@ import com.aiinty.dragonfly.ui.theme.SecondaryContainer
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Login(val user: User)
+object Login
 
 @Composable
 fun LoginScreen(

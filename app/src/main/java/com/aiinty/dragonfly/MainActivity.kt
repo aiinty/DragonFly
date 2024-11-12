@@ -13,7 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
+import com.aiinty.dragonfly.core.entity.USER_KEY
 import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.screens.Auth
 import com.aiinty.dragonfly.ui.screens.AuthScreen
@@ -50,34 +50,40 @@ fun DragonFlyApp(
                 composable<Loading> {
                     LoadingScreen(
                         onUserCredentialsFound = { user ->
-                            navController.navigate(Auth(user)) {
+                            navController.currentBackStackEntry?.savedStateHandle?.set(USER_KEY, user)
+                            navController.navigate(Auth) {
                                 launchSingleTop = true
                             }
                         },
                         onUserCredentialsNotFound = { user ->
-                            navController.navigate(Onboarding(user)) {
+                            navController.currentBackStackEntry?.savedStateHandle?.set(USER_KEY, user)
+                            navController.navigate(Onboarding) {
                                 launchSingleTop = true
                             }
                         }
                     )
                 }
-                composable<Onboarding> { backStack ->
-                    val user = backStack.toRoute<User>()
+                composable<Onboarding> {
+                    val userObject: User? = navController.previousBackStackEntry?.savedStateHandle?.get(USER_KEY)
+
                     OnboardingScreen(
-                        user,
-                        onNavigateToNext = {
-                            navController.navigate(Login(user)) {
+                        userObject!!,
+                        onNavigateToNext = { user ->
+                            navController.currentBackStackEntry?.savedStateHandle?.set(USER_KEY, user)
+                            navController.navigate(Login) {
                                 launchSingleTop = true
                             }
                     })
                 }
-                composable<Login> { backStack ->
-                    val user = backStack.toRoute<User>()
-                    LoginScreen(user)
+                composable<Login> {
+                    val userObject: User? = navController.previousBackStackEntry?.savedStateHandle?.get(USER_KEY)
+
+                    LoginScreen(userObject!!)
                 }
-                composable<Auth> { backStack ->
-                    val user = backStack.toRoute<User>()
-                    AuthScreen(user)
+                composable<Auth> {
+                    val userObject: User? = navController.previousBackStackEntry?.savedStateHandle?.get(USER_KEY)
+
+                    AuthScreen(userObject!!)
                 }
             }
         }
