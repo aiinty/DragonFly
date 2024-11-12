@@ -19,4 +19,22 @@
     <string name="login_register_hint">Don\'t have an account?</string>
     <string name="register">Register</string>
     <string name="enter_security_code">Enter Security Code</string>
+    <string name="register_desc">Create an account and enjoy the benefits we provide for you</string>
+    <string name="register_with_gmail">Register with Gmail</string>
+    <string name="register_other">Other</string>
+    <string name="register_with_email">Register with Email</string>
+    <string name="register_email">Email</string>
+    <string name="register_email_desc">Enter your email to register</string>
+    <string name="register_username">Username</string>
+    <string name="register_username_desc">Enter your username to register</string>
+    <string name="register_password">Password</string>
+    <string name="register_password_desc">Enter your password to register</string>
+    <string name="register_password_re">Re - Password</string>
+    <!--INFORMATION-->
+    <string name="information">Information</string>
+    <string name="information_title">Frequently read articles</string>
+    <string name="information_first_title">How to reset password</string>
+    <string name="information_first_desc">If you forget your password, you can request a password reset via email or the number you registered</string>
+    <string name="information_second">How to create a virtual account</string>
+    <string name="information_second_desc">To create a virtual account you need to raise your customer status to priority</string>
 </resources>

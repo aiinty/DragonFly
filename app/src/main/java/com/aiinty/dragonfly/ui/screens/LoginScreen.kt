@@ -2,7 +2,9 @@ package com.aiinty.dragonfly.ui.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
@@ -28,17 +31,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.aiinty.dragonfly.R
+import com.aiinty.dragonfly.core.datastore.DataStoreInstance
+import com.aiinty.dragonfly.core.entity.USER_REMEMBER_ME_KEY
 import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.theme.Outline
 import com.aiinty.dragonfly.ui.theme.Primary
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
 import com.aiinty.dragonfly.ui.theme.Secondary
 import com.aiinty.dragonfly.ui.theme.SecondaryContainer
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -46,8 +55,12 @@ object Login
 
 @Composable
 fun LoginScreen(
-    user: User
+    user: User,
+    onSuccessfulLogin: (User) -> Unit,
+    onRegisterNavigation: () -> Unit
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -100,6 +113,7 @@ fun LoginScreen(
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = login.value,
+                singleLine = true,
                 onValueChange = { login.value = it },
                 label = { Text(text = stringResource(id = R.string.login_email_hint)) }
             )
@@ -107,7 +121,10 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth(),
                 value = password.value,
                 onValueChange = { password.value = it },
-                label = { Text(text = stringResource(id = R.string.login_passoword_hint)) }
+                singleLine = true,
+                label = { Text(text = stringResource(id = R.string.login_password_hint)) },
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             )
 
             Row(
@@ -143,7 +160,14 @@ fun LoginScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Button(
-                onClick = { },
+                onClick = {
+                    if (login.value == user.login && password.value == user.password) {
+                        runBlocking {
+                            DataStoreInstance.writeBooleanValue(context, USER_REMEMBER_ME_KEY, isRememberMe.value)
+                        }
+                        onSuccessfulLogin(user)
+                    }
+                },
                 Modifier
                     .fillMaxWidth()
                     .height(53.dp),
@@ -164,7 +188,9 @@ fun LoginScreen(
             )
 
             Button(
-                onClick = { },
+                onClick = {
+
+                },
                 Modifier
                     .fillMaxWidth()
                     .height(53.dp),
@@ -178,11 +204,11 @@ fun LoginScreen(
                     Image(
                         modifier = Modifier.size(16.dp),
                         bitmap = ImageBitmap.imageResource(R.drawable.google),
-                        contentDescription = "google"
+                        contentDescription = stringResource(R.string.Google)
                     )
                     Text(
                         modifier = Modifier.padding(start = 10.dp),
-                        text = "Login with Gmail",
+                        text = stringResource(R.string.login_with_gmail),
                         style = MaterialTheme.typography.labelSmall,
                         color = Secondary
                     )
@@ -200,9 +226,7 @@ fun LoginScreen(
 
             TextButton(
                 contentPadding = PaddingValues(0.dp),
-                onClick = {
-
-                }
+                onClick = { onRegisterNavigation() }
             ) {
                 Text(
                     text = stringResource(id = R.string.register),

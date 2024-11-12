@@ -84,9 +84,9 @@ fun OnboardingScreen(
 ) {
     val items = mapOf(
         OnboardingScreenState.INIT to OnboardingItem(null, null),
-        OnboardingScreenState.START to OnboardingItem(R.string.loading_first_title, R.string.loading_first_desc),
-        OnboardingScreenState.MEDIUM to OnboardingItem(R.string.loading_second_title, R.string.loading_second_desc),
-        OnboardingScreenState.END to OnboardingItem(R.string.loading_third_title, R.string.loading_second_desc),
+        OnboardingScreenState.START to OnboardingItem(R.string.onboarding_first_title, R.string.onboarding_first_desc),
+        OnboardingScreenState.MEDIUM to OnboardingItem(R.string.onboarding_second_title, R.string.onboarding_second_desc),
+        OnboardingScreenState.END to OnboardingItem(R.string.onboarding_third_title, R.string.onboarding_second_desc),
     )
     val screenState = remember { mutableStateOf(OnboardingScreenState.INIT) }
     val offsetY = remember { mutableFloatStateOf(0f) }
@@ -146,7 +146,7 @@ fun OnboardingScreen(
         val transition = updateTransition(targetState = screenState, label = "transition")
         val cardAngle = transition.animateFloat(transitionSpec = {
             tween(500)
-        }, label = "angle") { state ->
+        }, label = "cardAngle") { state ->
             when(state.value) {
                 OnboardingScreenState.INIT -> 0f
                 OnboardingScreenState.START -> 0f
@@ -156,7 +156,7 @@ fun OnboardingScreen(
         }
         val cardSize = transition.animateDp(transitionSpec = {
             tween(500)
-        }, label = "size") { animated ->
+        }, label = "cardSize") { animated ->
             when(animated.value) {
                 OnboardingScreenState.INIT -> 250.dp
                 OnboardingScreenState.START -> 250.dp
@@ -170,13 +170,12 @@ fun OnboardingScreen(
             modifier = Modifier.weight(5f),
             contentAlignment = Alignment.Center
         ) {
-
             AnimatedCard(
                 imageId = R.drawable.credit_card4,
                 size = cardSize,
                 offset = transition.animateOffset(transitionSpec = {
                         tween(1000)
-                    }, label = "offset") { state ->
+                    }, label = "offset1") { state ->
                     when(state.value) {
                         OnboardingScreenState.INIT -> Offset(-360f, 120f)
                         OnboardingScreenState.START -> Offset(0f, 0f)
@@ -184,8 +183,7 @@ fun OnboardingScreen(
                         else -> Offset(76f, 0f)
                     }
                 },
-                angle = cardAngle,
-                descId = R.string.login // TODO
+                angle = cardAngle
             )
 
             //MEDIUM STATE
@@ -197,12 +195,14 @@ fun OnboardingScreen(
                 Image(
                     modifier = Modifier.offset(110.dp, (-30).dp),
                     imageVector = ImageVector.vectorResource(R.drawable.circular_line),
-                    contentDescription = "Line" // TODO
+                    contentDescription = stringResource(R.string.line)
                 )
                 Image(
-                    modifier = Modifier.offset((-110).dp, 70.dp).rotate(-180f),
+                    modifier = Modifier
+                        .offset((-110).dp, 70.dp)
+                        .rotate(-180f),
                     imageVector = ImageVector.vectorResource(R.drawable.circular_line),
-                    contentDescription = "Line" // TODO
+                    contentDescription = stringResource(R.string.line)
                 )
 
             }
@@ -218,14 +218,13 @@ fun OnboardingScreen(
                     size = cardSize,
                     offset = transition.animateOffset(transitionSpec = {
                             tween(1000)
-                        }, label = "offset") { animated ->
+                        }, label = "offset3") { animated ->
                         when(animated.value) {
                             OnboardingScreenState.MEDIUM -> Offset(-55f, -60f)
                             else -> Offset(-76f, 0f)
                         }
                     },
-                    angle = cardAngle,
-                    descId = R.string.login // TODO
+                    angle = cardAngle
                 )
             }
 
@@ -234,7 +233,7 @@ fun OnboardingScreen(
                 size = cardSize,
                 offset = transition.animateOffset(transitionSpec = {
                     tween(1000)
-                }, label = "offset") { animated ->
+                }, label = "offset2") { animated ->
                     when(animated.value) {
                         OnboardingScreenState.INIT -> Offset(-450f, 60f)
                         OnboardingScreenState.START -> Offset(-90f, -60f)
@@ -242,8 +241,7 @@ fun OnboardingScreen(
                         else -> Offset(0f, 0f)
                     }
                 },
-                angle = cardAngle,
-                descId = R.string.login // TODO
+                angle = cardAngle
             )
         }
 
@@ -262,9 +260,9 @@ fun OnboardingScreen(
                 }.using(
                     SizeTransform(clip = false)
                 )
-            }
+            },
+            label = "itemsAnimation"
         ) { state ->
-
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(32.dp),
@@ -284,12 +282,12 @@ fun OnboardingScreen(
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         Text(
-                            text = "Swipe for more",
+                            text = stringResource(R.string.onboarding_swipe),
                             style = MaterialTheme.typography.labelSmall
                         )
                         Image(
                             imageVector = ImageVector.vectorResource(R.drawable.arrow),
-                            contentDescription = "Arrow"
+                            contentDescription = stringResource(R.string.arrow)
                         )
                     }
                 }
@@ -305,7 +303,7 @@ fun OnboardingScreen(
             colors = ButtonDefaults.buttonColors(PrimaryContainer)
         ) {
             Text(
-                text = "Get Started",
+                text = stringResource(R.string.onboarding_get_started),
                 style = MaterialTheme.typography.labelSmall,
                 color = Primary
             )
@@ -325,7 +323,7 @@ private fun AnimatedCard(
     size: State<Dp>,
     angle: State<Float>,
     offset: State<Offset>,
-    descId: Int?
+    descId: Int? = null
     ) {
     Image(
         modifier = Modifier

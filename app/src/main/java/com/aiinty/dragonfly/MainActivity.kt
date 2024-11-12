@@ -23,6 +23,8 @@ import com.aiinty.dragonfly.ui.screens.Login
 import com.aiinty.dragonfly.ui.screens.LoginScreen
 import com.aiinty.dragonfly.ui.screens.Onboarding
 import com.aiinty.dragonfly.ui.screens.OnboardingScreen
+import com.aiinty.dragonfly.ui.screens.Register
+import com.aiinty.dragonfly.ui.screens.RegisterScreen
 import com.aiinty.dragonfly.ui.theme.DragonFlyTheme
 
 class MainActivity : ComponentActivity() {
@@ -78,12 +80,28 @@ fun DragonFlyApp(
                 composable<Login> {
                     val userObject: User? = navController.previousBackStackEntry?.savedStateHandle?.get(USER_KEY)
 
-                    LoginScreen(userObject!!)
+                    LoginScreen(
+                        userObject!!,
+                        onSuccessfulLogin = { user ->
+                            navController.currentBackStackEntry?.savedStateHandle?.set(USER_KEY, user)
+                            navController.navigate(Auth) {
+                                launchSingleTop = true
+                            }
+                        },
+                        onRegisterNavigation = {
+                            navController.navigate(Register) {
+                                launchSingleTop = true
+                            }
+                        }
+                    )
                 }
                 composable<Auth> {
                     val userObject: User? = navController.previousBackStackEntry?.savedStateHandle?.get(USER_KEY)
 
                     AuthScreen(userObject!!)
+                }
+                composable<Register> {
+                    RegisterScreen()
                 }
             }
         }
