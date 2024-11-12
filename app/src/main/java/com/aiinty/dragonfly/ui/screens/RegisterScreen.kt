@@ -1,12 +1,15 @@
 package com.aiinty.dragonfly.ui.screens
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +35,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.ui.components.BaseHeader
@@ -60,6 +66,7 @@ private data class RegisterItem(
     val descId: Int?,
 )
 
+@Preview
 @Composable
 fun RegisterScreen() {
     val context = LocalContext.current
@@ -69,37 +76,172 @@ fun RegisterScreen() {
         RegisterScreenState.USERNAME to RegisterItem(R.string.register_username, R.string.register_username_desc),
         RegisterScreenState.PASSWORD to RegisterItem(R.string.register_password, R.string.register_password_desc),
     )
-    val screenState = remember { mutableStateOf(RegisterScreenState.PASSWORD) }
+    val email = remember { mutableStateOf("") }
+    val username = remember { mutableStateOf("") }
+    val password = remember { mutableStateOf("") }
+    val passwordRe = remember { mutableStateOf("") }
+    val screenState = remember { mutableStateOf(RegisterScreenState.EMAIL) }
 
-    Box(
+    fun toPrevState() {
+        if (screenState.value.ordinal != 0) {
+            screenState.value =
+                RegisterScreenState.entries[screenState.value.ordinal - 1]
+        }
+    }
+
+    fun toNextState() {
+        if (screenState.value.ordinal != RegisterScreenState.entries.size - 1) {
+            screenState.value =
+                RegisterScreenState.entries[screenState.value.ordinal + 1]
+        }
+    }
+
+    Column (
         modifier = Modifier.fillMaxSize(),
     ) {
         AnimatedContent(
             targetState = screenState.value,
-            label = "itemsAnimation"
+            transitionSpec = {
+                fadeIn().togetherWith(fadeOut())
+            },
+            label = "header"
         ) { state ->
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
+            when(state) {
+                RegisterScreenState.START -> DefaultHeader()
+                else -> RegisterHeader(
+                    state,
+                    onBackClick = { toPrevState() },
+                    onInformationClick = {  }
+                )
+            }
+        }
+
+        Column(
+            modifier = Modifier.padding(10.dp, 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+
+            AnimatedContent(
+                targetState = screenState.value,
+                transitionSpec = {
+                    fadeIn().togetherWith(fadeOut())
+                },
+                label = "itemsAnimation"
+            ) { state ->
                 val item = items[state]
-                item?.let {
+                item?.let { _ ->
                     when(state) {
                         RegisterScreenState.EMAIL -> {
-                            RegisterHeader(state)
+                            ItemDetails(item.titleId, item.descId) {
+                                Column(
+                                    modifier = Modifier.fillMaxHeight(),
+                                    verticalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    OutlinedTextField(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        value = email.value,
+                                        singleLine = true,
+                                        onValueChange = { email.value = it },
+                                        label = { Text(text = stringResource(id = R.string.register_email)) }
+                                    )
+
+                                    Button(
+                                        onClick = { toNextState() },
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .height(53.dp),
+                                        shape = RoundedCornerShape(8.dp),
+                                        colors = ButtonDefaults.buttonColors(PrimaryContainer)
+                                    ) {
+                                        Text(
+                                            text = stringResource(R.string.app_name),
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = Primary
+                                        )
+                                    }
+                                }
+                            }
                         }
                         RegisterScreenState.USERNAME -> {
-                            RegisterHeader(state)
+                            ItemDetails(item.titleId, item.descId) {
+                                Column(
+                                    modifier = Modifier.fillMaxHeight(),
+                                    verticalArrangement = Arrangement.SpaceBetween,
+                                ) {
+                                    OutlinedTextField(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        value = username.value,
+                                        singleLine = true,
+                                        onValueChange = { username.value = it },
+                                        label = { Text(text = stringResource(id = R.string.register_username)) }
+                                    )
+
+                                    Button(
+                                        onClick = { toNextState() },
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .height(53.dp),
+                                        shape = RoundedCornerShape(8.dp),
+                                        colors = ButtonDefaults.buttonColors(PrimaryContainer)
+                                    ) {
+                                        Text(
+                                            text = stringResource(R.string.app_name),
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = Primary
+                                        )
+                                    }
+                                }
+                            }
                         }
                         RegisterScreenState.PASSWORD -> {
-                            RegisterHeader(state)
-                        }
-
-                        else -> {
-                            DefaultHeader()
-
                             ItemDetails(item.titleId, item.descId) {
-                                StartCard()
+                                Column(
+                                    modifier = Modifier.fillMaxHeight(),
+                                    verticalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Column(
+                                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                                    ) {
+                                        OutlinedTextField(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            value = username.value,
+                                            singleLine = true,
+                                            onValueChange = { username.value = it },
+                                            label = { Text(text = stringResource(id = R.string.register_password)) }
+                                        )
+
+                                        OutlinedTextField(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            value = username.value,
+                                            singleLine = true,
+                                            onValueChange = { username.value = it },
+                                            label = { Text(text = stringResource(id = R.string.register_password_re)) }
+                                        )
+                                    }
+
+                                    Button(
+                                        onClick = { toNextState() },
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .height(53.dp),
+                                        shape = RoundedCornerShape(8.dp),
+                                        colors = ButtonDefaults.buttonColors(PrimaryContainer)
+                                    ) {
+                                        Text(
+                                            text = stringResource(R.string.app_name),
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = Primary
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        else -> {
+                            ItemDetails(item.titleId, item.descId) {
+                                StartCard(
+                                    onRegisterClick = { toNextState() }
+                                )
                             }
                         }
                     }
@@ -110,7 +252,9 @@ fun RegisterScreen() {
 }
 
 @Composable
-private fun StartCard() {
+private fun StartCard(
+    onRegisterClick: () -> Unit
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -147,7 +291,7 @@ private fun StartCard() {
         )
 
         Button(
-            onClick = { },
+            onClick = { onRegisterClick() },
             Modifier
                 .fillMaxWidth()
                 .height(53.dp),
@@ -165,15 +309,18 @@ private fun StartCard() {
 
 @Composable
 private fun RegisterHeader(
-    state: RegisterScreenState
+    state: RegisterScreenState,
+    onBackClick: () -> Unit,
+    onInformationClick: () -> Unit,
 ) {
     Column {
         BaseHeader(
             {
                 IconButton(
-                    onClick = { }
+                    onClick = { onBackClick() }
                 ) {
                     Icon(
+                        modifier = Modifier.size(24.dp),
                         imageVector = ImageVector.vectorResource(R.drawable.arrow_left),
                         contentDescription = stringResource(R.string.arrow)
                     )
@@ -182,14 +329,16 @@ private fun RegisterHeader(
             {
                 Text(
                     text = stringResource(R.string.register),
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.W600
                 )
             },
             {
                 IconButton(
-                    onClick = { }
+                    onClick = { onInformationClick() }
                 ) {
                     Icon(
+                        modifier = Modifier.size(24.dp),
                         imageVector = ImageVector.vectorResource(R.drawable.info_circle),
                         contentDescription = stringResource(R.string.arrow)
                     )
@@ -212,16 +361,21 @@ private fun ItemDetails(
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(32.dp)
     ) {
-        Text(
-            text = titleId?.let { stringResource(titleId) } ?: "",
-            style = MaterialTheme.typography.titleSmall
-        )
-        Text(
-            text = descId?.let { stringResource(descId) } ?: "",
-            style = MaterialTheme.typography.bodySmall
-        )
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = titleId?.let { stringResource(titleId) } ?: "",
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = descId?.let { stringResource(descId) } ?: "",
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
         content()
     }
 }
