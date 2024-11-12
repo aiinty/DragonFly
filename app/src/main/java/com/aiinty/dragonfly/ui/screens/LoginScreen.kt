@@ -11,14 +11,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -36,7 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.ui.theme.*
 import kotlinx.serialization.Serializable
@@ -55,7 +51,7 @@ fun LoginScreen() {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
 
-        val email = remember { mutableStateOf("") }
+        val login = remember { mutableStateOf("") }
         val password = remember { mutableStateOf("") }
         val isRememberMe = remember { mutableStateOf(false) }
 
@@ -98,8 +94,8 @@ fun LoginScreen() {
         ) {
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = email.value,
-                onValueChange = { email.value = it },
+                value = login.value,
+                onValueChange = { login.value = it },
                 label = { Text(text = stringResource(id = R.string.login_email_hint)) }
             )
             OutlinedTextField(
