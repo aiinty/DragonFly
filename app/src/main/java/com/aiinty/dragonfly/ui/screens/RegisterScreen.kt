@@ -45,12 +45,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 object Register
 
-private enum class RegisterScreenState {
+private enum class RegisterScreenState() {
     START,
     EMAIL,
     USERNAME,
-    PASSWORD,
+    PASSWORD;
 //    PASSCODE // TODO
+
+    fun calculatePercent(): Float = this.ordinal / RegisterScreenState.entries.size.toFloat()
 }
 
 private data class RegisterItem(
@@ -67,16 +69,12 @@ fun RegisterScreen() {
         RegisterScreenState.USERNAME to RegisterItem(R.string.register_username, R.string.register_username_desc),
         RegisterScreenState.PASSWORD to RegisterItem(R.string.register_password, R.string.register_password_desc),
     )
-    val screenState = remember { mutableStateOf(RegisterScreenState.EMAIL) }
+    val screenState = remember { mutableStateOf(RegisterScreenState.PASSWORD) }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp, 16.dp),
+        modifier = Modifier.fillMaxSize(),
     ) {
         AnimatedContent(
-            modifier = Modifier
-            .padding(16.dp),
             targetState = screenState.value,
             label = "itemsAnimation"
         ) { state ->
@@ -199,7 +197,8 @@ private fun RegisterHeader(
             }
         )
         LinearProgressIndicator(
-            progress = ((RegisterScreenState.entries.size - 1) / state.ordinal).toFloat(),
+            modifier = Modifier.fillMaxWidth(),
+            progress = state.calculatePercent(),
             color = PrimaryContainer
         )
     }
