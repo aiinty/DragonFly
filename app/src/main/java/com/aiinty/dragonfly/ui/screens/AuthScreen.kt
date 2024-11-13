@@ -148,6 +148,11 @@ fun AuthScreen(
                                                     passCode += key
                                                 }
 
+                                                if (user.passCode.isNullOrEmpty()) {
+                                                    user.passCode = passCode
+                                                    onNextNavigate()
+                                                }
+
                                                 if (passCode == user.passCode) {
                                                     onNextNavigate()
                                                 }
