@@ -50,14 +50,12 @@ private fun Preview() {
 
 @Composable
 fun AuthScreen(
-    user: User,
-    onNextNavigate: () -> Unit
+    user: User, onNextNavigate: () -> Unit
 ) {
     var passCode by remember { mutableStateOf("") }
 
     Row(
-        Modifier.fillMaxSize(),
-        verticalAlignment = Alignment.CenterVertically
+        Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
             modifier = Modifier
@@ -97,17 +95,16 @@ fun AuthScreen(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(10.dp))
                                     .border(
-                                        1.dp, if (index >= passCode.length)
-                                            Color(0xFFECECEC) else
-                                            PrimaryContainer, shape = RoundedCornerShape(10.dp)
+                                        1.dp,
+                                        if (index >= passCode.length) Color(0xFFECECEC) else PrimaryContainer,
+                                        shape = RoundedCornerShape(10.dp)
                                     )
-                                    .size(48.dp),
-                                contentAlignment = Alignment.Center
+                                    .size(48.dp), contentAlignment = Alignment.Center
                             ) {
                                 if (index < passCode.length) {
                                     Image(
                                         imageVector = ImageVector.vectorResource(R.drawable.ellipse),
-                                        "Code cell",
+                                        "code cell",
                                         Modifier.size(8.dp, 8.dp)
                                     )
                                 }
