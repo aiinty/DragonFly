@@ -19,7 +19,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -52,7 +51,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 object Register
 
-// TODO: passcode create screen 
+// TODO: passcode create screen
 enum class RegisterScreenState {
     START, EMAIL, USERNAME, PASSWORD;
 
@@ -159,6 +158,7 @@ fun RegisterScreen(
                         RegisterScreenState.PASSWORD -> {
                             ItemDetails(item.titleId, item.descId) {
                                 PasswordCard(user, onNextClick = {
+                                    user.isRegistered = true
                                     onNextNavigate(user)
                                 })
                             }
@@ -327,7 +327,7 @@ private fun PasswordCard(
                 label = { Text(text = stringResource(id = R.string.register_password)) }
             )
 
-            OutlinedTextField(
+            BaseTextField(
                 value = passwordRe.value,
                 onValueChange = { passwordRe.value = it; isCorrect.value = (password.value == passwordRe.value) },
                 visualTransformation = PasswordVisualTransformation(),
