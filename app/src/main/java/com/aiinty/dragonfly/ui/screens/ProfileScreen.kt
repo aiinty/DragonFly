@@ -37,7 +37,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 object Profile
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
 private fun Preview() {
     ProfileScreen(

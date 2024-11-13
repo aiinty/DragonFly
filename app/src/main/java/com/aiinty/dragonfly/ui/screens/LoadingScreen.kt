@@ -26,12 +26,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 object Loading
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
 private fun Preview() {
     LoadingScreen(
         onUserCredentialsFound = {},
-        onUserCredentialsNotFound = {}
+        onUserCredentialsNotFound = {},
     )
 }
 
@@ -61,15 +61,13 @@ fun LoadingScreen(
         LaunchedEffect(Unit) {
             delay(3000)
 
-
-
             val user = DataStoreInstance.readUser(context)
 
             if (user.isRegistered) {
                 onUserCredentialsFound(user)
-                return@LaunchedEffect
+            } else {
+                onUserCredentialsNotFound(user)
             }
-            onUserCredentialsNotFound(user)
         }
     }
 }

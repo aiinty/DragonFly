@@ -8,7 +8,7 @@ import com.aiinty.dragonfly.core.entity.User
 import kotlinx.coroutines.launch
 
 class UserViewModel : ViewModel() {
-    var user: User? = null
+    var user: User = User()
         private set
 
     fun updateUser(updatedUser: User) {

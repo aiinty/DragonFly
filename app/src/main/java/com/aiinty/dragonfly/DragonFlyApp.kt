@@ -14,7 +14,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.aiinty.dragonfly.core.datastore.DataStoreInstance
-import com.aiinty.dragonfly.core.entity.USER_KEY
 import com.aiinty.dragonfly.ui.screens.Auth
 import com.aiinty.dragonfly.ui.screens.AuthScreen
 import com.aiinty.dragonfly.ui.screens.Loading
@@ -49,37 +48,33 @@ fun DragonFlyApp(
         NavHost(
             modifier = Modifier.padding(innerPadding),
             navController = navController,
-            startDestination = startDestination
+            startDestination = startDestination,
         ) {
             composable<Loading> {
                 LoadingScreen(
                     onUserCredentialsFound = { user ->
                         userViewModel.updateUser(user)
+
+                        // FIXME: navigate without transition???????? 
+                        navController.popBackStack()
                         if (user.rememberMe) {
-                            navController.navigate(Auth) {
-                                launchSingleTop = true
-                            }
+                            navController.navigate(Auth)
                         } else {
-                            navController.navigate(Login) {
-                                launchSingleTop = true
-                            }
+                            navController.navigate(Login)
                         }
                     },
                     onUserCredentialsNotFound = { user ->
                         userViewModel.updateUser(user)
 
-                        navController.navigate(Onboarding){
-                            launchSingleTop = true
-                        }
+                        navController.popBackStack()
+                        navController.navigate(Onboarding)
                     }
                 )
             }
 
             composable<Onboarding> {
-                val userObject = userViewModel.user
-
                 OnboardingScreen(
-                    userObject!!,
+                    userViewModel.user,
                     onNavigateToNext = { user ->
                         userViewModel.updateUser(user)
                         navController.navigate(Login)
@@ -87,11 +82,12 @@ fun DragonFlyApp(
             }
 
             composable<Login> {
-                val userObject = userViewModel.user
                 LoginScreen(
-                    userObject!!,
+                    userViewModel.user,
                     onSuccessfulLogin = { user ->
                         userViewModel.updateUser(user)
+
+                        navController.popBackStack()
                         navController.navigate(Auth)
                     },
                     onRegisterNavigation = { user ->
@@ -102,32 +98,32 @@ fun DragonFlyApp(
             }
 
             composable<Auth> {
-                val userObject = userViewModel.user
-
-                AuthScreen(userObject!!, { }) // TODO
+                AuthScreen(
+                    userViewModel.user,
+                    { }
+                ) // TODO
             }
 
             composable<Register> {
-                val userObject = userViewModel.user
-
-                RegisterScreen(userObject!!, onNextNavigate = { user ->
-                    navController.currentBackStackEntry?.savedStateHandle?.set(USER_KEY, user)
-                    user.passCode = "1111"
-                    user.isRegistered = true
+                RegisterScreen(
+                    userViewModel.user,
+                    onNextNavigate = { user ->
+                    user.passCode = "1111" // TODO: delete this shit
                     runBlocking {
                         DataStoreInstance.writeUser(context, user)
                     }
                     userViewModel.updateUser(user)
-                    navController.navigate(Auth) {
-                        launchSingleTop = true
-                    }
+
+                    navController.popBackStack()
+                    navController.navigate(Auth)
                 })
 
             }
 
             composable<Profile> {
-                val userObject = userViewModel.user
-                ProfileScreen(userObject!!) // TODO
+                ProfileScreen(
+                    userViewModel.user
+                ) // TODO
             }
         }
     }
