@@ -85,7 +85,6 @@ fun AuthScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.auth_enter_code),
-
                         style = MaterialTheme.typography.labelMedium
                     )
 
