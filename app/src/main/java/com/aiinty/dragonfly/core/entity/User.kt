@@ -19,5 +19,4 @@ data class User(
     var passCode: String? = null,
     var rememberMe: Boolean = false,
     var isRegistered: Boolean = false
-) : Parcelable {
-}
+) : Parcelable

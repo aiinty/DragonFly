@@ -19,7 +19,7 @@ fun DefaultHeader() {
     BaseHeader(
         {
             IconButton(
-                onClick = { }
+                onClick = { },
             ) {
                 Icon(
                     modifier = Modifier.size(24.dp),

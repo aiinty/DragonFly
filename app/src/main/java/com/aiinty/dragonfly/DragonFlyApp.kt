@@ -1,7 +1,8 @@
 package com.aiinty.dragonfly
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -42,8 +43,11 @@ fun DragonFlyApp(
         userViewModel.loadUser(context)
     }
 
-    Surface(modifier = Modifier.fillMaxSize()) {
+    Scaffold (
+        modifier = Modifier.fillMaxSize()
+    ) { innerPadding ->
         NavHost(
+            modifier = Modifier.padding(innerPadding),
             navController = navController,
             startDestination = startDestination
         ) {
@@ -70,6 +74,7 @@ fun DragonFlyApp(
                     }
                 )
             }
+
             composable<Onboarding> {
                 val userObject = userViewModel.user
 
@@ -80,9 +85,9 @@ fun DragonFlyApp(
                         navController.navigate(Login)
                     })
             }
+
             composable<Login> {
                 val userObject = userViewModel.user
-
                 LoginScreen(
                     userObject!!,
                     onSuccessfulLogin = { user ->
@@ -95,13 +100,12 @@ fun DragonFlyApp(
                     }
                 )
             }
+
             composable<Auth> {
                 val userObject = userViewModel.user
 
-                AuthScreen(userObject!!, {
-                })
+                AuthScreen(userObject!!, { }) // TODO
             }
-
 
             composable<Register> {
                 val userObject = userViewModel.user
@@ -125,8 +129,6 @@ fun DragonFlyApp(
                 val userObject = userViewModel.user
                 ProfileScreen(userObject!!) // TODO
             }
-
         }
     }
 }
-
