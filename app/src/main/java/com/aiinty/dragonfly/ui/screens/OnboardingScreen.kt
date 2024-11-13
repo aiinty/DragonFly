@@ -48,6 +48,7 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.aiinty.dragonfly.R
@@ -63,7 +64,7 @@ import kotlin.math.absoluteValue
 @Serializable
 object Onboarding
 
-private enum class OnboardingScreenState{
+enum class OnboardingScreenState{
     INIT,
     START,
     MEDIUM,
@@ -75,9 +76,20 @@ private data class OnboardingItem(
     val descId: Int?,
 )
 
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+private fun Preview() {
+    OnboardingScreen(
+        user = User(),
+        startState = OnboardingScreenState.START,
+        onNavigateToNext = { }
+    )
+}
+
 @Composable
 fun OnboardingScreen(
     user: User,
+    startState: OnboardingScreenState = OnboardingScreenState.INIT,
     onNavigateToNext: (User) -> Unit,
 ) {
     val items = mapOf(
@@ -86,7 +98,7 @@ fun OnboardingScreen(
         OnboardingScreenState.MEDIUM to OnboardingItem(R.string.onboarding_second_title, R.string.onboarding_second_desc),
         OnboardingScreenState.END to OnboardingItem(R.string.onboarding_third_title, R.string.onboarding_second_desc),
     )
-    val screenState = remember { mutableStateOf(OnboardingScreenState.INIT) }
+    val screenState = remember { mutableStateOf(startState) }
     val offsetY = remember { mutableFloatStateOf(0f) }
 
     Column(

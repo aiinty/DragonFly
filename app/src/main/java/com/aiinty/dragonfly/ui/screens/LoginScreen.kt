@@ -31,6 +31,7 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.core.datastore.DataStoreInstance
@@ -48,11 +49,21 @@ import kotlinx.serialization.Serializable
 @Serializable
 object Login
 
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+private fun Preview() {
+    LoginScreen(
+        user = User(),
+        onSuccessfulLogin = {},
+        onRegisterNavigation = {}
+    )
+}
+
 @Composable
 fun LoginScreen(
     user: User,
     onSuccessfulLogin: (User) -> Unit,
-    onRegisterNavigation: () -> Unit
+    onRegisterNavigation: (User) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -139,7 +150,7 @@ fun LoginScreen(
         ) {
             Button(
                 onClick = {
-                    if (login.value == user.login && password.value == user.password) {
+                    if ((login.value == user.email || login.value == user.username ) && password.value == user.password) {
                         runBlocking {
                             DataStoreInstance.writeBooleanValue(context, USER_REMEMBER_ME_KEY, isRememberMe.value)
                         }
@@ -204,7 +215,7 @@ fun LoginScreen(
 
             TextButton(
                 contentPadding = PaddingValues(0.dp),
-                onClick = { onRegisterNavigation() }
+                onClick = { onRegisterNavigation(user) }
             ) {
                 Text(
                     text = stringResource(id = R.string.register),

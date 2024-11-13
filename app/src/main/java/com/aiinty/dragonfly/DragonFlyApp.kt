@@ -4,11 +4,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.aiinty.dragonfly.core.datastore.DataStoreInstance
 import com.aiinty.dragonfly.core.entity.USER_KEY
 import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.screens.Auth
@@ -23,13 +25,16 @@ import com.aiinty.dragonfly.ui.screens.Profile
 import com.aiinty.dragonfly.ui.screens.ProfileScreen
 import com.aiinty.dragonfly.ui.screens.Register
 import com.aiinty.dragonfly.ui.screens.RegisterScreen
+import kotlinx.coroutines.runBlocking
 
 @Preview
 @Composable
 fun DragonFlyApp(
     navController: NavHostController = rememberNavController(),
-    startDestination: Any = Register
+    startDestination: Any = Loading
 ) {
+    val context = LocalContext.current
+
     Surface(modifier = Modifier.fillMaxSize()) {
         NavHost(
             navController = navController,
@@ -37,15 +42,22 @@ fun DragonFlyApp(
         ) {
             composable<Loading> {
                 LoadingScreen(
+
                     onUserCredentialsFound = { user ->
                         navController.currentBackStackEntry?.savedStateHandle?.set(USER_KEY, user)
-                        navController.navigate(Auth) {
-                            launchSingleTop = true
+                        if (user.rememberMe) {
+                            navController.navigate(Auth) {
+                                launchSingleTop = true
+                            }
+                        } else {
+                            navController.navigate(Login) {
+                                launchSingleTop = true
+                            }
                         }
                     },
                     onUserCredentialsNotFound = { user ->
                         navController.currentBackStackEntry?.savedStateHandle?.set(USER_KEY, user)
-                        navController.navigate(Onboarding) {
+                        navController.navigate(Onboarding){
                             launchSingleTop = true
                         }
                     }
@@ -60,9 +72,7 @@ fun DragonFlyApp(
                     userObject!!,
                     onNavigateToNext = { user ->
                         navController.currentBackStackEntry?.savedStateHandle?.set(USER_KEY, user)
-                        navController.navigate(Login) {
-                            launchSingleTop = true
-                        }
+                        navController.navigate(Login)
                     })
             }
             composable<Login> {
@@ -74,14 +84,11 @@ fun DragonFlyApp(
                     userObject!!,
                     onSuccessfulLogin = { user ->
                         navController.currentBackStackEntry?.savedStateHandle?.set(USER_KEY, user)
-                        navController.navigate(Auth) {
-                            launchSingleTop = true
-                        }
+                        navController.navigate(Auth)
                     },
-                    onRegisterNavigation = {
-                        navController.navigate(Register) {
-                            launchSingleTop = true
-                        }
+                    onRegisterNavigation = { user ->
+                        navController.currentBackStackEntry?.savedStateHandle?.set(USER_KEY, user)
+                        navController.navigate(Register)
                     }
                 )
             }
@@ -90,12 +97,29 @@ fun DragonFlyApp(
                     USER_KEY
                 )
 
-                AuthScreen(userObject!!) // TODO
+                AuthScreen(userObject!!, {
+
+                })
             }
 
 
             composable<Register> {
-                RegisterScreen()
+                val userObject: User? = navController.previousBackStackEntry?.savedStateHandle?.get(
+                    USER_KEY
+                )
+
+                RegisterScreen(userObject!!, onNextNavigate = { user ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set(USER_KEY, user)
+                    user.passCode = "1111"
+                    user.isRegistered = true
+                    runBlocking {
+                        DataStoreInstance.writeUser(context, user)
+                    }
+                    navController.navigate(Auth) {
+                        launchSingleTop = true
+                    }
+                })
+
             }
 
             composable<Profile> {

@@ -14,7 +14,7 @@ fun BaseHeader(
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = if (items.size == 1) Arrangement.Center else Arrangement.SpaceBetween,
     ) {
         items.forEach { it() }
     }

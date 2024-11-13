@@ -40,9 +40,18 @@ import kotlinx.serialization.Serializable
 @Serializable
 object Auth
 
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+private fun Preview() {
+    AuthScreen(
+        User()
+    ) {}
+}
+
 @Composable
 fun AuthScreen(
-    user: User
+    user: User,
+    onNextNavigate: () -> Unit
 ) {
     var passCode by remember { mutableStateOf("") }
 
@@ -50,8 +59,6 @@ fun AuthScreen(
         Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -111,7 +118,6 @@ fun AuthScreen(
                 }
             }
 
-
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -143,6 +149,10 @@ fun AuthScreen(
                                                 else -> {
                                                     if (passCode.length < 4) {
                                                         passCode += key
+                                                    }
+
+                                                    if (passCode == user.passCode) {
+                                                        onNextNavigate()
                                                     }
                                                 }
                                             }
@@ -180,10 +190,4 @@ fun AuthScreen(
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun AuthScreenPreview() {
-    AuthScreen(User("Example", "Example", "Example", true))
 }

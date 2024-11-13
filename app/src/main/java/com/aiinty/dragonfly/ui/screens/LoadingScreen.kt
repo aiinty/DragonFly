@@ -15,20 +15,25 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.core.datastore.DataStoreInstance
-import com.aiinty.dragonfly.core.entity.USER_LOGIN_KEY
-import com.aiinty.dragonfly.core.entity.USER_PASSCODE_KEY
-import com.aiinty.dragonfly.core.entity.USER_PASSWORD_KEY
-import com.aiinty.dragonfly.core.entity.USER_REMEMBER_ME_KEY
 import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
 import kotlinx.serialization.Serializable
 
 @Serializable
 object Loading
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+private fun Preview() {
+    LoadingScreen(
+        onUserCredentialsFound = {},
+        onUserCredentialsNotFound = {}
+    )
+}
 
 @Composable
 fun LoadingScreen(
@@ -56,14 +61,11 @@ fun LoadingScreen(
         LaunchedEffect(Unit) {
             delay(3000)
 
-            val login = DataStoreInstance.readStringValue(context, USER_LOGIN_KEY).first()
-            val password = DataStoreInstance.readStringValue(context, USER_PASSWORD_KEY).first()
-            val passcode = DataStoreInstance.readStringValue(context, USER_PASSCODE_KEY).first()
-            val rememberMe = DataStoreInstance.readBooleanValue(context, USER_REMEMBER_ME_KEY).first()
 
-            val user = User(login, password, passcode, rememberMe)
 
-            if (login != null && password != null && passcode != null && rememberMe != null) {
+            val user = DataStoreInstance.readUser(context)
+
+            if (user.isRegistered) {
                 onUserCredentialsFound(user)
                 return@LaunchedEffect
             }

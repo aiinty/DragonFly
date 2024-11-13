@@ -40,6 +40,7 @@
     <string name="register_password">Password</string>
     <string name="register_password_desc">Enter your password to register</string>
     <string name="register_password_re">Re - Password</string>
+    <string name="register_next">Next</string>
     <!--INFORMATION-->
     <string name="information">Information</string>
     <string name="information_title">Frequently read articles</string>
@@ -47,4 +48,19 @@
     <string name="information_first_desc">If you forget your password, you can request a password reset via email or the number you registered</string>
     <string name="information_second">How to create a virtual account</string>
     <string name="information_second_desc">To create a virtual account you need to raise your customer status to priority</string>
+    <!--HOME-->
+    <string name="home">Home</string>
+    <!--POCKET-->
+    <string name="pocket">Pocket</string>
+    <!--INBOX-->
+    <string name="inbox">Inbox</string>
+    <!--PROFILE-->
+    <string name="profile">Profile</string>
+    <string name="profile_silver_members">silver members</string>
+    <string name="profile_log_out">Log Out</string>
+    <!--SETTINGS-->
+    <string name="settings">Settings</string>
+    <!--PERSONAL DATA-->
+    <string name="personal_data">Personal data</string>
+    <string name="user_avatar">user avatar</string>
 </resources>
