@@ -25,13 +25,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -80,7 +80,6 @@ fun RegisterScreen(
     user: User, startState: RegisterScreenState = RegisterScreenState.START,
     onNextNavigate: (User) -> Unit
 ) {
-    val context = LocalContext.current
     val items = mapOf(
         RegisterScreenState.START to RegisterItem(R.string.register, R.string.register_desc),
         RegisterScreenState.EMAIL to RegisterItem(
@@ -234,6 +233,10 @@ private fun EmailCard(
     val email = remember { mutableStateOf(user.email ?: "") }
     val isCorrect = remember { mutableStateOf(false) }
 
+    LaunchedEffect(email.value) {
+        isCorrect.value = android.util.Patterns.EMAIL_ADDRESS.matcher(email.value).matches()
+    }
+
     Column(
         modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -266,6 +269,10 @@ private fun UsernameCard(
     val username = remember { mutableStateOf(user.username ?: "") }
     val isCorrect = remember { mutableStateOf(false) }
 
+    LaunchedEffect(username.value) {
+        isCorrect.value = username.value.isNotEmpty() && username.value.takeLast(1).contains(Regex("[A-Za-z_]"))
+    }
+
     Column(
         modifier = Modifier.fillMaxHeight(),
         verticalArrangement = Arrangement.SpaceBetween,
@@ -275,9 +282,9 @@ private fun UsernameCard(
             singleLine = true,
             onValueChange = {
                 if (it.takeLast(1).contains(Regex("[A-Za-z_]"))) {
-                    username.value = it;
+                    username.value = it
                 }
-                isCorrect.value = username.value.isNotEmpty();
+                isCorrect.value = username.value.isNotEmpty()
             },
             label = { Text(text = stringResource(id = R.string.register_username)) }
         )
@@ -303,6 +310,9 @@ private fun PasswordCard(
 
     val isCorrect = remember { mutableStateOf(false) }
 
+    LaunchedEffect(password.value, passwordRe.value) {
+        isCorrect.value = password.value == passwordRe.value && password.value.isNotEmpty()
+    }
 
     Column(
         modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceBetween
