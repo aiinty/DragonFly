@@ -22,13 +22,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,9 +50,9 @@ import androidx.compose.ui.unit.dp
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.components.AnimateInvisibility
+import com.aiinty.dragonfly.ui.components.BaseButton
 import com.aiinty.dragonfly.ui.components.DefaultHeader
 import com.aiinty.dragonfly.ui.theme.Primary
-import com.aiinty.dragonfly.ui.theme.PrimaryContainer
 import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
 import kotlin.math.absoluteValue
@@ -288,13 +284,8 @@ fun OnboardingScreen(
             }
         }
 
-        Button(
-            onClick = { onNavigateToNext(user) },
-            Modifier
-                .fillMaxWidth()
-                .height(53.dp),
-            shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(PrimaryContainer)
+        BaseButton(
+            onClick = { onNavigateToNext(user) }
         ) {
             Text(
                 text = stringResource(R.string.onboarding_get_started),
@@ -302,6 +293,7 @@ fun OnboardingScreen(
                 color = Primary
             )
         }
+
         LaunchedEffect(Unit) {
             if (screenState.value == OnboardingScreenState.INIT) {
                 delay(100)
@@ -340,7 +332,6 @@ private fun ItemDetails(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-
         Text(
             text = titleId?.let { stringResource(titleId) } ?: "",
             textAlign = TextAlign.Center,
