@@ -136,57 +136,58 @@ fun AuthScreen(
                         ) {
                             column.forEach { key ->
                                 if (key.isNotEmpty()) {
-                                    TextButton(
-                                        onClick = {
-                                            when (key) {
-                                                "<" -> {
-                                                    if (passCode.isNotEmpty()) {
-                                                        passCode = passCode.dropLast(1)
-                                                    }
-                                                }
 
-                                                else -> {
-                                                    if (passCode.length < 4) {
-                                                        passCode += key
-                                                    }
+                                    KeyboardButton(key, onClick = {
 
-                                                    if (passCode == user.passCode) {
-                                                        onNextNavigate()
-                                                    }
+                                        when (key) {
+                                            "<" -> {
+                                                if (passCode.isNotEmpty()) {
+                                                    passCode = passCode.dropLast(1)
                                                 }
                                             }
-                                        },
 
-                                        modifier = Modifier
-                                            .size(64.dp)
-                                            .background(Color.Transparent)
-                                    ) {
-                                        if (key == "<") {
+                                            else -> {
+                                                if (passCode.length < 4) {
+                                                    passCode += key
+                                                }
 
-                                            Image(
-                                                imageVector = ImageVector.vectorResource(R.drawable.backspace),
-                                                "Backspace button",
-                                                Modifier
-                                                    .size(32.dp, 32.dp)
-                                                    .padding(end = 8.dp)
-                                            )
-                                        } else {
-                                            Text(
-                                                key,
-                                                style = MaterialTheme.typography.titleSmall.copy(
-                                                    fontSize = 24.sp,
-                                                    color = Secondary,
-                                                    lineHeight = 32.sp
-                                                )
-                                            )
+                                                if (passCode == user.passCode) {
+                                                    onNextNavigate()
+                                                }
+                                            }
                                         }
-                                    }
+                                    })
                                 }
                             }
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun KeyboardButton(key: String, onClick: () -> Unit) {
+    TextButton(
+        onClick = onClick, modifier = Modifier
+            .size(64.dp)
+            .background(Color.Transparent)
+    ) {
+        if (key == "<") {
+            Image(
+                imageVector = ImageVector.vectorResource(R.drawable.backspace),
+                "Backspace button",
+                Modifier
+                    .size(32.dp, 32.dp)
+                    .padding(end = 8.dp)
+            )
+        } else {
+            Text(
+                key, style = MaterialTheme.typography.titleSmall.copy(
+                    fontSize = 24.sp, color = Secondary, lineHeight = 32.sp
+                )
+            )
         }
     }
 }
