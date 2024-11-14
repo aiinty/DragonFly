@@ -49,7 +49,7 @@ val Typography = Typography(
         fontWeight = FontWeight.W400,
         fontSize = 12.sp,
         lineHeight = 18.sp,
-        letterSpacing = 0.5.sp,
+        letterSpacing = 0.sp,
         color = Tertiary
     ),
     //BUTTONS, ETC

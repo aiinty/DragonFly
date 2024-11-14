@@ -46,7 +46,7 @@
     <string name="information_title">Frequently read articles</string>
     <string name="information_first_title">How to reset password</string>
     <string name="information_first_desc">If you forget your password, you can request a password reset via email or the number you registered</string>
-    <string name="information_second">How to create a virtual account</string>
+    <string name="information_second_title">How to create a virtual account</string>
     <string name="information_second_desc">To create a virtual account you need to raise your customer status to priority</string>
     <!--HOME-->
     <string name="home">Home</string>
