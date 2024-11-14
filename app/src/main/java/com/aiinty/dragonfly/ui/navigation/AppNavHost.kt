@@ -12,9 +12,11 @@ import com.aiinty.dragonfly.ui.screens.main.profileScreen
 import com.aiinty.dragonfly.ui.screens.welcome.LoadingRoute
 import com.aiinty.dragonfly.ui.screens.welcome.OnboardingRoute
 import com.aiinty.dragonfly.ui.screens.welcome.authScreen
+import com.aiinty.dragonfly.ui.screens.welcome.informationScreen
 import com.aiinty.dragonfly.ui.screens.welcome.loadingScreen
 import com.aiinty.dragonfly.ui.screens.welcome.loginScreen
 import com.aiinty.dragonfly.ui.screens.welcome.navigateToAuth
+import com.aiinty.dragonfly.ui.screens.welcome.navigateToInformation
 import com.aiinty.dragonfly.ui.screens.welcome.navigateToLogin
 import com.aiinty.dragonfly.ui.screens.welcome.navigateToOnboarding
 import com.aiinty.dragonfly.ui.screens.welcome.onboardingScreen
@@ -73,7 +75,8 @@ fun AppNavHost(
                     }
                 }
             },
-            onRegisterNavigation = { navController.navigateToRegister() }
+            onRegisterNavigation = { navController.navigateToRegister() },
+            onForgotPassword = { navController.navigateToInformation() }
         )
 
         registerScreen(
@@ -83,12 +86,14 @@ fun AppNavHost(
             registerEmailScreen(
                 user = User("", "", "", ""),
                 onNextNavigate = { navController.navigateToRegisterUsername() },
-                onPreviousNavigate = { appState.navigateToPreviousDestination() }
+                onPreviousNavigate = { appState.navigateToPreviousDestination() },
+                onInformationNavigate = { navController.navigateToInformation() }
             )
             registerUsernameScreen(
                 user = User("", "", "", ""),
                 onNextNavigate = { navController.navigateToRegisterPassword() },
-                onPreviousNavigate = { appState.navigateToPreviousDestination() }
+                onPreviousNavigate = { appState.navigateToPreviousDestination() },
+                onInformationNavigate = { navController.navigateToInformation() }
             )
             registerPasswordScreen(
                 user = User("", "", "", ""),
@@ -100,9 +105,14 @@ fun AppNavHost(
                         }
                     }
                 },
-                onPreviousNavigate = { appState.navigateToPreviousDestination() }
+                onPreviousNavigate = { appState.navigateToPreviousDestination() },
+                onInformationNavigate = { navController.navigateToInformation() }
             )
         }
+
+        informationScreen(
+            onPreviousNavigate = { appState.navigateToPreviousDestination() }
+        )
 
         authScreen(
             user = User("", "", "", ""),

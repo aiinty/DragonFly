@@ -33,7 +33,8 @@ object RegisterPasswordRoute
 private fun RegisterPasswordScreen(
     user: User,
     onNextClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onInformationClick: () -> Unit
 ) {
     val password = remember { mutableStateOf("") }
     val passwordRe = remember { mutableStateOf("") }
@@ -45,9 +46,9 @@ private fun RegisterPasswordScreen(
 
     Column {
         RegisterHeader(
-            RegisterScreenState.PASSWORD,
-            { onBackClick() },
-            { }
+            state = RegisterScreenState.PASSWORD,
+            onBackClick = onBackClick,
+            onInformationClick = onInformationClick,
         )
 
         RegisterItemDetails(
@@ -107,13 +108,15 @@ fun NavController.navigateToRegisterPassword(navOptions: NavOptionsBuilder.() ->
 fun NavGraphBuilder.registerPasswordScreen(
     user: User,
     onNextNavigate: () -> Unit,
-    onPreviousNavigate: () -> Unit
+    onPreviousNavigate: () -> Unit,
+    onInformationNavigate: () -> Unit
 ) {
     composable<RegisterPasswordRoute> {
         RegisterPasswordScreen(
             user = user,
             onNextClick = onNextNavigate,
-            onBackClick = onPreviousNavigate
+            onBackClick = onPreviousNavigate,
+            onInformationClick = onInformationNavigate
         )
     }
 }
@@ -123,6 +126,7 @@ fun NavGraphBuilder.registerPasswordScreen(
 private fun RegisterPasswordPreview() {
     RegisterPasswordScreen (
         User(),
+        { },
         { }
     ) { }
 }

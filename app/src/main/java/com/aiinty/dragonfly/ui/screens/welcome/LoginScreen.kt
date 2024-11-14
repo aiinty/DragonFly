@@ -55,7 +55,8 @@ object LoginRoute
 fun LoginScreen(
     user: User,
     onSuccessfulLogin: (User) -> Unit,
-    onRegisterNavigation: (User) -> Unit
+    onRegisterNavigation: (User) -> Unit,
+    onForgotPassword: () -> Unit
 ) {
     val context = LocalContext.current
     val login = remember { mutableStateOf("") }
@@ -133,10 +134,15 @@ fun LoginScreen(
                             style = MaterialTheme.typography.labelSmall,
                         )
                     }
-                    Text(
-                        text = stringResource(id = R.string.login_forgot),
-                        style = MaterialTheme.typography.labelSmall,
-                    )
+                    TextButton(
+                        onClick = onForgotPassword,
+                        contentPadding = PaddingValues(0.dp)
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.login_forgot),
+                            style = MaterialTheme.typography.labelSmall,
+                        )
+                    }
                 }
             }
 
@@ -216,25 +222,27 @@ fun LoginScreen(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun LoginScreenPreview() {
-    LoginScreen(
-        user = User(),
-        onSuccessfulLogin = {},
-        onRegisterNavigation = {}
-    )
-}
-
 fun NavController.navigateToLogin(navOptions: NavOptionsBuilder.() -> Unit = {}) =
     navigate(route = LoginRoute, navOptions)
 
 fun NavGraphBuilder.loginScreen(
     user: User,
     onSuccessfulLogin: (User) -> Unit,
-    onRegisterNavigation: (User) -> Unit
+    onRegisterNavigation: (User) -> Unit,
+    onForgotPassword: () -> Unit
 ) {
     composable<LoginRoute> {
-        LoginScreen(user, onSuccessfulLogin, onRegisterNavigation)
+        LoginScreen(user, onSuccessfulLogin, onRegisterNavigation, onForgotPassword)
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LoginScreenPreview() {
+    LoginScreen(
+        user = User(),
+        onSuccessfulLogin = {},
+        onRegisterNavigation = {},
+        onForgotPassword = {}
+    )
 }

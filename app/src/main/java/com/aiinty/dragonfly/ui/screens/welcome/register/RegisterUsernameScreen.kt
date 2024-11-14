@@ -30,7 +30,8 @@ object RegisterUsernameRoute
 private fun RegisterUsernameScreen(
     user: User,
     onNextClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onInformationClick: () -> Unit
 ) {
     val username = remember { mutableStateOf(user.username ?: "") }
     val isCorrect = remember { mutableStateOf(false) }
@@ -41,9 +42,9 @@ private fun RegisterUsernameScreen(
 
     Column {
         RegisterHeader(
-            RegisterScreenState.USERNAME,
-            { onBackClick() },
-            { }
+            state = RegisterScreenState.USERNAME,
+            onBackClick = onBackClick,
+            onInformationClick = onInformationClick
         )
 
         RegisterItemDetails(
@@ -89,13 +90,15 @@ fun NavController.navigateToRegisterUsername(navOptions: NavOptionsBuilder.() ->
 fun NavGraphBuilder.registerUsernameScreen(
     user: User,
     onNextNavigate: () -> Unit,
-    onPreviousNavigate: () -> Unit
+    onPreviousNavigate: () -> Unit,
+    onInformationNavigate: () -> Unit
 ) {
     composable<RegisterUsernameRoute> {
         RegisterUsernameScreen(
             user = user,
             onNextClick = onNextNavigate,
-            onBackClick = onPreviousNavigate
+            onBackClick = onPreviousNavigate,
+            onInformationClick = onInformationNavigate
         )
     }
 }
@@ -105,6 +108,7 @@ fun NavGraphBuilder.registerUsernameScreen(
 private fun RegisterUsernamePreview() {
     RegisterUsernameScreen(
         User(),
+        { },
         { }
     ) { }
 }

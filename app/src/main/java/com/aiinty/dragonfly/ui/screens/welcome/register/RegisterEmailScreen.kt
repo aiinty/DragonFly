@@ -30,7 +30,8 @@ object RegisterEmailRoute
 private fun RegisterEmailScreen(
     user: User,
     onNextClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onInformationClick: () -> Unit
 ) {
     val email = remember { mutableStateOf(user.email ?: "") }
     val isCorrect = remember { mutableStateOf(false) }
@@ -41,9 +42,9 @@ private fun RegisterEmailScreen(
 
     Column {
         RegisterHeader(
-            RegisterScreenState.EMAIL,
-            { onBackClick() },
-            { }
+            state = RegisterScreenState.EMAIL,
+            onBackClick = onBackClick,
+            onInformationClick = onInformationClick
         )
 
         RegisterItemDetails(
@@ -88,13 +89,15 @@ fun NavController.navigateToRegisterEmail(navOptions: NavOptionsBuilder.() -> Un
 fun NavGraphBuilder.registerEmailScreen(
     user: User,
     onNextNavigate: () -> Unit,
-    onPreviousNavigate: () -> Unit
+    onPreviousNavigate: () -> Unit,
+    onInformationNavigate: () -> Unit
 ) {
     composable<RegisterEmailRoute> {
         RegisterEmailScreen(
             user = user,
             onNextClick = onNextNavigate,
-            onBackClick = onPreviousNavigate
+            onBackClick = onPreviousNavigate,
+            onInformationClick = onInformationNavigate
         )
     }
 }
@@ -104,6 +107,7 @@ fun NavGraphBuilder.registerEmailScreen(
 private fun RegisterEmailPreview() {
     RegisterEmailScreen (
         User(),
+        { },
         { }
     ) { }
 }
