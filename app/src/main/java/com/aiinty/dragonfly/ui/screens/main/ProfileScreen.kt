@@ -1,4 +1,4 @@
-package com.aiinty.dragonfly.ui.screens
+package com.aiinty.dragonfly.ui.screens.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -26,6 +26,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
+import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.components.BaseButton
@@ -35,15 +39,7 @@ import com.aiinty.dragonfly.ui.theme.PrimaryContainer
 import kotlinx.serialization.Serializable
 
 @Serializable
-object Profile
-
-@Preview(showBackground = true)
-@Composable
-private fun Preview() {
-    ProfileScreen(
-        User("Example", "Example", "Example", "1234", true)
-    )
-}
+object ProfileRoute
 
 @Composable
 fun ProfileScreen(
@@ -151,4 +147,23 @@ private fun ProfileMenuItem(
             )
         }
     }
+}
+
+fun NavController.navigateToProfile(navOptions: NavOptions) =
+    navigate(route = ProfileRoute, navOptions)
+
+fun NavGraphBuilder.profileScreen(
+    user: User
+) {
+    composable<ProfileRoute> {
+        ProfileScreen(user)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ProfilePreview() {
+    ProfileScreen(
+        User("Example", "Example", "Example", "1234")
+    )
 }

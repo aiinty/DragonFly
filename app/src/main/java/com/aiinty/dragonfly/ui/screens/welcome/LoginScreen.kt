@@ -1,4 +1,4 @@
-package com.aiinty.dragonfly.ui.screens
+package com.aiinty.dragonfly.ui.screens.welcome
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -29,11 +28,16 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptionsBuilder
+import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.core.datastore.DataStoreInstance
 import com.aiinty.dragonfly.core.entity.USER_REMEMBER_ME_KEY
 import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.components.BaseButton
+import com.aiinty.dragonfly.ui.components.BaseCheckbox
 import com.aiinty.dragonfly.ui.components.BaseTextField
 import com.aiinty.dragonfly.ui.components.DefaultHeader
 import com.aiinty.dragonfly.ui.theme.Outline
@@ -45,17 +49,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 
 @Serializable
-object Login
-
-@Preview(showBackground = true)
-@Composable
-private fun Preview() {
-    LoginScreen(
-        user = User(),
-        onSuccessfulLogin = {},
-        onRegisterNavigation = {}
-    )
-}
+object LoginRoute
 
 @Composable
 fun LoginScreen(
@@ -130,7 +124,7 @@ fun LoginScreen(
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Checkbox(
+                        BaseCheckbox(
                             checked = isRememberMe.value,
                             onCheckedChange = { isRememberMe.value = it },
                         )
@@ -219,5 +213,28 @@ fun LoginScreen(
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LoginScreenPreview() {
+    LoginScreen(
+        user = User(),
+        onSuccessfulLogin = {},
+        onRegisterNavigation = {}
+    )
+}
+
+fun NavController.navigateToLogin(navOptions: NavOptionsBuilder.() -> Unit = {}) =
+    navigate(route = LoginRoute, navOptions)
+
+fun NavGraphBuilder.loginScreen(
+    user: User,
+    onSuccessfulLogin: (User) -> Unit,
+    onRegisterNavigation: (User) -> Unit
+) {
+    composable<LoginRoute> {
+        LoginScreen(user, onSuccessfulLogin, onRegisterNavigation)
     }
 }

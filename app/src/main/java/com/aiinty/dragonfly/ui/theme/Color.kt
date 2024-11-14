@@ -10,4 +10,5 @@ val Secondary = Color(0xFF2D2D2D)
 val SecondaryContainer = Color(0xFFFFFFFF)
 
 val Gray = Color(0xFF909090)
+val LightGray = Color(0xFFB1B1B1)
 val Pink80 = Color(0xFFEFB8C8)

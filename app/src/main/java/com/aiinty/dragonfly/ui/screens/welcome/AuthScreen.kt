@@ -1,4 +1,4 @@
-package com.aiinty.dragonfly.ui.screens
+package com.aiinty.dragonfly.ui.screens.welcome
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,6 +31,10 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptionsBuilder
+import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
@@ -38,15 +42,7 @@ import com.aiinty.dragonfly.ui.theme.Secondary
 import kotlinx.serialization.Serializable
 
 @Serializable
-object Auth
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-private fun Preview() {
-    AuthScreen(
-        User()
-    ) {}
-}
+object AuthRoute
 
 @Composable
 fun AuthScreen(
@@ -133,9 +129,7 @@ fun AuthScreen(
                         ) {
                             column.forEach { key ->
                                 if (key.isNotEmpty()) {
-
                                     KeyboardButton(key, onClick = {
-
                                         when (key) {
                                             "<" -> {
                                                 if (passCode.isNotEmpty()) {
@@ -148,7 +142,7 @@ fun AuthScreen(
                                                     passCode += key
                                                 }
 
-                                                if (user.passCode.isNullOrEmpty()) {
+                                                if (user.passCode.isNullOrEmpty() && passCode.length == 4) {
                                                     user.passCode = passCode
                                                     onNextNavigate()
                                                 }
@@ -192,4 +186,24 @@ fun KeyboardButton(key: String, onClick: () -> Unit) {
             )
         }
     }
+}
+
+fun NavController.navigateToAuth(navOptions: NavOptionsBuilder.() -> Unit = {}) =
+    navigate(route = AuthRoute, navOptions)
+
+fun NavGraphBuilder.authScreen(
+    user: User,
+    onHomeNavigate: () -> Unit
+) {
+    composable<AuthRoute> {
+        AuthScreen(user, onHomeNavigate)
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+private fun LoadingScreenPreview() {
+    AuthScreen(
+        User()
+    ) {}
 }

@@ -1,4 +1,4 @@
-package com.aiinty.dragonfly.ui.screens
+package com.aiinty.dragonfly.ui.screens.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -29,31 +31,51 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
+import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.ui.components.BaseHeader
 import com.aiinty.dragonfly.ui.theme.Tertiary
+import kotlinx.serialization.Serializable
 
-@Preview
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen()
-}
+@Serializable
+object HomeRoute
 
 @Composable
 fun HomeScreen() {
-    Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        BaseHeader({
-            Image(
-                painterResource(R.drawable.header_with_text),
-                "dragonfly",
-                Modifier.size(90.dp, 22.dp)
-            )
-        }, { Icon(ImageVector.vectorResource(R.drawable.scanner), "scanner") })
 
-        BalanceSection()
-        ActionButtons()
-        ConnectCard()
-        CurrencySection()
+    val cards = listOf<@Composable () -> Unit>({ PocketCard(title = "lol") },
+        { PocketCard(title = "lol") }, { PocketCard(title = "lol") },)
+
+    LazyColumn(
+        modifier = Modifier
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)) {
+
+        item {
+
+            BaseHeader({
+                Image(
+                    painterResource(R.drawable.header_with_text),
+                    "dragonfly",
+                    Modifier.size(90.dp, 22.dp)
+                )
+            }, { Icon(ImageVector.vectorResource(R.drawable.scanner), "scanner") })
+
+            BalanceSection()
+            ActionButtons()
+            ConnectCard()
+        }
+
+        itemsIndexed(cards) { _, it ->
+            it()
+        }
+
+        item {
+            CurrencySection()
+        }
     }
 }
 
@@ -192,4 +214,19 @@ fun CurrencyRow(item: CurrencyItem) {
         Text(text = item.price, fontSize = 16.sp)
         Text(text = item.rate, fontSize = 16.sp)
     }
+}
+
+fun NavController.navigateToHome(navOptions: NavOptions) =
+    navigate(route = HomeRoute, navOptions)
+
+fun NavGraphBuilder.homeScreen() {
+    composable<HomeRoute> {
+        HomeScreen()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun HomePreview() {
+    HomeScreen()
 }

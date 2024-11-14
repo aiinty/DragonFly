@@ -1,4 +1,4 @@
-package com.aiinty.dragonfly.ui.screens
+package com.aiinty.dragonfly.ui.screens.welcome
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +16,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
+import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.core.datastore.DataStoreInstance
 import com.aiinty.dragonfly.core.entity.User
@@ -24,16 +28,7 @@ import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
 
 @Serializable
-object Loading
-
-@Preview(showBackground = true)
-@Composable
-private fun Preview() {
-    LoadingScreen(
-        onUserCredentialsFound = {},
-        onUserCredentialsNotFound = {},
-    )
-}
+object LoadingRoute
 
 @Composable
 fun LoadingScreen(
@@ -70,4 +65,26 @@ fun LoadingScreen(
             }
         }
     }
+}
+
+fun NavController.navigateToLoading(onUserCredentialsFound: (User) -> Unit,
+                                    onUserCredentialsNotFound: (User) -> Unit, navOptions: NavOptions) =
+    navigate(route = LoadingRoute, navOptions)
+
+fun NavGraphBuilder.loadingScreen(
+    onUserCredentialsFound: (User) -> Unit,
+    onUserCredentialsNotFound: (User) -> Unit
+) {
+    composable<LoadingRoute> {
+        LoadingScreen(onUserCredentialsFound, onUserCredentialsNotFound)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LoadingScreenPreview() {
+    LoadingScreen(
+        onUserCredentialsFound = {},
+        onUserCredentialsNotFound = {},
+    )
 }
