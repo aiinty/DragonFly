@@ -2,24 +2,26 @@ package com.aiinty.dragonfly.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
-import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.AppState
 import com.aiinty.dragonfly.ui.screens.main.homeScreen
 import com.aiinty.dragonfly.ui.screens.main.inboxScreen
 import com.aiinty.dragonfly.ui.screens.main.pocketScreen
-import com.aiinty.dragonfly.ui.screens.main.profileScreen
-import com.aiinty.dragonfly.ui.screens.welcome.LoadingRoute
-import com.aiinty.dragonfly.ui.screens.welcome.OnboardingRoute
-import com.aiinty.dragonfly.ui.screens.welcome.authScreen
-import com.aiinty.dragonfly.ui.screens.welcome.informationScreen
-import com.aiinty.dragonfly.ui.screens.welcome.loadingScreen
-import com.aiinty.dragonfly.ui.screens.welcome.loginScreen
-import com.aiinty.dragonfly.ui.screens.welcome.navigateToAuth
-import com.aiinty.dragonfly.ui.screens.welcome.navigateToInformation
-import com.aiinty.dragonfly.ui.screens.welcome.navigateToLogin
-import com.aiinty.dragonfly.ui.screens.welcome.navigateToOnboarding
-import com.aiinty.dragonfly.ui.screens.welcome.onboardingScreen
+import com.aiinty.dragonfly.ui.screens.main.profile.profileScreen
+import com.aiinty.dragonfly.ui.screens.welcome.auth.authScreen
+import com.aiinty.dragonfly.ui.screens.welcome.auth.navigateToAuth
+import com.aiinty.dragonfly.ui.screens.welcome.information.informationScreen
+import com.aiinty.dragonfly.ui.screens.welcome.information.navigateToInformation
+import com.aiinty.dragonfly.ui.screens.welcome.loading.LoadingRoute
+import com.aiinty.dragonfly.ui.screens.welcome.loading.loadingScreen
+import com.aiinty.dragonfly.ui.screens.welcome.login.LoginRoute
+import com.aiinty.dragonfly.ui.screens.welcome.login.loginScreen
+import com.aiinty.dragonfly.ui.screens.welcome.login.navigateToLogin
+import com.aiinty.dragonfly.ui.screens.welcome.onboarding.OnboardingRoute
+import com.aiinty.dragonfly.ui.screens.welcome.onboarding.navigateToOnboarding
+import com.aiinty.dragonfly.ui.screens.welcome.onboarding.onboardingScreen
+import com.aiinty.dragonfly.ui.screens.welcome.register.RegisterViewModel
 import com.aiinty.dragonfly.ui.screens.welcome.register.navigateToRegister
 import com.aiinty.dragonfly.ui.screens.welcome.register.navigateToRegisterEmail
 import com.aiinty.dragonfly.ui.screens.welcome.register.navigateToRegisterPassword
@@ -35,6 +37,7 @@ fun AppNavHost(
     modifier: Modifier = Modifier,
 ) {
     val navController = appState.navController
+    val registerViewModel: RegisterViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -42,9 +45,17 @@ fun AppNavHost(
         modifier = modifier,
     ) {
         loadingScreen(
-            onUserCredentialsFound =
+            onUserCredentialsFoundRemembered =
             {
                 navController.navigateToAuth {
+                    popUpTo(LoadingRoute) {
+                        inclusive = true
+                    }
+                }
+            },
+            onUserCredentialsFoundNotRemembered =
+            {
+                navController.navigateToLogin {
                     popUpTo(LoadingRoute) {
                         inclusive = true
                     }
@@ -61,12 +72,10 @@ fun AppNavHost(
         )
 
         onboardingScreen(
-            user = User("", "", "", ""),
             onLoginNavigate = { navController.navigateToLogin() }
         )
 
         loginScreen(
-            user = User("", "", "", ""),
             onSuccessfulLogin =
             {
                 navController.navigateToAuth {
@@ -80,23 +89,23 @@ fun AppNavHost(
         )
 
         registerScreen(
-            user = User("", "", "", ""),
+            registerViewModel = registerViewModel,
             onEmailNavigate = { navController.navigateToRegisterEmail() }
         ) {
             registerEmailScreen(
-                user = User("", "", "", ""),
+                registerViewModel = registerViewModel,
                 onNextNavigate = { navController.navigateToRegisterUsername() },
                 onPreviousNavigate = { appState.navigateToPreviousDestination() },
                 onInformationNavigate = { navController.navigateToInformation() }
             )
             registerUsernameScreen(
-                user = User("", "", "", ""),
+                registerViewModel = registerViewModel,
                 onNextNavigate = { navController.navigateToRegisterPassword() },
                 onPreviousNavigate = { appState.navigateToPreviousDestination() },
                 onInformationNavigate = { navController.navigateToInformation() }
             )
             registerPasswordScreen(
-                user = User("", "", "", ""),
+                registerViewModel = registerViewModel,
                 onNextNavigate =
                 {
                     navController.navigateToAuth {
@@ -115,7 +124,6 @@ fun AppNavHost(
         )
 
         authScreen(
-            user = User("", "", "", ""),
             onHomeNavigate = { appState.navigateToTopLevelDestination(TopLevelDestination.HOME) }
         )
 
@@ -126,7 +134,16 @@ fun AppNavHost(
         inboxScreen()
 
         profileScreen(
-            user = User("", "", "", "")
+            onLogOut = {
+                navController.navigateToLogin {
+                    popUpTo(LoginRoute){
+                        saveState = false
+                        inclusive = false
+                    }
+                    restoreState = false
+                    launchSingleTop = true
+                }
+            }
         )
     }
 }

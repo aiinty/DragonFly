@@ -11,6 +11,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
@@ -18,12 +19,12 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
-import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.TopAppBarState
 import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseButton
@@ -41,21 +42,29 @@ enum class RegisterScreenState {
     START, EMAIL, USERNAME, PASSWORD;
 
     fun calculatePercent(): Float = this.ordinal / RegisterScreenState.entries.size.toFloat()
+
+    fun nextState(): RegisterScreenState =
+        if (this.ordinal != RegisterScreenState.entries.size - 1)
+            RegisterScreenState.entries[this.ordinal + 1]
+        else
+            this
+
     fun previousState(): RegisterScreenState =
-            if (this.ordinal != 0) RegisterScreenState.entries[this.ordinal - 1] else this
+        if (this.ordinal != 0) RegisterScreenState.entries[this.ordinal - 1] else this
 }
 
-//TODO: save current RegisterScreenState to RegisterViewModel
 @Composable
 fun RegisterScreen(
-    user: User,
-    onNextNavigate: (User) -> Unit
+    viewModel: RegisterViewModel,
+    onNextNavigate: () -> Unit
 ) {
-    TopAppBarStateProvider.update(
-        TopAppBarState {
-            DefaultHeader()
-        }
-    )
+    LaunchedEffect(Unit) {
+        TopAppBarStateProvider.update(
+            TopAppBarState {
+                DefaultHeader()
+            }
+        )
+    }
 
     RegisterItemDetails(
         titleId = R.string.register,
@@ -95,7 +104,10 @@ fun RegisterScreen(
                     style = MaterialTheme.typography.labelSmall,
                 )
                 BaseButton (
-                    onClick = { onNextNavigate(user) },
+                    onClick =
+                    {
+                        onNextNavigate()
+                    },
                 ) {
                     Text(
                         text = stringResource(R.string.register_with_email),
@@ -112,12 +124,15 @@ fun NavController.navigateToRegister(navOptions: NavOptionsBuilder.() -> Unit = 
     navigate(route = RegisterRoute, navOptions)
 
 fun NavGraphBuilder.registerScreen(
-    user: User,
-    onEmailNavigate: (User) -> Unit,
+    registerViewModel: RegisterViewModel,
+    onEmailNavigate: () -> Unit,
     registerDestination: NavGraphBuilder.() -> Unit
 ) {
     composable<RegisterRoute> {
-        RegisterScreen(user, onNextNavigate = onEmailNavigate)
+        RegisterScreen(
+            viewModel = registerViewModel,
+            onNextNavigate = onEmailNavigate
+        )
     }
     registerDestination()
 }
@@ -126,7 +141,7 @@ fun NavGraphBuilder.registerScreen(
 @Composable
 private fun LoadingScreenPreview() {
     RegisterScreen(
-        User(),
+        viewModel = hiltViewModel(),
         onNextNavigate = { }
     )
 }

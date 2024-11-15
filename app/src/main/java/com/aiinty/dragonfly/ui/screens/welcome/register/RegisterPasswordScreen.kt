@@ -14,12 +14,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
-import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.TopAppBarState
 import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseButton
@@ -33,7 +33,7 @@ object RegisterPasswordRoute
 // TODO: password len check
 @Composable
 private fun RegisterPasswordScreen(
-    user: User,
+    viewModel: RegisterViewModel,
     onNextClick: () -> Unit,
     onBackClick: () -> Unit,
     onInformationClick: () -> Unit
@@ -42,16 +42,19 @@ private fun RegisterPasswordScreen(
     val passwordRe = remember { mutableStateOf("") }
     val isCorrect = remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(viewModel.currentRegisterScreenState) {
         TopAppBarStateProvider.update(
             TopAppBarState {
                 RegisterHeader(
                     state = RegisterScreenState.PASSWORD,
-                    // TODO: get PreviousState from registerViewModel
-//                previousState = ,
+                    previousState = viewModel.currentRegisterScreenState,
                     onBackClick = onBackClick,
                     onInformationClick = onInformationClick,
                 )
+
+                LaunchedEffect(Unit) {
+                    viewModel.currentRegisterScreenState = RegisterScreenState.PASSWORD
+                }
             }
         )
     }
@@ -95,10 +98,13 @@ private fun RegisterPasswordScreen(
             }
 
             BaseButton(
-                onClick = {
-                    user.password = password.value
+                onClick =
+                {
+                    viewModel.user.password = password.value
+                    viewModel.saveRegisteredUser()
                     onNextClick()
-                }, enabled = isCorrect.value
+                },
+                enabled = isCorrect.value
             ) {
                 Text(
                     text = stringResource(R.string.register_next),
@@ -114,14 +120,14 @@ fun NavController.navigateToRegisterPassword(navOptions: NavOptionsBuilder.() ->
     navigate(route = RegisterPasswordRoute, navOptions)
 
 fun NavGraphBuilder.registerPasswordScreen(
-    user: User,
+    registerViewModel: RegisterViewModel,
     onNextNavigate: () -> Unit,
     onPreviousNavigate: () -> Unit,
     onInformationNavigate: () -> Unit
 ) {
     composable<RegisterPasswordRoute> {
         RegisterPasswordScreen(
-            user = user,
+            viewModel = registerViewModel,
             onNextClick = onNextNavigate,
             onBackClick = onPreviousNavigate,
             onInformationClick = onInformationNavigate
@@ -133,8 +139,8 @@ fun NavGraphBuilder.registerPasswordScreen(
 @Composable
 private fun RegisterPasswordPreview() {
     RegisterPasswordScreen (
-        User(),
-        { },
-        { }
+        viewModel = hiltViewModel(),
+        onNextClick = { },
+        onBackClick = { }
     ) { }
 }

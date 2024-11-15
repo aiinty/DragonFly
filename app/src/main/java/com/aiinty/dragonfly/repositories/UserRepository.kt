@@ -5,13 +5,12 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.core.entity.USER_EMAIL_KEY
-import com.aiinty.dragonfly.core.entity.USER_IS_REGISTERED_KEY
 import com.aiinty.dragonfly.core.entity.USER_PASSCODE_KEY
 import com.aiinty.dragonfly.core.entity.USER_PASSWORD_KEY
 import com.aiinty.dragonfly.core.entity.USER_REMEMBER_ME_KEY
 import com.aiinty.dragonfly.core.entity.USER_USERNAME_KEY
+import com.aiinty.dragonfly.core.entity.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -23,18 +22,16 @@ class UserRepository @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ) {
 
-    suspend fun getUser(): User {
-        val isRegistered = readBooleanValue(USER_IS_REGISTERED_KEY).first() ?: false
-        return if (isRegistered) {
-            val email = readStringValue(USER_EMAIL_KEY).first() ?: ""
-            val username = readStringValue(USER_USERNAME_KEY).first() ?: ""
-            val password = readStringValue(USER_PASSWORD_KEY).first() ?: ""
-            val passcode = readStringValue(USER_PASSCODE_KEY).first() ?: ""
-            val rememberMe = readBooleanValue(USER_REMEMBER_ME_KEY).first() ?: false
-            User(email, username, password, passcode, rememberMe, isRegistered)
-        } else {
-            User()
-        }
+    suspend fun getUser(): User? {
+        val email = readStringValue(USER_EMAIL_KEY).first()
+        val username = readStringValue(USER_USERNAME_KEY).first()
+        val password = readStringValue(USER_PASSWORD_KEY).first()
+        val passcode = readStringValue(USER_PASSCODE_KEY).first()
+        val rememberMe = readBooleanValue(USER_REMEMBER_ME_KEY).first() ?: false
+
+        return if (email != null && username != null && password != null && passcode != null) {
+            User(email, username, password, passcode, rememberMe)
+        } else return null
     }
 
     suspend fun saveUser(user: User) {
@@ -43,7 +40,6 @@ class UserRepository @Inject constructor(
         writeStringValue(USER_PASSWORD_KEY, user.password ?: "")
         writeStringValue(USER_PASSCODE_KEY, user.passCode ?: "")
         writeBooleanValue(USER_REMEMBER_ME_KEY, user.rememberMe)
-        writeBooleanValue(USER_IS_REGISTERED_KEY, user.isRegistered)
     }
 
     private fun readStringValue(keyValue: String): Flow<String?> {

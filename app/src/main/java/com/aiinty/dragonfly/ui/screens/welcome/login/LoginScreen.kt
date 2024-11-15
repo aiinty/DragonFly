@@ -1,4 +1,4 @@
-package com.aiinty.dragonfly.ui.screens.welcome
+package com.aiinty.dragonfly.ui.screens.welcome.login
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -22,20 +22,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
-import com.aiinty.dragonfly.core.entity.USER_REMEMBER_ME_KEY
-import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.TopAppBarState
 import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseButton
@@ -55,12 +53,11 @@ object LoginRoute
 
 @Composable
 fun LoginScreen(
-    user: User,
-    onSuccessfulLogin: (User) -> Unit,
-    onRegisterNavigation: (User) -> Unit,
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    onSuccessfulLogin: () -> Unit,
+    onRegisterNavigation: () -> Unit,
     onForgotPassword: () -> Unit
 ) {
-    val context = LocalContext.current
     val login = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val isRememberMe = remember { mutableStateOf(false) }
@@ -163,12 +160,16 @@ fun LoginScreen(
             ) {
                 BaseButton(
                     onClick = {
-                        if ((login.value == user.email || login.value == user.username ) && password.value == user.password) {
-//                            runBlocking {
-////                                DataStoreInstance.writeBooleanValue(context, USER_REMEMBER_ME_KEY, isRememberMe.value)
-//                            }
-                            user.rememberMe = true
-                            onSuccessfulLogin(user)
+                        runBlocking {
+                            val user = loginViewModel.getUser() ?: return@runBlocking
+
+                            if ((login.value == user.email || login.value == user.username ) && password.value == user.password) {
+                                if (isRememberMe.value) {
+                                    user.rememberMe = true
+                                    loginViewModel.saveUser(user)
+                                }
+                                onSuccessfulLogin()
+                            }
                         }
                     },
                 ) {
@@ -219,7 +220,7 @@ fun LoginScreen(
                 )
             TextButton(
                 contentPadding = PaddingValues(0.dp),
-                onClick = { onRegisterNavigation(user) }
+                onClick = { onRegisterNavigation() }
             ) {
                 Text(
                     text = stringResource(id = R.string.register),
@@ -235,13 +236,16 @@ fun NavController.navigateToLogin(navOptions: NavOptionsBuilder.() -> Unit = {})
     navigate(route = LoginRoute, navOptions)
 
 fun NavGraphBuilder.loginScreen(
-    user: User,
-    onSuccessfulLogin: (User) -> Unit,
-    onRegisterNavigation: (User) -> Unit,
+    onSuccessfulLogin: () -> Unit,
+    onRegisterNavigation: () -> Unit,
     onForgotPassword: () -> Unit
 ) {
     composable<LoginRoute> {
-        LoginScreen(user, onSuccessfulLogin, onRegisterNavigation, onForgotPassword)
+        LoginScreen(
+            onSuccessfulLogin = onSuccessfulLogin,
+            onRegisterNavigation = onRegisterNavigation,
+            onForgotPassword = onForgotPassword
+        )
     }
 }
 
@@ -249,7 +253,6 @@ fun NavGraphBuilder.loginScreen(
 @Composable
 private fun LoginScreenPreview() {
     LoginScreen(
-        user = User(),
         onSuccessfulLogin = {},
         onRegisterNavigation = {},
         onForgotPassword = {}

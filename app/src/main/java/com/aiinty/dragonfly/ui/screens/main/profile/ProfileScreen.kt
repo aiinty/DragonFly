@@ -1,4 +1,4 @@
-package com.aiinty.dragonfly.ui.screens.main
+package com.aiinty.dragonfly.ui.screens.main.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -27,18 +27,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
-import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.TopAppBarState
 import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseButton
 import com.aiinty.dragonfly.ui.components.BaseHeader
 import com.aiinty.dragonfly.ui.theme.Primary
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -46,7 +47,8 @@ object ProfileRoute
 
 @Composable
 fun ProfileScreen(
-    user: User
+    profileViewModel: ProfileViewModel = hiltViewModel(),
+    onLogOut: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         TopAppBarStateProvider.update(
@@ -85,7 +87,12 @@ fun ProfileScreen(
                 )
 
                 Column {
-                    Text(user.username!!)
+                    // FIXME
+                    var name = ""
+                    runBlocking {
+                        name = profileViewModel.getUser()!!.username
+                    }
+                    Text(name)
                     Text(stringResource(id = R.string.profile_silver_members))
                 }
             }
@@ -110,7 +117,14 @@ fun ProfileScreen(
         }
 
         BaseButton(
-            onClick = {},
+            onClick = {
+                runBlocking {
+                    val user = profileViewModel.getUser()
+                    user!!.rememberMe = false
+                    profileViewModel.saveUser(user)
+                    onLogOut()
+                }
+            },
             colors = ButtonDefaults.buttonColors(Color(0xFFFE324E))
         ) {
             Text(
@@ -173,10 +187,12 @@ fun NavController.navigateToProfile(navOptions: NavOptions) =
     navigate(route = ProfileRoute, navOptions)
 
 fun NavGraphBuilder.profileScreen(
-    user: User
+    onLogOut: () -> Unit
 ) {
     composable<ProfileRoute> {
-        ProfileScreen(user)
+        ProfileScreen(
+            onLogOut = onLogOut
+        )
     }
 }
 
@@ -190,6 +206,7 @@ private fun ProfileHeaderPreview() {
 @Composable
 private fun ProfilePreview() {
     ProfileScreen(
-        User("Example", "Example", "Example", "1234")
+        hiltViewModel(),
+        {}
     )
 }

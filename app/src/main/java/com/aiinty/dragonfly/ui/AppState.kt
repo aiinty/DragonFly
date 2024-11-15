@@ -20,7 +20,7 @@ import com.aiinty.dragonfly.ui.navigation.TopLevelDestination
 import com.aiinty.dragonfly.ui.screens.main.navigateToHome
 import com.aiinty.dragonfly.ui.screens.main.navigateToInbox
 import com.aiinty.dragonfly.ui.screens.main.navigateToPocket
-import com.aiinty.dragonfly.ui.screens.main.navigateToProfile
+import com.aiinty.dragonfly.ui.screens.main.profile.navigateToProfile
 import kotlinx.coroutines.CoroutineScope
 
 @Composable

@@ -6,7 +6,7 @@ import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.ui.screens.main.HomeRoute
 import com.aiinty.dragonfly.ui.screens.main.InboxRoute
 import com.aiinty.dragonfly.ui.screens.main.PocketRoute
-import com.aiinty.dragonfly.ui.screens.main.ProfileRoute
+import com.aiinty.dragonfly.ui.screens.main.profile.ProfileRoute
 import kotlin.reflect.KClass
 
 enum class TopLevelDestination(

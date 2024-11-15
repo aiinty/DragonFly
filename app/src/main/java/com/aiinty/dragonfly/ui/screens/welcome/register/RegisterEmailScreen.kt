@@ -12,12 +12,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
-import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.TopAppBarState
 import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseButton
@@ -30,27 +30,32 @@ object RegisterEmailRoute
 
 @Composable
 private fun RegisterEmailScreen(
-    user: User,
+    viewModel: RegisterViewModel,
     onNextClick: () -> Unit,
     onBackClick: () -> Unit,
     onInformationClick: () -> Unit
 ) {
-    val email = remember { mutableStateOf(user.email ?: "") }
+    val email = remember { mutableStateOf("") }
     val isCorrect = remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(viewModel.currentRegisterScreenState) {
         TopAppBarStateProvider.update(
             TopAppBarState {
                 RegisterHeader(
                     state = RegisterScreenState.EMAIL,
-                    // TODO: get PreviousState from registerViewModel
-//                previousState = ,
+                    previousState = viewModel.currentRegisterScreenState,
                     onBackClick = onBackClick,
                     onInformationClick = onInformationClick
                 )
+
+                LaunchedEffect(Unit) {
+                    viewModel.currentRegisterScreenState = RegisterScreenState.EMAIL
+                }
             }
         )
     }
+
+
 
     LaunchedEffect(email.value) {
         isCorrect.value = android.util.Patterns.EMAIL_ADDRESS.matcher(email.value).matches()
@@ -79,7 +84,12 @@ private fun RegisterEmailScreen(
             )
 
             BaseButton(
-                onClick = {  user.email = email.value; onNextClick(); }, enabled = isCorrect.value
+                onClick =
+                {
+                    viewModel.user.email = email.value
+                    onNextClick();
+                },
+                enabled = isCorrect.value
             ) {
                 Text(
                     text = stringResource(R.string.register_next),
@@ -95,14 +105,14 @@ fun NavController.navigateToRegisterEmail(navOptions: NavOptionsBuilder.() -> Un
     navigate(route = RegisterEmailRoute, navOptions)
 
 fun NavGraphBuilder.registerEmailScreen(
-    user: User,
+    registerViewModel: RegisterViewModel,
     onNextNavigate: () -> Unit,
     onPreviousNavigate: () -> Unit,
     onInformationNavigate: () -> Unit
 ) {
     composable<RegisterEmailRoute> {
         RegisterEmailScreen(
-            user = user,
+            viewModel = registerViewModel,
             onNextClick = onNextNavigate,
             onBackClick = onPreviousNavigate,
             onInformationClick = onInformationNavigate
@@ -114,8 +124,8 @@ fun NavGraphBuilder.registerEmailScreen(
 @Composable
 private fun RegisterEmailPreview() {
     RegisterEmailScreen (
-        User(),
-        { },
-        { }
+        viewModel = hiltViewModel(),
+        onNextClick = { },
+        onBackClick = { }
     ) { }
 }

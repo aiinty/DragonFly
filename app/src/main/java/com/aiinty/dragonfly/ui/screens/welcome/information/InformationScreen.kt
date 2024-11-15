@@ -1,4 +1,4 @@
-package com.aiinty.dragonfly.ui.screens.welcome
+package com.aiinty.dragonfly.ui.screens.welcome.information
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable

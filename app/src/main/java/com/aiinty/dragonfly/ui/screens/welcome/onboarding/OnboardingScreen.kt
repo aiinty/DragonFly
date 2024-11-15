@@ -1,4 +1,4 @@
-package com.aiinty.dragonfly.ui.screens.welcome
+package com.aiinty.dragonfly.ui.screens.welcome.onboarding
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -52,7 +52,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
-import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.TopAppBarState
 import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.AnimateInvisibility
@@ -80,9 +79,8 @@ private data class OnboardingItem(
 
 @Composable
 fun OnboardingScreen(
-    user: User,
     startState: OnboardingScreenState = OnboardingScreenState.INIT,
-    onNextNavigate: (User) -> Unit,
+    onNextNavigate: () -> Unit,
 ) {
     val items = mapOf(
         OnboardingScreenState.INIT to OnboardingItem(null, null),
@@ -291,7 +289,7 @@ fun OnboardingScreen(
             }
 
             BaseButton(
-                onClick = { onNextNavigate(user) }
+                onClick = { onNextNavigate() }
             ) {
                 Text(
                     text = stringResource(R.string.onboarding_get_started),
@@ -356,11 +354,12 @@ fun NavController.navigateToOnboarding(navOptions: NavOptionsBuilder.() -> Unit 
     navigate(route = OnboardingRoute, navOptions)
 
 fun NavGraphBuilder.onboardingScreen(
-    user: User,
-    onLoginNavigate: (User) -> Unit
+    onLoginNavigate: () -> Unit
 ) {
     composable<OnboardingRoute> {
-        OnboardingScreen(user, onNextNavigate = onLoginNavigate)
+        OnboardingScreen(
+            onNextNavigate = onLoginNavigate
+        )
     }
 }
 
@@ -368,7 +367,6 @@ fun NavGraphBuilder.onboardingScreen(
 @Composable
 private fun OnboardingInitPreview() {
     OnboardingScreen(
-        user = User(),
         startState = OnboardingScreenState.INIT,
         onNextNavigate = { }
     )
@@ -378,7 +376,6 @@ private fun OnboardingInitPreview() {
 @Composable
 private fun OnboardingStartPreview() {
     OnboardingScreen(
-        user = User(),
         startState = OnboardingScreenState.START,
         onNextNavigate = { }
     )
@@ -388,7 +385,6 @@ private fun OnboardingStartPreview() {
 @Composable
 private fun OnboardingMediumPreview() {
     OnboardingScreen(
-        user = User(),
         startState = OnboardingScreenState.MEDIUM,
         onNextNavigate = { }
     )
@@ -398,7 +394,6 @@ private fun OnboardingMediumPreview() {
 @Composable
 private fun OnboardingEndPreview() {
     OnboardingScreen(
-        user = User(),
         startState = OnboardingScreenState.END,
         onNextNavigate = { }
     )

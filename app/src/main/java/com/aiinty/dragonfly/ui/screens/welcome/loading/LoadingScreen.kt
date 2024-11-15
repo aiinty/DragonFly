@@ -1,4 +1,4 @@
-package com.aiinty.dragonfly.ui.screens.welcome
+package com.aiinty.dragonfly.ui.screens.welcome.loading
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -12,16 +12,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
-import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
 import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
@@ -31,11 +30,11 @@ object LoadingRoute
 
 @Composable
 fun LoadingScreen(
-    onUserCredentialsFound: (User) -> Unit,
-    onUserCredentialsNotFound: (User) -> Unit,
+    loadingViewModel: LoadingViewModel = hiltViewModel(),
+    onUserCredentialsFoundRemembered: () -> Unit,
+    onUserCredentialsFoundNotRemembered: () -> Unit,
+    onUserCredentialsNotFound: () -> Unit,
 ) {
-    val context = LocalContext.current
-
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -51,31 +50,39 @@ fun LoadingScreen(
             style = MaterialTheme.typography.titleMedium,
             color = PrimaryContainer
         )
+    }
 
-        LaunchedEffect(Unit) {
-            delay(3000)
+    LaunchedEffect(Unit) {
+        delay(3000)
 
-//            TODO val user = DataStoreInstance.readUser(context)
-            val user = User("", "", "", "")
-            if (user.isRegistered) {
-                onUserCredentialsFound(user)
-            } else {
-                onUserCredentialsNotFound(user)
-            }
+        val user = loadingViewModel.getUser()
+
+        if (user == null) {
+            onUserCredentialsNotFound()
+            return@LaunchedEffect
         }
+        if (user.rememberMe) {
+            onUserCredentialsFoundRemembered()
+            return@LaunchedEffect
+        }
+        onUserCredentialsFoundNotRemembered()
     }
 }
 
-fun NavController.navigateToLoading(onUserCredentialsFound: (User) -> Unit,
-                                    onUserCredentialsNotFound: (User) -> Unit, navOptions: NavOptions) =
+fun NavController.navigateToLoading(navOptions: NavOptionsBuilder.() -> Unit = {}) =
     navigate(route = LoadingRoute, navOptions)
 
 fun NavGraphBuilder.loadingScreen(
-    onUserCredentialsFound: (User) -> Unit,
-    onUserCredentialsNotFound: (User) -> Unit
+    onUserCredentialsFoundRemembered: () -> Unit,
+    onUserCredentialsFoundNotRemembered: () -> Unit,
+    onUserCredentialsNotFound: () -> Unit,
 ) {
     composable<LoadingRoute> {
-        LoadingScreen(onUserCredentialsFound, onUserCredentialsNotFound)
+        LoadingScreen(
+            onUserCredentialsFoundRemembered = onUserCredentialsFoundRemembered,
+            onUserCredentialsFoundNotRemembered = onUserCredentialsFoundNotRemembered,
+            onUserCredentialsNotFound = onUserCredentialsNotFound
+        )
     }
 }
 
@@ -83,7 +90,8 @@ fun NavGraphBuilder.loadingScreen(
 @Composable
 private fun LoadingScreenPreview() {
     LoadingScreen(
-        onUserCredentialsFound = {},
-        onUserCredentialsNotFound = {},
+        onUserCredentialsFoundRemembered = { },
+        onUserCredentialsFoundNotRemembered = { },
+        onUserCredentialsNotFound = { },
     )
 }

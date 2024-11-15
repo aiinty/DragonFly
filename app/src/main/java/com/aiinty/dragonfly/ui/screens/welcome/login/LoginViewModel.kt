@@ -1,4 +1,4 @@
-package com.aiinty.dragonfly.ui.viewmodel
+package com.aiinty.dragonfly.ui.screens.welcome.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,23 +9,26 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserViewModel @Inject constructor(
+class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-    var user: User? = null
+     var user: User? = null
         private set
 
-    fun updateUser(updatedUser: User) {
-        user = updatedUser
+    init {
         viewModelScope.launch {
-            userRepository.saveUser(updatedUser)
+            user = getUser()
         }
     }
 
-    fun loadUser() {
+    suspend fun getUser(): User? {
+        return userRepository.getUser()
+    }
+
+    fun saveUser(user: User){
         viewModelScope.launch {
-            user = userRepository.getUser()
+            userRepository.saveUser(user)
         }
     }
 }
