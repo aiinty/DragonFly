@@ -87,12 +87,7 @@ fun ProfileScreen(
                 )
 
                 Column {
-                    // FIXME
-                    var name = ""
-                    runBlocking {
-                        name = profileViewModel.getUser()!!.username
-                    }
-                    Text(name)
+                    Text(stringResource(R.string.profile_name))
                     Text(stringResource(id = R.string.profile_silver_members))
                 }
             }
