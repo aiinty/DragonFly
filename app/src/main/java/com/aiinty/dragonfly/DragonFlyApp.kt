@@ -13,7 +13,6 @@ import com.aiinty.dragonfly.ui.navigation.AppNavHost
 import com.aiinty.dragonfly.ui.navigation.AppNavigationBottomBar
 import com.aiinty.dragonfly.ui.rememberAppState
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DragonFlyApp(
     appState: AppState,
