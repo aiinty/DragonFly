@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -35,6 +34,7 @@ import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.ui.TopAppBarState
 import com.aiinty.dragonfly.ui.TopAppBarStateProvider
+import com.aiinty.dragonfly.ui.components.BaseDivider
 import com.aiinty.dragonfly.ui.components.BaseHeader
 import com.aiinty.dragonfly.ui.theme.LightGray
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
@@ -143,7 +143,7 @@ fun InformationItem(
             style = MaterialTheme.typography.bodySmall,
             color = LightGray
         )
-        Divider()
+        BaseDivider()
     }
 }
 
