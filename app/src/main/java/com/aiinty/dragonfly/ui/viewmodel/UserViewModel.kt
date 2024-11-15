@@ -1,23 +1,31 @@
 package com.aiinty.dragonfly.ui.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aiinty.dragonfly.core.datastore.DataStoreInstance
 import com.aiinty.dragonfly.core.entity.User
+import com.aiinty.dragonfly.repositories.UserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UserViewModel : ViewModel() {
+@HiltViewModel
+class UserViewModel @Inject constructor(
+    private val userRepository: UserRepository
+) : ViewModel() {
+
     var user: User = User()
         private set
 
     fun updateUser(updatedUser: User) {
         user = updatedUser
+        viewModelScope.launch {
+            userRepository.saveUser(updatedUser)
+        }
     }
 
-    fun loadUser(context: Context) {
+    fun loadUser() {
         viewModelScope.launch {
-            user = DataStoreInstance.readUser(context)
+            user = userRepository.getUser()
         }
     }
 }

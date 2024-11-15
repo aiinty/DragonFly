@@ -34,7 +34,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
-import com.aiinty.dragonfly.core.datastore.DataStoreInstance
 import com.aiinty.dragonfly.core.entity.USER_REMEMBER_ME_KEY
 import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.TopAppBarState
@@ -165,9 +164,10 @@ fun LoginScreen(
                 BaseButton(
                     onClick = {
                         if ((login.value == user.email || login.value == user.username ) && password.value == user.password) {
-                            runBlocking {
-                                DataStoreInstance.writeBooleanValue(context, USER_REMEMBER_ME_KEY, isRememberMe.value)
-                            }
+//                            runBlocking {
+////                                DataStoreInstance.writeBooleanValue(context, USER_REMEMBER_ME_KEY, isRememberMe.value)
+//                            }
+                            user.rememberMe = true
                             onSuccessfulLogin(user)
                         }
                     },

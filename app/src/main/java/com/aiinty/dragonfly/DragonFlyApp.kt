@@ -52,7 +52,7 @@ fun DragonFlyApp(
 
 @Preview(showBackground = true)
 @Composable
-private fun Preview() {
+private fun DragonFlyAppPreview() {
     DragonFlyApp(
         rememberAppState(),
     )

@@ -21,7 +21,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
-import com.aiinty.dragonfly.core.datastore.DataStoreInstance
 import com.aiinty.dragonfly.core.entity.User
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
 import kotlinx.coroutines.delay
@@ -56,8 +55,8 @@ fun LoadingScreen(
         LaunchedEffect(Unit) {
             delay(3000)
 
-            val user = DataStoreInstance.readUser(context)
-
+//            TODO val user = DataStoreInstance.readUser(context)
+            val user = User("", "", "", "")
             if (user.isRegistered) {
                 onUserCredentialsFound(user)
             } else {
