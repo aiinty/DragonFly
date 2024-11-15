@@ -60,7 +60,7 @@ private fun RegisterPasswordScreen(
     }
 
     LaunchedEffect(password.value, passwordRe.value) {
-        isCorrect.value = password.value == passwordRe.value && password.value.isNotEmpty()
+        isCorrect.value = (password.value == passwordRe.value && password.value.length >= 8 && password.value.contains(Regex("[`!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?~]")))
     }
 
     RegisterItemDetails(
@@ -75,7 +75,7 @@ private fun RegisterPasswordScreen(
             ) {
                 BaseTextField(
                     value = password.value,
-                    onValueChange = { password.value = it; isCorrect.value = (password.value == passwordRe.value) },
+                    onValueChange = { password.value = it; isCorrect.value = (password.value == passwordRe.value && password.value.length >= 8 && password.value.contains(Regex("[`!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?~]"))) },
                     visualTransformation = PasswordVisualTransformation(),
                     label = {
                         Text(
@@ -86,7 +86,7 @@ private fun RegisterPasswordScreen(
 
                 BaseTextField(
                     value = passwordRe.value,
-                    onValueChange = { passwordRe.value = it; isCorrect.value = (password.value == passwordRe.value) },
+                    onValueChange = { passwordRe.value = it; isCorrect.value = (password.value == passwordRe.value && password.value.length >= 8 && password.value.contains(Regex("[`!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?~]")))  },
                     visualTransformation = PasswordVisualTransformation(),
                     label = {
                         Text(
