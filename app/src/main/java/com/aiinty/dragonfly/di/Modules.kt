@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.aiinty.dragonfly.repositories.UserRepository
+import com.aiinty.dragonfly.repositories.UserRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,5 +23,11 @@ object DataStoreModule {
     @Provides
     fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
         return context.dataStore
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserRepository(dataStore: DataStore<Preferences>): UserRepository {
+        return UserRepositoryImpl(dataStore)
     }
 }
