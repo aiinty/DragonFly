@@ -31,6 +31,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,6 +49,7 @@ import com.aiinty.dragonfly.ui.components.BaseTabRow
 import com.aiinty.dragonfly.ui.theme.Gray
 import com.aiinty.dragonfly.ui.theme.LightGray
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
+import com.aiinty.dragonfly.ui.theme.Secondary
 import com.aiinty.dragonfly.ui.theme.Tertiary
 import kotlinx.serialization.Serializable
 
@@ -63,6 +65,7 @@ fun InboxScreen(
         stringResource(R.string.inbox),
         stringResource(R.string.inbox_notification)
     )
+    //!!SO MANY SPECIAL FOR SCROLL PREVIEW!!
     val inboxItems = listOf(
         InboxItem(
             stringResource(R.string.inbox_item_first_title),
@@ -74,6 +77,36 @@ fun InboxScreen(
             stringResource(R.string.inbox_item_second_desc),
             false
         ),
+        InboxItem(
+            stringResource(R.string.inbox_item_second_title),
+            stringResource(R.string.inbox_item_second_desc),
+            false
+        ),
+        InboxItem(
+            stringResource(R.string.inbox_item_second_title),
+            stringResource(R.string.inbox_item_second_desc),
+            false
+        ),
+        InboxItem(
+            stringResource(R.string.inbox_item_second_title),
+            stringResource(R.string.inbox_item_second_desc),
+            false
+        ),
+        InboxItem(
+            stringResource(R.string.inbox_item_second_title),
+            stringResource(R.string.inbox_item_second_desc),
+            false
+        ),
+        InboxItem(
+            stringResource(R.string.inbox_item_second_title),
+            stringResource(R.string.inbox_item_second_desc),
+            false
+        ),
+        InboxItem(
+            stringResource(R.string.inbox_item_second_title),
+            stringResource(R.string.inbox_item_second_desc),
+            false
+        )
     )
     val notificationItems = listOf(
         NotificationItem(
@@ -88,6 +121,12 @@ fun InboxScreen(
             R.drawable.notification_pic2,
             false
         ),
+        NotificationItem(
+            stringResource(R.string.inbox_notification_second_title),
+            stringResource(R.string.inbox_notification_second_desc),
+            R.drawable.notification_pic2,
+            false
+        )
     )
 
     LaunchedEffect(Unit) {
@@ -99,7 +138,7 @@ fun InboxScreen(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ){
         BaseTabRow(
             selectedTabIndex = tabIdx
@@ -111,15 +150,26 @@ fun InboxScreen(
                     text = {
                         Text(
                             text = title,
-                            style = MaterialTheme.typography.labelSmall
+                            style = MaterialTheme.typography.labelSmall,
+                            color = if (tabIdx == idx) PrimaryContainer else Secondary
                         )
                     }
                 )
             }
         }
         when (tabIdx) {
-            0 -> InboxList(inboxItems)
-            1 -> NotificationList(notificationItems)
+            0 -> InboxList(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp),
+                items = inboxItems
+            )
+            1 -> NotificationList(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp),
+                items = notificationItems
+            )
         }
     }
 }
@@ -132,15 +182,13 @@ private data class InboxItem(
 
 @Composable
 private fun InboxList(
-    inboxItems: List<InboxItem>
+    items: List<InboxItem>,
+    modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp, 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier = modifier,
     ) {
-        itemsIndexed(inboxItems) { _, it ->
+        itemsIndexed(items) { _, it ->
             InboxListItem(
                 title = it.title,
                 desc = it.desc,
@@ -157,7 +205,7 @@ private fun InboxListItem(
     isNew: Boolean
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Row(
@@ -183,7 +231,8 @@ private fun InboxListItem(
             ){
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.labelLarge,
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Medium,
                     color = if (isNew) PrimaryContainer else Gray
                 )
 
@@ -202,15 +251,13 @@ private fun InboxListItem(
 
 @Composable
 private fun NotificationList(
-    notificationItems: List<NotificationItem>
+    items: List<NotificationItem>,
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp, 16.dp),
-        verticalArrangement = Arrangement.spacedBy(32.dp)
+        modifier = modifier,
     ) {
-        itemsIndexed(notificationItems) { _, it ->
+        itemsIndexed(items) { _, it ->
             NotificationListItem(
                 title = it.title,
                 desc = it.desc,
@@ -236,12 +283,15 @@ private fun NotificationListItem(
     isNew: Boolean
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 32.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.labelLarge,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Medium,
             color = if (isNew) PrimaryContainer else Gray
         )
 
