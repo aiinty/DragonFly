@@ -9,6 +9,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
+import com.aiinty.dragonfly.ui.TopAppBarState
+import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -16,6 +18,12 @@ object PocketRoute
 
 @Composable
 fun PocketScreen() {
+    TopAppBarStateProvider.update(
+        TopAppBarState {
+            HomeHeader()
+        }
+    )
+
     Text(stringResource(R.string.pocket))
 }
 
