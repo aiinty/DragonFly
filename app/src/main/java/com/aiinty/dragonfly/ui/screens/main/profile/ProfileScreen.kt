@@ -190,37 +190,6 @@ private fun ProfileHeader(
     )
 }
 
-@Composable
-private fun ProfileMenuItem(
-    text: @Composable () -> Unit,
-    icon: @Composable () -> Unit,
-    onClick: () -> Unit
-) {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .clickable { onClick() },
-        verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        icon()
-
-        Column(verticalArrangement = Arrangement.spacedBy(15.dp)) {
-            Row(
-                Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                text()
-
-                Icon(ImageVector.vectorResource(R.drawable.arrow_right), "arrow right")
-
-            }
-
-            Divider(
-                Modifier.fillMaxWidth(), 2.dp
-            )
-        }
-    }
-}
 
 fun NavController.navigateToProfile(navOptions: NavOptions) =
     navigate(route = ProfileRoute, navOptions)
