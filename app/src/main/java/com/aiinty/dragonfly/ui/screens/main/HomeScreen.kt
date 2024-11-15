@@ -1,6 +1,5 @@
 package com.aiinty.dragonfly.ui.screens.main
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -18,7 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +41,8 @@ import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.ui.TopAppBarState
 import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseHeader
+import com.aiinty.dragonfly.ui.components.PocketCard
+import com.aiinty.dragonfly.ui.components.PocketSection
 import com.aiinty.dragonfly.ui.theme.ECECEC
 import com.aiinty.dragonfly.ui.theme.Gray
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
@@ -62,11 +62,12 @@ fun HomeScreen() {
 
     LazyColumn (
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(16.dp)
     ) {
-        item { Spacer(Modifier.size(16.dp)) }
+        item { Spacer(Modifier.size(16.dp)) } // FIXME another way pls
+
         item {
             BalanceSection()
         }
@@ -106,6 +107,9 @@ fun HomeScreen() {
         }
 
         item { CurrencySection() }
+
+        item { Spacer(Modifier.size(16.dp)) } // FIXME another way pls
+
     }
 }
 
@@ -186,68 +190,6 @@ fun ConnectCard() {
 }
 
 @Composable
-fun PocketSection(items: List<@Composable () -> Unit>, onViewMoreClick: () -> Unit) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(imageVector = ImageVector.vectorResource(R.drawable.pocket), stringResource(R.string.my_pocket), tint = PrimaryContainer)
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                Text(stringResource(R.string.my_pocket))
-                TextButton({}, contentPadding = PaddingValues(0.dp)) {
-                    Text(stringResource(R.string.create_pocket), lineHeight = 18.sp, fontSize = 12.sp, color = PrimaryContainer)
-                }
-            }
-        }
-
-        items.chunked(2).forEach {  rowItems ->
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                for (item in rowItems) {
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                    ) {
-                        item()
-                    }
-                }
-                if (rowItems.size < 2) {
-                    Spacer(modifier = Modifier.weight(1f))
-                }
-            }
-        }
-    }
-
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        TextButton({ onViewMoreClick() },
-            modifier = Modifier
-                .padding(vertical = 8.dp)) {
-
-            Text(
-                stringResource(R.string.view_more),
-                color = Color.Blue)
-        }
-    }
-}
-
-@Composable
-fun PocketCard(title: String, @DrawableRes iconId: Int) {
-    Column(Modifier.border(1.dp, ECECEC, RoundedCornerShape(8.dp))) {
-            Image(ImageBitmap.imageResource(iconId), stringResource(R.string.card), Modifier
-                .size(164.dp, 150.dp)
-                .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.FillWidth)
-
-        Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Text(title, fontSize = 10.sp, lineHeight = 15.sp)
-            Text(stringResource(R.string.pocket_cost), fontSize = 16.sp, color = PrimaryContainer, style = MaterialTheme.typography.labelMedium)
-        }
-    }
-}
-
-@Composable
 fun CurrencySection() {
     Column(
         verticalArrangement = Arrangement.spacedBy(6.dp)
@@ -305,17 +247,6 @@ fun CurrencySection() {
 }
 
 data class CurrencyItem(val name: String, val price: String, val rate: String)
-
-@Composable
-fun CurrencyRow(item: CurrencyItem) {
-    Row(
-        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(text = item.name, fontSize = 16.sp)
-        Text(text = item.price, fontSize = 16.sp)
-        Text(text = item.rate, fontSize = 16.sp)
-    }
-}
 
 @Composable
 fun HomeHeader(
