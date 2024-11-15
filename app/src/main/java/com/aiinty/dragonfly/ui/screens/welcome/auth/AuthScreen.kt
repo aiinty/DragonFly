@@ -41,12 +41,20 @@ import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.repositories.FakeUserRepository
 import com.aiinty.dragonfly.ui.TopAppBarState
 import com.aiinty.dragonfly.ui.TopAppBarStateProvider
+import com.aiinty.dragonfly.ui.theme.Outline
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
+import com.aiinty.dragonfly.ui.theme.Red
 import com.aiinty.dragonfly.ui.theme.Secondary
 import kotlinx.serialization.Serializable
 
 @Serializable
 object AuthRoute
+
+enum class PassCodeState {
+    NotFull,
+    FullNotCorrect,
+    FullCorrect
+}
 
 @Composable
 fun AuthScreen(
@@ -54,6 +62,7 @@ fun AuthScreen(
     onNextNavigate: () -> Unit
 ) {
     var passCode by remember { mutableStateOf("") }
+    var correctState by remember { mutableStateOf(PassCodeState.NotFull) }
 
     LaunchedEffect(Unit) {
         TopAppBarStateProvider.update(
@@ -104,16 +113,31 @@ fun AuthScreen(
                                     .clip(RoundedCornerShape(10.dp))
                                     .border(
                                         1.dp,
-                                        if (index >= passCode.length) Color(0xFFECECEC) else PrimaryContainer,
+                                        if (index >= passCode.length) {
+                                            Outline
+                                        } else if (correctState == PassCodeState.FullNotCorrect) {
+                                            Red
+                                        } else
+                                        {
+                                            PrimaryContainer
+                                        },
                                         shape = RoundedCornerShape(10.dp)
                                     )
                                     .size(48.dp), contentAlignment = Alignment.Center
                             ) {
                                 if (index < passCode.length) {
-                                    Image(
+                                    Icon(
                                         imageVector = ImageVector.vectorResource(R.drawable.ellipse),
                                         "code cell",
-                                        Modifier.size(8.dp, 8.dp)
+                                        Modifier.size(8.dp, 8.dp),
+                                        tint = if (index >= passCode.length) {
+                                            Color.Unspecified
+                                        } else if (correctState == PassCodeState.FullNotCorrect) {
+                                            Red
+                                        } else
+                                        {
+                                            PrimaryContainer
+                                        },
                                     )
                                 }
                             }
@@ -154,16 +178,20 @@ fun AuthScreen(
                                             else -> {
                                                 if (passCode.length < 4) {
                                                     passCode += key
+                                                    correctState = PassCodeState.NotFull
                                                 }
 
-                                                if (user.passCode.isNullOrEmpty() && passCode.length == 4) {
-                                                    user.passCode = passCode
-                                                    authViewModel.saveUser(user)
-                                                    onNextNavigate()
-                                                }
-
-                                                if (passCode == user.passCode) {
-                                                    onNextNavigate()
+                                                if (passCode.length == 4) {
+                                                    if (user.passCode.isNullOrEmpty()) {
+                                                        user.passCode = passCode
+                                                        authViewModel.saveUser(user)
+                                                        onNextNavigate()
+                                                    } else if (passCode == user.passCode) {
+                                                        correctState = PassCodeState.FullCorrect
+                                                        onNextNavigate()
+                                                    } else {
+                                                        correctState = PassCodeState.FullNotCorrect
+                                                    }
                                                 }
                                             }
                                         }
