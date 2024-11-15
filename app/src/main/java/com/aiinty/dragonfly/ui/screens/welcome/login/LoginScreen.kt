@@ -34,6 +34,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
+import com.aiinty.dragonfly.repositories.FakeUserRepository
 import com.aiinty.dragonfly.ui.TopAppBarState
 import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseButton
@@ -253,6 +254,7 @@ fun NavGraphBuilder.loginScreen(
 @Composable
 private fun LoginScreenPreview() {
     LoginScreen(
+        loginViewModel = LoginViewModel(FakeUserRepository()),
         onSuccessfulLogin = {},
         onRegisterNavigation = {},
         onForgotPassword = {}

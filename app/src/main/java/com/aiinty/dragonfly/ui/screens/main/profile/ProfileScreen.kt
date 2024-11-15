@@ -33,6 +33,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
+import com.aiinty.dragonfly.repositories.FakeUserRepository
 import com.aiinty.dragonfly.ui.TopAppBarState
 import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseButton
@@ -206,7 +207,7 @@ private fun ProfileHeaderPreview() {
 @Composable
 private fun ProfilePreview() {
     ProfileScreen(
-        hiltViewModel(),
+        profileViewModel = ProfileViewModel(FakeUserRepository()),
         {}
     )
 }

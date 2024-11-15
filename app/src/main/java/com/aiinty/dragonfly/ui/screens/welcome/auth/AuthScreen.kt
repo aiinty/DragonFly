@@ -38,6 +38,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
+import com.aiinty.dragonfly.repositories.FakeUserRepository
 import com.aiinty.dragonfly.ui.TopAppBarState
 import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
@@ -215,8 +216,10 @@ fun NavGraphBuilder.authScreen(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
 private fun LoadingScreenPreview() {
-    AuthScreen {}
+    AuthScreen(
+        authViewModel = AuthViewModel(FakeUserRepository())
+    ) {}
 }
