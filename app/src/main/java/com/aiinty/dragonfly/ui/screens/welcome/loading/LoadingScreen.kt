@@ -21,6 +21,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
+import com.aiinty.dragonfly.repositories.FakeUserRepository
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
 import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
@@ -90,6 +91,7 @@ fun NavGraphBuilder.loadingScreen(
 @Composable
 private fun LoadingScreenPreview() {
     LoadingScreen(
+        loadingViewModel = LoadingViewModel(FakeUserRepository()),
         onUserCredentialsFoundRemembered = { },
         onUserCredentialsFoundNotRemembered = { },
         onUserCredentialsNotFound = { },

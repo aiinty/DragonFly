@@ -3,14 +3,14 @@ package com.aiinty.dragonfly.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aiinty.dragonfly.core.entity.User
-import com.aiinty.dragonfly.repositories.UserRepository
+import com.aiinty.dragonfly.repositories.UserRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepositoryImpl
 ) : ViewModel() {
 
     var user: User? = null
