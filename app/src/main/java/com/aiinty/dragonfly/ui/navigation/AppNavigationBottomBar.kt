@@ -5,13 +5,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aiinty.dragonfly.ui.AppState
 import com.aiinty.dragonfly.ui.rememberAppState
@@ -23,37 +26,41 @@ fun AppNavigationBottomBar(
     modifier: Modifier = Modifier,
     appState: AppState,
 ) {
-    NavigationBar (
-        modifier = modifier,
+    Surface(
+        modifier = Modifier.shadow(elevation = 10.dp),
     ) {
-        TopLevelDestination.entries.forEach {
-            AppNavigationBarItem(
-                selected = appState.currentTopLevelDestination == it,
-                selectedIcon = {
-                    Icon(
-                        ImageVector.vectorResource(it.selectedIconId),
-                        stringResource(id = it.iconTextId),
-                        tint = PrimaryContainer
-                    )
-                },
-                icon = {
-                    Icon(
-                        ImageVector.vectorResource(it.unselectedIconId),
-                        stringResource(id = it.iconTextId),
-                        tint = LightGray
-                    )
-                },
-                label = {
+        NavigationBar (
+            modifier = modifier.shadow(100.dp),
+        ) {
+            TopLevelDestination.entries.forEach {
+                AppNavigationBarItem(
+                    selected = appState.currentTopLevelDestination == it,
+                    selectedIcon = {
+                        Icon(
+                            ImageVector.vectorResource(it.selectedIconId),
+                            stringResource(id = it.iconTextId),
+                            tint = PrimaryContainer
+                        )
+                    },
+                    icon = {
+                        Icon(
+                            ImageVector.vectorResource(it.unselectedIconId),
+                            stringResource(id = it.iconTextId),
+                            tint = LightGray
+                        )
+                    },
+                    label = {
 
-                    Text(
-                        text = stringResource(it.titleTextId),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = if (appState.currentTopLevelDestination == it) PrimaryContainer else LightGray,
-                        lineHeight = 18.sp
-                    )
-                },
-                onClick = { appState.navigateToTopLevelDestination(it) }
-            )
+                        Text(
+                            text = stringResource(it.titleTextId),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = if (appState.currentTopLevelDestination == it) PrimaryContainer else LightGray,
+                            lineHeight = 18.sp
+                        )
+                    },
+                    onClick = { appState.navigateToTopLevelDestination(it) }
+                )
+            }
         }
     }
 }
