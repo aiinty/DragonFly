@@ -14,6 +14,7 @@ import com.aiinty.dragonfly.core.entity.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -29,17 +30,19 @@ class UserRepositoryImpl @Inject constructor(
         val passcode = readStringValue(USER_PASSCODE_KEY).first()
         val rememberMe = readBooleanValue(USER_REMEMBER_ME_KEY).first() ?: false
 
-        return if (email != null && username != null && password != null && passcode != null) {
+        return if (email != null && username != null && password != null) {
             User(email, username, password, passcode, rememberMe)
         } else return null
     }
 
     override suspend fun saveUser(user: User) {
-        writeStringValue(USER_EMAIL_KEY, user.email ?: "")
-        writeStringValue(USER_USERNAME_KEY, user.username ?: "")
-        writeStringValue(USER_PASSWORD_KEY, user.password ?: "")
-        writeStringValue(USER_PASSCODE_KEY, user.passCode ?: "")
-        writeBooleanValue(USER_REMEMBER_ME_KEY, user.rememberMe)
+        runBlocking {
+            writeStringValue(USER_EMAIL_KEY, user.email ?: "")
+            writeStringValue(USER_USERNAME_KEY, user.username ?: "")
+            writeStringValue(USER_PASSWORD_KEY, user.password ?: "")
+            writeStringValue(USER_PASSCODE_KEY, user.passCode ?: "")
+            writeBooleanValue(USER_REMEMBER_ME_KEY, user.rememberMe)
+        }
     }
 
     override fun readStringValue(keyValue: String): Flow<String?> {
