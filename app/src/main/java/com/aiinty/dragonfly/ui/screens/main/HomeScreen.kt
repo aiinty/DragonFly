@@ -42,7 +42,6 @@ import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.ui.TopAppBarState
 import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseHeader
-import com.aiinty.dragonfly.ui.components.PocketCard
 import com.aiinty.dragonfly.ui.components.PocketSection
 import com.aiinty.dragonfly.ui.theme.Gray
 import com.aiinty.dragonfly.ui.theme.Outline
@@ -59,6 +58,41 @@ fun HomeScreen() {
         TopAppBarState {
             HomeHeader()
         }
+    )
+
+    val cards = listOf(
+        PocketCardItem(
+            stringResource(R.string.saving_balance),
+            R.drawable.cc1
+        ),
+        PocketCardItem(
+            stringResource(R.string.family_balance),
+            R.drawable.cc2
+        ),
+        PocketCardItem(
+            stringResource(R.string.investment_balance),
+            R.drawable.cc3
+        ),
+        PocketCardItem(
+            stringResource(R.string.alms_balance),
+            R.drawable.cc4
+        ),
+        PocketCardItem(
+            stringResource(R.string.saving_balance),
+            R.drawable.cc1
+        ),
+        PocketCardItem(
+            stringResource(R.string.family_balance),
+            R.drawable.cc2
+        ),
+        PocketCardItem(
+            stringResource(R.string.investment_balance),
+            R.drawable.cc3
+        ),
+        PocketCardItem(
+            stringResource(R.string.alms_balance),
+            R.drawable.cc4
+        )
     )
 
     LazyColumn (
@@ -90,83 +124,7 @@ fun HomeScreen() {
                 }
             }
 
-            PocketSection(
-                listOf(
-                    {
-                        PocketCard(
-                            stringResource(R.string.saving_balance),
-                            R.drawable.cc1
-                        )
-                    },
-                    {
-                        PocketCard(
-                            stringResource(R.string.family_balance),
-                            R.drawable.cc2
-                        )
-                    },
-                    {
-                        PocketCard(
-                            stringResource(R.string.investment_balance),
-                            R.drawable.cc3
-                        )
-                    },
-                    {
-                        PocketCard(
-                            stringResource(R.string.alms_balance),
-                            R.drawable.cc4
-                        )
-                    },
-                    {
-                        PocketCard(
-                            stringResource(R.string.saving_balance),
-                            R.drawable.cc1
-                        )
-                    },
-                    {
-                        PocketCard(
-                            stringResource(R.string.family_balance),
-                            R.drawable.cc2
-                        )
-                    },
-                    {
-                        PocketCard(
-                            stringResource(R.string.investment_balance),
-                            R.drawable.cc3
-                        )
-                    },
-                    {
-                        PocketCard(
-                            stringResource(R.string.alms_balance),
-                            R.drawable.cc4
-                        )
-                    },
-                    {
-                        PocketCard(
-                            stringResource(R.string.saving_balance),
-                            R.drawable.cc1
-                        )
-                    },
-                    {
-                        PocketCard(
-                            stringResource(R.string.family_balance),
-                            R.drawable.cc2
-                        )
-                    },
-                    {
-                        PocketCard(
-                            stringResource(R.string.investment_balance),
-                            R.drawable.cc3
-                        )
-                    },
-                    {
-                        PocketCard(
-                            stringResource(R.string.alms_balance),
-                            R.drawable.cc4
-                        )
-                    },
-                )
-            ) {
-            }
+            PocketSection(cards) {}
         }
 
         item { CurrencySection() }
