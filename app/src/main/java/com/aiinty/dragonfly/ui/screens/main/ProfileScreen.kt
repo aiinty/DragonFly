@@ -129,7 +129,10 @@ private fun ProfileHeader(
     BaseHeader(
         modifier = modifier.padding(8.dp),
         {
-            Text(text = stringResource(id = R.string.profile))
+            Text(
+                text = stringResource(R.string.profile),
+                style = MaterialTheme.typography.labelSmall
+            )
         }
     )
 }

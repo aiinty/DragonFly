@@ -2,7 +2,7 @@
 
 An Android app built with Kotlin and Jetpack Compose.
 
-## Figma
+## Design
 
 - [Design in Figma](https://www.figma.com/design/T3Vg95lADAG6BGSkds1wVV/DragonFly?m=auto&t=HFtVknABmoQTOVSJ-1)
 

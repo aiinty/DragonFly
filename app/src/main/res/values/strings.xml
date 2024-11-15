@@ -54,6 +54,37 @@
     <string name="pocket">Pocket</string>
     <!--INBOX-->
     <string name="inbox">Inbox</string>
+    <string name="inbox_notification">Notification</string>
+    <string name="inbox_item_first_desc">Investing in a bank is one of the common and safe choices for beginners who want to start their investment journey. This article will provide a short guide to getting started investing in banks, covering some of the investment products offered by banks and tips for getting started.</string>
+    <string name="inbox_item_first_title">Investment just got easier</string>
+    <string name="inbox_item_second_title">Tips for safe foreign transactions</string>
+    <string name="inbox_item_second_desc">Choose the Right Transfer Method:
+There are several transfer methods that can be used, such as bank transfers, electronic transfers, or using money transfer services such as PayPal or TransferWise. Make sure to choose the most efficient and economical method for your needs.
+
+Check Foreign Exchange Rates:
+Before making a transfer, check current foreign exchange rates. Compare rates across different financial institutions or money transfer platforms to get a more favorable exchange rate. Avoid making transfers when the exchange rate is unfavorable.
+
+Check Fees and Commissions:
+Be sure to check the fees and commissions charged by financial institutions or money transfer services. These fees may vary between different institutions or platforms. Choose one that offers lower fees and commissions to save on transfer fees.
+
+Beneficiary Information Verification:
+Make sure you have correct and complete information about the recipient of the transfer, such as full name, address and bank account number. Errors in this information can cause transfer delays or failures.
+
+Pay Attention to Transfer Time:
+Check the time taken for transfers between countries. International transfers usually take longer than domestic transfers. Also note that time zone differences can affect transfer processing times.
+
+Check Limitations and Requirements:
+Be sure to check the restrictions and conditions that apply to transfers between countries. Some countries may have limits on certain transfer amounts or require additional documents for security and compliance purposes.
+
+Use a Trusted Transfer Service:
+Choose a financial institution or money transfer platform that is trusted and has a good reputation. Do some research and read user reviews before deciding to use their services. Also make sure they have a strong security system in place to protect your transfer.
+
+Save Transfer Proof:
+After making the transfer, save proof of transfer such as proof of payment or transfer confirmation. This is important for your financial references and documentation.</string>
+    <string name="inbox_notification_first_title">Free transfer other bank</string>
+    <string name="inbox_notification_first_desc">Enjoy free interbank transfer fees for a full month and many other attractive promos</string>
+    <string name="inbox_notification_second_title">Pay using a Dragonfly credit card</string>
+    <string name="inbox_notification_second_desc">Enjoy discounts by using a credit card of up to 70% this promo applies only to new users</string>
     <!--PROFILE-->
     <string name="profile">Profile</string>
     <string name="profile_silver_members">silver members</string>
@@ -62,5 +93,5 @@
     <string name="settings">Settings</string>
     <!--PERSONAL DATA-->
     <string name="personal_data">Personal data</string>
-    <string name="user_avatar">user avatar</string>
+    <string name="user_avatar">User avatar</string>
 </resources>
