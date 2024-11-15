@@ -4,13 +4,11 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,11 +25,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aiinty.dragonfly.R
+import com.aiinty.dragonfly.ui.screens.main.PocketCardItem
 import com.aiinty.dragonfly.ui.theme.Outline
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
 
 @Composable
-fun PocketSection(items: List<@Composable () -> Unit>, viewMore: Boolean = true, onViewMoreClick: () -> Unit) {
+fun PocketSection(items: List<PocketCardItem>, viewMore: Boolean = true, onViewMoreClick: () -> Unit) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -42,12 +41,11 @@ fun PocketSection(items: List<@Composable () -> Unit>, viewMore: Boolean = true,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 for (item in rowItems) {
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                    ) {
-                        item()
-                    }
+                    PocketCard(
+                        modifier = Modifier.weight(1f),
+                        title = item.title,
+                        iconId = item.iconId
+                    )
                 }
                 if (rowItems.size < 2) {
                     Spacer(modifier = Modifier.weight(1f))
@@ -72,13 +70,17 @@ fun PocketSection(items: List<@Composable () -> Unit>, viewMore: Boolean = true,
 
 @Composable
 fun PocketCard(
-    title: String, @DrawableRes iconId: Int
+    modifier: Modifier = Modifier,
+    title: String,
+    @DrawableRes iconId: Int
 ) {
-    Column(Modifier.border(1.dp, Outline, RoundedCornerShape(8.dp))) {
+    Column(
+        modifier.border(1.dp, Outline, RoundedCornerShape(8.dp))) {
         Image(
-            ImageBitmap.imageResource(iconId), stringResource(R.string.card), Modifier
-            .size(164.dp, 150.dp)
-            .clip(RoundedCornerShape(8.dp)),
+            ImageBitmap.imageResource(iconId), stringResource(R.string.card),
+            Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp)),
             contentScale = ContentScale.FillWidth)
 
         Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {

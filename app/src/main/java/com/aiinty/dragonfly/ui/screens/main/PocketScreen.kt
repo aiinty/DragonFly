@@ -1,12 +1,12 @@
 package com.aiinty.dragonfly.ui.screens.main
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,7 +36,6 @@ import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.ui.TopAppBarState
 import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseHeader
-import com.aiinty.dragonfly.ui.components.PocketCard
 import com.aiinty.dragonfly.ui.components.PocketSection
 import com.aiinty.dragonfly.ui.theme.Outline
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
@@ -53,101 +52,60 @@ fun PocketScreen() {
             PocketHeader()
         }
     )
+    val chipsTitles = listOf(
+        "All",
+        "Saving",
+        "Family",
+        "Investment",
+        "Alms",
+        "Another other"
+    )
+    val cards = listOf(
+        PocketCardItem(
+            stringResource(R.string.saving_balance),
+            R.drawable.cc1
+        ),
+        PocketCardItem(
+            stringResource(R.string.family_balance),
+            R.drawable.cc2
+        ),
+        PocketCardItem(
+            stringResource(R.string.investment_balance),
+            R.drawable.cc3
+        ),
+        PocketCardItem(
+            stringResource(R.string.alms_balance),
+            R.drawable.cc4
+        ),
+        PocketCardItem(
+            stringResource(R.string.saving_balance),
+            R.drawable.cc1
+        ),
+        PocketCardItem(
+            stringResource(R.string.family_balance),
+            R.drawable.cc2
+        ),
+        PocketCardItem(
+            stringResource(R.string.investment_balance),
+            R.drawable.cc3
+        ),
+        PocketCardItem(
+            stringResource(R.string.alms_balance),
+            R.drawable.cc4
+        )
+    )
 
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp), contentPadding = PaddingValues(10.dp, 16.dp)) {
-            item {
-                ToggleablePocketChips(
-                    listOf(
-                        "All",
-                        "Saving",
-                        "Family",
-                        "Investment",
-                        "Alms",
-                        "Another other"
-                    )
-                )
-            }
+    Column(
+        modifier = Modifier.padding(horizontal = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        ToggleablePocketChips(chipsTitles)
 
-            item {
-                PocketSection(
-                    listOf(
-                        {
-                            PocketCard(
-                                stringResource(R.string.saving_balance),
-                                R.drawable.cc1
-                            )
-                        },
-                        {
-                            PocketCard(
-                                stringResource(R.string.family_balance),
-                                R.drawable.cc2
-                            )
-                        },
-                        {
-                            PocketCard(
-                                stringResource(R.string.investment_balance),
-                                R.drawable.cc3
-                            )
-                        },
-                        {
-                            PocketCard(
-                                stringResource(R.string.alms_balance),
-                                R.drawable.cc4
-                            )
-                        },
-                        {
-                            PocketCard(
-                                stringResource(R.string.saving_balance),
-                                R.drawable.cc1
-                            )
-                        },
-                        {
-                            PocketCard(
-                                stringResource(R.string.family_balance),
-                                R.drawable.cc2
-                            )
-                        },
-                        {
-                            PocketCard(
-                                stringResource(R.string.investment_balance),
-                                R.drawable.cc3
-                            )
-                        },
-                        {
-                            PocketCard(
-                                stringResource(R.string.alms_balance),
-                                R.drawable.cc4
-                            )
-                        },
-                        {
-                            PocketCard(
-                                stringResource(R.string.saving_balance),
-                                R.drawable.cc1
-                            )
-                        },
-                        {
-                            PocketCard(
-                                stringResource(R.string.family_balance),
-                                R.drawable.cc2
-                            )
-                        },
-                        {
-                            PocketCard(
-                                stringResource(R.string.investment_balance),
-                                R.drawable.cc3
-                            )
-                        },
-                        {
-                            PocketCard(
-                                stringResource(R.string.alms_balance),
-                                R.drawable.cc4
-                            )
-                        },
-                    ), viewMore = false
-                ) { }
-            }
-        }
+        PocketSection(cards, viewMore = false) { }
+    }
 }
+
+data class PocketCardItem(val title: String, @DrawableRes val iconId: Int)
 
 @Composable
 fun ToggleablePocketChips(items: List<String>) {
