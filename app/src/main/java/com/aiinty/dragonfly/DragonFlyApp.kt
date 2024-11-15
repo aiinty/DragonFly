@@ -14,19 +14,8 @@ import com.aiinty.dragonfly.ui.rememberAppState
 
 @Composable
 fun DragonFlyApp(
-    appState: AppState,
-//    navController: NavHostController = rememberNavController(),
-//    startDestination: Any = Loading
+    appState: AppState
 ) {
-    val currentDestination = appState.currentDestination
-
-//    val context = LocalContext.current
-//    val userViewModel: UserViewModel = viewModel()
-//
-//    LaunchedEffect(Unit) {
-//        userViewModel.loadUser(context)
-//    }
-
     Scaffold(
         topBar = {
             TopAppBarStateProvider.topAppBarState.topBar()
@@ -42,11 +31,11 @@ fun DragonFlyApp(
         },
     ) { innerPadding ->
         AppNavHost(
-            appState = appState, modifier = Modifier.padding(innerPadding)
+            appState = appState,
+            modifier = Modifier.padding(innerPadding)
         )
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

@@ -6,7 +6,6 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.util.trace
 import androidx.navigation.NavDestination
@@ -21,19 +20,15 @@ import com.aiinty.dragonfly.ui.screens.main.navigateToHome
 import com.aiinty.dragonfly.ui.screens.main.navigateToInbox
 import com.aiinty.dragonfly.ui.screens.main.navigateToPocket
 import com.aiinty.dragonfly.ui.screens.main.profile.navigateToProfile
-import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun rememberAppState(
-    coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
 ): AppState {
     return remember(
-        coroutineScope,
         navController,
     ) {
         AppState(
-            coroutineScope = coroutineScope,
             navController = navController,
         )
     }
@@ -52,7 +47,6 @@ object TopAppBarStateProvider {
 
 @Stable
 class AppState(
-    coroutineScope: CoroutineScope,
     val navController: NavHostController,
 ) {
     val currentDestination: NavDestination?
