@@ -3,6 +3,7 @@ package com.aiinty.dragonfly.ui.components
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldColors
@@ -30,6 +31,7 @@ fun BaseTextField(
     shape: Shape = RoundedCornerShape(8.dp),
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(
         cursorColor = PrimaryContainer,
+        selectionColors = TextSelectionColors(PrimaryContainer, PrimaryContainer.copy(alpha = 0.25f)),
         unfocusedLabelColor = Gray,
         focusedLabelColor = Gray,
         focusedTextColor = Secondary,

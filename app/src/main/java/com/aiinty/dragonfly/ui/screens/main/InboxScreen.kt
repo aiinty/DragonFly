@@ -323,7 +323,8 @@ private fun InboxHeader(
         {
             Text(
                 text = stringResource(R.string.inbox),
-                style = MaterialTheme.typography.labelSmall
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.W500
             )
         }
     )
