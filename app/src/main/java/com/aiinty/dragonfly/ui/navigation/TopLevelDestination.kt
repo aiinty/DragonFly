@@ -9,7 +9,6 @@ import com.aiinty.dragonfly.ui.screens.main.PocketRoute
 import com.aiinty.dragonfly.ui.screens.main.ProfileRoute
 import kotlin.reflect.KClass
 
-// TODO: make nav bar destination  
 enum class TopLevelDestination(
     @DrawableRes val selectedIconId: Int,
     @DrawableRes val unselectedIconId: Int = selectedIconId,

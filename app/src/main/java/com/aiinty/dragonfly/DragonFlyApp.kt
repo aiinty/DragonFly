@@ -2,15 +2,18 @@ package com.aiinty.dragonfly
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.aiinty.dragonfly.ui.AppState
+import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.navigation.AppNavHost
 import com.aiinty.dragonfly.ui.navigation.AppNavigationBottomBar
 import com.aiinty.dragonfly.ui.rememberAppState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DragonFlyApp(
     appState: AppState,
@@ -27,6 +30,9 @@ fun DragonFlyApp(
 //    }
 
     Scaffold(
+        topBar = {
+            TopAppBarStateProvider.topAppBarState.topBar()
+        },
         bottomBar = {
             AnimatedVisibility(
                 visible = appState.shouldShowBottomBar

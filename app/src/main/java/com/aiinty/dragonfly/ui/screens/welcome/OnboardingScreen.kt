@@ -53,6 +53,8 @@ import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.core.entity.User
+import com.aiinty.dragonfly.ui.TopAppBarState
+import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.AnimateInvisibility
 import com.aiinty.dragonfly.ui.components.BaseButton
 import com.aiinty.dragonfly.ui.components.DefaultHeader
@@ -91,12 +93,18 @@ fun OnboardingScreen(
     val screenState = remember { mutableStateOf(startState) }
     val offsetY = remember { mutableFloatStateOf(0f) }
 
+    LaunchedEffect(Unit) {
+        TopAppBarStateProvider.update(
+            TopAppBarState {
+                DefaultHeader()
+            }
+        )
+    }
+
     Column(
         modifier = Modifier.fillMaxSize()
 
     ) {
-        DefaultHeader()
-
         Column(
             modifier = Modifier
                 .padding(8.dp, 16.dp)

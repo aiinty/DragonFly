@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,6 +38,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
+import com.aiinty.dragonfly.ui.TopAppBarState
+import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseHeader
 import com.aiinty.dragonfly.ui.theme.Tertiary
 import kotlinx.serialization.Serializable
@@ -45,37 +49,31 @@ object HomeRoute
 
 @Composable
 fun HomeScreen() {
-
     val cards = listOf<@Composable () -> Unit>({ PocketCard(title = "lol") },
         { PocketCard(title = "lol") }, { PocketCard(title = "lol") },)
 
-    LazyColumn(
-        modifier = Modifier
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)) {
-
-        item {
-
-            BaseHeader({
-                Image(
-                    painterResource(R.drawable.header_with_text),
-                    "dragonfly",
-                    Modifier.size(90.dp, 22.dp)
-                )
-            }, { Icon(ImageVector.vectorResource(R.drawable.scanner), "scanner") })
-
-            BalanceSection()
-            ActionButtons()
-            ConnectCard()
+    TopAppBarStateProvider.update(
+        TopAppBarState {
+            HomeHeader()
         }
+    )
 
-        itemsIndexed(cards) { _, it ->
-            it()
-        }
+    Column (
+        modifier = Modifier.fillMaxSize()
+    ){
+        BalanceSection()
+        ActionButtons()
+        ConnectCard()
 
-        item {
-            CurrencySection()
+        LazyColumn(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            itemsIndexed(cards) { _, it ->
+                it()
+            }
         }
+        CurrencySection()
     }
 }
 
@@ -216,6 +214,28 @@ fun CurrencyRow(item: CurrencyItem) {
     }
 }
 
+@Composable
+fun HomeHeader(
+    modifier: Modifier = Modifier,
+) {
+    BaseHeader(
+        modifier = modifier.padding(8.dp),
+        {
+            Image(
+                painter = painterResource(R.drawable.header_with_text),
+                contentDescription = stringResource(R.string.app_name),
+                modifier = Modifier.size(90.dp, 22.dp)
+            )
+        },
+        {
+            Icon(
+                imageVector = ImageVector.vectorResource(R.drawable.scanner),
+                contentDescription = "scanner"
+            )
+        }
+    )
+}
+
 fun NavController.navigateToHome(navOptions: NavOptions) =
     navigate(route = HomeRoute, navOptions)
 
@@ -223,6 +243,12 @@ fun NavGraphBuilder.homeScreen() {
     composable<HomeRoute> {
         HomeScreen()
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun HomeHeaderPreview() {
+    HomeHeader()
 }
 
 @Preview(showBackground = true)

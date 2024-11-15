@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -36,6 +37,8 @@ import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.core.datastore.DataStoreInstance
 import com.aiinty.dragonfly.core.entity.USER_REMEMBER_ME_KEY
 import com.aiinty.dragonfly.core.entity.User
+import com.aiinty.dragonfly.ui.TopAppBarState
+import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseButton
 import com.aiinty.dragonfly.ui.components.BaseCheckbox
 import com.aiinty.dragonfly.ui.components.BaseTextField
@@ -63,13 +66,19 @@ fun LoginScreen(
     val password = remember { mutableStateOf("") }
     val isRememberMe = remember { mutableStateOf(false) }
 
+    LaunchedEffect(Unit) {
+        TopAppBarStateProvider.update(
+            TopAppBarState {
+                DefaultHeader()
+            }
+        )
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        DefaultHeader()
-
         Column(
             modifier = Modifier
                 .padding(10.dp, 16.dp)

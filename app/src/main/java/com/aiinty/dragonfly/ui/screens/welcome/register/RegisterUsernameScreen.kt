@@ -18,6 +18,8 @@ import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.core.entity.User
+import com.aiinty.dragonfly.ui.TopAppBarState
+import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseButton
 import com.aiinty.dragonfly.ui.components.BaseTextField
 import com.aiinty.dragonfly.ui.theme.Primary
@@ -36,49 +38,56 @@ private fun RegisterUsernameScreen(
     val username = remember { mutableStateOf(user.username ?: "") }
     val isCorrect = remember { mutableStateOf(false) }
 
+
+    LaunchedEffect(Unit) {
+        TopAppBarStateProvider.update(
+            TopAppBarState {
+                RegisterHeader(
+                    state = RegisterScreenState.USERNAME,
+                    // TODO: get PreviousState from registerViewModel
+//                previousState = ,
+                    onBackClick = onBackClick,
+                    onInformationClick = onInformationClick
+                )
+            }
+        )
+    }
+
     LaunchedEffect(username.value) {
         isCorrect.value = username.value.isNotEmpty()
     }
 
-    Column {
-        RegisterHeader(
-            state = RegisterScreenState.USERNAME,
-            onBackClick = onBackClick,
-            onInformationClick = onInformationClick
-        )
-
-        RegisterItemDetails(
-            titleId = R.string.register_username,
-            descId = R.string.register_username_desc
+    RegisterItemDetails(
+        titleId = R.string.register_username,
+        descId = R.string.register_username_desc
+    ) {
+        Column(
+            modifier = Modifier.fillMaxHeight(),
+            verticalArrangement = Arrangement.SpaceBetween,
         ) {
-            Column(
-                modifier = Modifier.fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceBetween,
-            ) {
-                BaseTextField(
-                    value = username.value,
-                    onValueChange = {
-                        if (it.takeLast(1).contains(Regex("[A-Za-z_]"))) {
-                            username.value = it
-                        }
-                        isCorrect.value = username.value.isNotEmpty()
-                    },
-                    label = {
-                        Text(
-                            text = stringResource(id = R.string.register_username),
-                            style = MaterialTheme.typography.labelSmall
-                        )
+            BaseTextField(
+                value = username.value,
+                onValueChange = {
+                    if (it.takeLast(1).contains(Regex("[A-Za-z_]"))) {
+                        username.value = it
                     }
-                )
-                BaseButton(
-                    onClick = { user.username = username.value; onNextClick();  }, enabled = isCorrect.value
-                ) {
+                    isCorrect.value = username.value.isNotEmpty()
+                },
+                label = {
                     Text(
-                        text = stringResource(R.string.register_next),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = Primary
+                        text = stringResource(id = R.string.register_username),
+                        style = MaterialTheme.typography.labelSmall
                     )
                 }
+            )
+            BaseButton(
+                onClick = { user.username = username.value; onNextClick();  }, enabled = isCorrect.value
+            ) {
+                Text(
+                    text = stringResource(R.string.register_next),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Primary
+                )
             }
         }
     }

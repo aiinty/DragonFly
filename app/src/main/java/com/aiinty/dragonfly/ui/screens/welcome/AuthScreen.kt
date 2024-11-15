@@ -17,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +38,8 @@ import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.core.entity.User
+import com.aiinty.dragonfly.ui.TopAppBarState
+import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
 import com.aiinty.dragonfly.ui.theme.Secondary
 import kotlinx.serialization.Serializable
@@ -50,8 +53,15 @@ fun AuthScreen(
 ) {
     var passCode by remember { mutableStateOf("") }
 
+    LaunchedEffect(Unit) {
+        TopAppBarStateProvider.update(
+            TopAppBarState { }
+        )
+    }
+
     Row(
-        Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically
+        Modifier.fillMaxSize(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
             modifier = Modifier

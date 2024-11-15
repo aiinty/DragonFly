@@ -16,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +33,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.core.entity.User
+import com.aiinty.dragonfly.ui.TopAppBarState
+import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseButton
 import com.aiinty.dragonfly.ui.components.BaseHeader
 import com.aiinty.dragonfly.ui.theme.Primary
@@ -45,6 +48,14 @@ object ProfileRoute
 fun ProfileScreen(
     user: User
 ) {
+    LaunchedEffect(Unit) {
+        TopAppBarStateProvider.update(
+            TopAppBarState {
+                ProfileHeader()
+            }
+        )
+    }
+
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -52,8 +63,6 @@ fun ProfileScreen(
             .fillMaxSize()
             .padding(25.dp)
     ) {
-        ProfileHeader()
-
         Column(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(30.dp),
@@ -99,22 +108,30 @@ fun ProfileScreen(
                 )
             }, onClick = { })
         }
-            BaseButton(onClick = {}, colors = ButtonDefaults.buttonColors(Color(0xFFFE324E))) {
-                Text(
-                    text = stringResource(R.string.profile_log_out),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = Primary
-                )
-            }
 
+        BaseButton(
+            onClick = {},
+            colors = ButtonDefaults.buttonColors(Color(0xFFFE324E))
+        ) {
+            Text(
+                text = stringResource(R.string.profile_log_out),
+                style = MaterialTheme.typography.labelSmall,
+                color = Primary
+            )
+        }
     }
 }
 
 @Composable
-private fun ProfileHeader() {
-    BaseHeader({
-        Text(text = stringResource(id = R.string.profile))
-    })
+private fun ProfileHeader(
+    modifier: Modifier = Modifier,
+) {
+    BaseHeader(
+        modifier = modifier.padding(8.dp),
+        {
+            Text(text = stringResource(id = R.string.profile))
+        }
+    )
 }
 
 @Composable
@@ -158,6 +175,12 @@ fun NavGraphBuilder.profileScreen(
     composable<ProfileRoute> {
         ProfileScreen(user)
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ProfileHeaderPreview() {
+    ProfileHeader()
 }
 
 @Preview(showBackground = true)

@@ -18,6 +18,8 @@ import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.core.entity.User
+import com.aiinty.dragonfly.ui.TopAppBarState
+import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseButton
 import com.aiinty.dragonfly.ui.components.BaseTextField
 import com.aiinty.dragonfly.ui.theme.Primary
@@ -36,48 +38,54 @@ private fun RegisterEmailScreen(
     val email = remember { mutableStateOf(user.email ?: "") }
     val isCorrect = remember { mutableStateOf(false) }
 
+    LaunchedEffect(Unit) {
+        TopAppBarStateProvider.update(
+            TopAppBarState {
+                RegisterHeader(
+                    state = RegisterScreenState.EMAIL,
+                    // TODO: get PreviousState from registerViewModel
+//                previousState = ,
+                    onBackClick = onBackClick,
+                    onInformationClick = onInformationClick
+                )
+            }
+        )
+    }
+
     LaunchedEffect(email.value) {
         isCorrect.value = android.util.Patterns.EMAIL_ADDRESS.matcher(email.value).matches()
     }
 
-    Column {
-        RegisterHeader(
-            state = RegisterScreenState.EMAIL,
-            onBackClick = onBackClick,
-            onInformationClick = onInformationClick
-        )
-
-        RegisterItemDetails(
-            titleId = R.string.register_email,
-            descId = R.string.register_email_desc
+    RegisterItemDetails(
+        titleId = R.string.register_email,
+        descId = R.string.register_email_desc
+    ) {
+        Column(
+            modifier = Modifier.fillMaxHeight(),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Column(
-                modifier = Modifier.fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                BaseTextField(
-                    value = email.value,
-                    onValueChange = {
-                        isCorrect.value = android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()
-                        email.value = it
-                    },
-                    label = {
-                        Text(
-                            text = stringResource(id = R.string.register_email),
-                            style = MaterialTheme.typography.labelSmall
-                        )
-                    }
-                )
-
-                BaseButton(
-                    onClick = {  user.email = email.value; onNextClick(); }, enabled = isCorrect.value
-                ) {
+            BaseTextField(
+                value = email.value,
+                onValueChange = {
+                    isCorrect.value = android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()
+                    email.value = it
+                },
+                label = {
                     Text(
-                        text = stringResource(R.string.register_next),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = Primary
+                        text = stringResource(id = R.string.register_email),
+                        style = MaterialTheme.typography.labelSmall
                     )
                 }
+            )
+
+            BaseButton(
+                onClick = {  user.email = email.value; onNextClick(); }, enabled = isCorrect.value
+            ) {
+                Text(
+                    text = stringResource(R.string.register_next),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Primary
+                )
             }
         }
     }

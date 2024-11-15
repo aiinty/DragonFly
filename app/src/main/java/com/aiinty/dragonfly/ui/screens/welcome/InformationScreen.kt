@@ -17,6 +17,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -32,6 +33,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
+import com.aiinty.dragonfly.ui.TopAppBarState
+import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseHeader
 import com.aiinty.dragonfly.ui.theme.LightGray
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
@@ -60,13 +63,19 @@ fun InformationScreen(
         )
     )
 
+    LaunchedEffect(Unit) {
+        TopAppBarStateProvider.update(
+            TopAppBarState {
+                InformationHeader(
+                    onBackClick = onBackClick
+                )
+            }
+        )
+    }
+
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        InformationHeader(
-            onBackClick = onBackClick
-        )
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -140,9 +149,11 @@ fun InformationItem(
 
 @Composable
 private fun InformationHeader(
+    modifier: Modifier = Modifier,
     onBackClick: () -> Unit
 ) {
     BaseHeader(
+        modifier = modifier,
         {
             IconButton(onClick = { onBackClick() }) {
                 Icon(
@@ -179,8 +190,15 @@ fun NavGraphBuilder.informationScreen(
 @Preview(showBackground = true)
 @Composable
 private fun InformationPreview() {
-    InformationScreen( {} )
+    InformationScreen {}
 }
+
+@Preview(showBackground = true)
+@Composable
+private fun InformationHeaderPreview() {
+    InformationHeader {}
+}
+
 
 @Preview(showBackground = true)
 @Composable

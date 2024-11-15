@@ -15,8 +15,11 @@ import com.aiinty.dragonfly.R
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultHeader() {
+fun DefaultHeader(
+    modifier: Modifier = Modifier
+) {
     BaseHeader(
+        modifier = modifier,
         {
             IconButton(
                 onClick = { },

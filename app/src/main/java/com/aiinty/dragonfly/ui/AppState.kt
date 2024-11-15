@@ -3,8 +3,11 @@ package com.aiinty.dragonfly.ui
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.util.trace
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -36,6 +39,17 @@ fun rememberAppState(
     }
 }
 
+data class TopAppBarState(val topBar: @Composable () -> Unit = { })
+
+object TopAppBarStateProvider {
+    var topAppBarState: TopAppBarState by mutableStateOf(TopAppBarState())
+        private set
+
+    fun update(topAppBarState: TopAppBarState) {
+        this.topAppBarState = topAppBarState
+    }
+}
+
 @Stable
 class AppState(
     coroutineScope: CoroutineScope,
@@ -62,9 +76,11 @@ class AppState(
         }
 
     fun navigateToPreviousDestination() {
-        navController.popBackStack()
-        navController.navigate(navController.currentBackStackEntry!!.destination.id)
-        navController.popBackStack()
+        if (navController.previousBackStackEntry != null) {
+            navController.popBackStack()
+            navController.navigate(navController.currentBackStackEntry!!.destination.id)
+            navController.popBackStack()
+        }
     }
 
     fun navigateToTopLevelDestination(topLevelDestination: TopLevelDestination) {

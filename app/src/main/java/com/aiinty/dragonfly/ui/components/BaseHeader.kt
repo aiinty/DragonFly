@@ -9,10 +9,11 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun BaseHeader(
+    modifier: Modifier = Modifier,
     vararg items: @Composable () -> Unit
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = if (items.size == 1) Arrangement.Center else Arrangement.SpaceBetween,
     ) {

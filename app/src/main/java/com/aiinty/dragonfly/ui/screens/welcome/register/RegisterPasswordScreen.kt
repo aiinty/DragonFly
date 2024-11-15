@@ -20,6 +20,8 @@ import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.core.entity.User
+import com.aiinty.dragonfly.ui.TopAppBarState
+import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseButton
 import com.aiinty.dragonfly.ui.components.BaseTextField
 import com.aiinty.dragonfly.ui.theme.Primary
@@ -40,63 +42,69 @@ private fun RegisterPasswordScreen(
     val passwordRe = remember { mutableStateOf("") }
     val isCorrect = remember { mutableStateOf(false) }
 
+    LaunchedEffect(Unit) {
+        TopAppBarStateProvider.update(
+            TopAppBarState {
+                RegisterHeader(
+                    state = RegisterScreenState.PASSWORD,
+                    // TODO: get PreviousState from registerViewModel
+//                previousState = ,
+                    onBackClick = onBackClick,
+                    onInformationClick = onInformationClick,
+                )
+            }
+        )
+    }
+
     LaunchedEffect(password.value, passwordRe.value) {
         isCorrect.value = password.value == passwordRe.value && password.value.isNotEmpty()
     }
 
-    Column {
-        RegisterHeader(
-            state = RegisterScreenState.PASSWORD,
-            onBackClick = onBackClick,
-            onInformationClick = onInformationClick,
-        )
-
-        RegisterItemDetails(
-            titleId = R.string.register_password,
-            descId =  R.string.register_password_desc
+    RegisterItemDetails(
+        titleId = R.string.register_password,
+        descId =  R.string.register_password_desc
+    ) {
+        Column(
+            modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
-                modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceBetween
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    BaseTextField(
-                        value = password.value,
-                        onValueChange = { password.value = it; isCorrect.value = (password.value == passwordRe.value) },
-                        visualTransformation = PasswordVisualTransformation(),
-                        label = {
-                            Text(
-                                text = stringResource(id = R.string.register_password),
-                                style = MaterialTheme.typography.labelSmall
-                            ) }
-                    )
+                BaseTextField(
+                    value = password.value,
+                    onValueChange = { password.value = it; isCorrect.value = (password.value == passwordRe.value) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    label = {
+                        Text(
+                            text = stringResource(id = R.string.register_password),
+                            style = MaterialTheme.typography.labelSmall
+                        ) }
+                )
 
-                    BaseTextField(
-                        value = passwordRe.value,
-                        onValueChange = { passwordRe.value = it; isCorrect.value = (password.value == passwordRe.value) },
-                        visualTransformation = PasswordVisualTransformation(),
-                        label = {
-                            Text(
-                                text = stringResource(id = R.string.register_password_re),
-                                style = MaterialTheme.typography.labelSmall
-                            )
-                        }
-                    )
-                }
+                BaseTextField(
+                    value = passwordRe.value,
+                    onValueChange = { passwordRe.value = it; isCorrect.value = (password.value == passwordRe.value) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    label = {
+                        Text(
+                            text = stringResource(id = R.string.register_password_re),
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    }
+                )
+            }
 
-                BaseButton(
-                    onClick = {
-                        user.password = password.value
-                        onNextClick()
-                    }, enabled = isCorrect.value
-                ) {
-                    Text(
-                        text = stringResource(R.string.register_next),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = Primary
-                    )
-                }
+            BaseButton(
+                onClick = {
+                    user.password = password.value
+                    onNextClick()
+                }, enabled = isCorrect.value
+            ) {
+                Text(
+                    text = stringResource(R.string.register_next),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Primary
+                )
             }
         }
     }

@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ButtonDefaults
@@ -25,6 +24,8 @@ import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
 import com.aiinty.dragonfly.core.entity.User
+import com.aiinty.dragonfly.ui.TopAppBarState
+import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseButton
 import com.aiinty.dragonfly.ui.components.DefaultHeader
 import com.aiinty.dragonfly.ui.theme.Outline
@@ -40,65 +41,67 @@ enum class RegisterScreenState {
     START, EMAIL, USERNAME, PASSWORD;
 
     fun calculatePercent(): Float = this.ordinal / RegisterScreenState.entries.size.toFloat()
+    fun previousState(): RegisterScreenState =
+            if (this.ordinal != 0) RegisterScreenState.entries[this.ordinal - 1] else this
 }
 
-//TODO: save RegisterScreenState to RegisterViewModel
+//TODO: save current RegisterScreenState to RegisterViewModel
 @Composable
 fun RegisterScreen(
     user: User,
     onNextNavigate: (User) -> Unit
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        DefaultHeader()
+    TopAppBarStateProvider.update(
+        TopAppBarState {
+            DefaultHeader()
+        }
+    )
 
-        RegisterItemDetails(
-            titleId = R.string.register,
-            descId = R.string.register_desc
+    RegisterItemDetails(
+        titleId = R.string.register,
+        descId = R.string.register_desc
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                BaseButton(
+                    onClick = { },
+                    border = BorderStroke(1.dp, Outline),
+                    colors = ButtonDefaults.buttonColors(containerColor = SecondaryContainer)
                 ) {
-                    BaseButton(
-                        onClick = { },
-                        border = BorderStroke(1.dp, Outline),
-                        colors = ButtonDefaults.buttonColors(containerColor = SecondaryContainer)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Image(
-                                modifier = Modifier.size(16.dp),
-                                bitmap = ImageBitmap.imageResource(R.drawable.google),
-                                contentDescription = stringResource(R.string.Google)
-                            )
-                            Text(
-                                modifier = Modifier.padding(start = 10.dp),
-                                text = stringResource(R.string.register_with_gmail),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = Secondary
-                            )
-                        }
-                    }
-                    Text(
-                        text = stringResource(R.string.register_other),
-                        style = MaterialTheme.typography.labelSmall,
-                    )
-                    BaseButton (
-                        onClick = { onNextNavigate(user) },
-                    ) {
+                        Image(
+                            modifier = Modifier.size(16.dp),
+                            bitmap = ImageBitmap.imageResource(R.drawable.google),
+                            contentDescription = stringResource(R.string.Google)
+                        )
                         Text(
-                            text = stringResource(R.string.register_with_email),
+                            modifier = Modifier.padding(start = 10.dp),
+                            text = stringResource(R.string.register_with_gmail),
                             style = MaterialTheme.typography.labelSmall,
-                            color = Primary
+                            color = Secondary
                         )
                     }
+                }
+                Text(
+                    text = stringResource(R.string.register_other),
+                    style = MaterialTheme.typography.labelSmall,
+                )
+                BaseButton (
+                    onClick = { onNextNavigate(user) },
+                ) {
+                    Text(
+                        text = stringResource(R.string.register_with_email),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Primary
+                    )
                 }
             }
         }
