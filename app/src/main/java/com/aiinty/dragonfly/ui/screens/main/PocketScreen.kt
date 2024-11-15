@@ -3,7 +3,7 @@ package com.aiinty.dragonfly.ui.screens.main
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -54,9 +54,7 @@ fun PocketScreen() {
         }
     )
 
-    Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-
-        LazyColumn {
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp), contentPadding = PaddingValues(10.dp, 16.dp)) {
             item {
                 ToggleablePocketChips(
                     listOf(
@@ -149,7 +147,6 @@ fun PocketScreen() {
                 ) { }
             }
         }
-    }
 }
 
 @Composable

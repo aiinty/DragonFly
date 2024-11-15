@@ -101,13 +101,67 @@ fun HomeScreen() {
                     {
                         PocketCard(
                             stringResource(R.string.family_balance),
-                            R.drawable.cc1
+                            R.drawable.cc2
                         )
                     },
                     {
                         PocketCard(
                             stringResource(R.string.investment_balance),
+                            R.drawable.cc3
+                        )
+                    },
+                    {
+                        PocketCard(
+                            stringResource(R.string.alms_balance),
+                            R.drawable.cc4
+                        )
+                    },
+                    {
+                        PocketCard(
+                            stringResource(R.string.saving_balance),
                             R.drawable.cc1
+                        )
+                    },
+                    {
+                        PocketCard(
+                            stringResource(R.string.family_balance),
+                            R.drawable.cc2
+                        )
+                    },
+                    {
+                        PocketCard(
+                            stringResource(R.string.investment_balance),
+                            R.drawable.cc3
+                        )
+                    },
+                    {
+                        PocketCard(
+                            stringResource(R.string.alms_balance),
+                            R.drawable.cc4
+                        )
+                    },
+                    {
+                        PocketCard(
+                            stringResource(R.string.saving_balance),
+                            R.drawable.cc1
+                        )
+                    },
+                    {
+                        PocketCard(
+                            stringResource(R.string.family_balance),
+                            R.drawable.cc2
+                        )
+                    },
+                    {
+                        PocketCard(
+                            stringResource(R.string.investment_balance),
+                            R.drawable.cc3
+                        )
+                    },
+                    {
+                        PocketCard(
+                            stringResource(R.string.alms_balance),
+                            R.drawable.cc4
                         )
                     },
                 )
