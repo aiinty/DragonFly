@@ -116,4 +116,6 @@ After making the transfer, save proof of transfer such as proof of payment or tr
     <!--PERSONAL DATA-->
     <string name="personal_data">Personal data</string>
     <string name="user_avatar">User avatar</string>
+    <string name="lock_icon_desc">Lock Icon</string>
+    <string name="alms_balance">Alms Balance</string>
 </resources>

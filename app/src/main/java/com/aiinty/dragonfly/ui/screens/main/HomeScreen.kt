@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -79,6 +80,16 @@ fun HomeScreen() {
         }
 
         item {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                Icon(imageVector = ImageVector.vectorResource(R.drawable.pocket), stringResource(R.string.my_pocket), tint = PrimaryContainer)
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                    Text(stringResource(R.string.my_pocket))
+                    TextButton({}, contentPadding = PaddingValues(0.dp)) {
+                        Text(stringResource(R.string.create_pocket), lineHeight = 18.sp, fontSize = 12.sp, color = PrimaryContainer)
+                    }
+                }
+            }
+
             PocketSection(
                 listOf(
                     {
