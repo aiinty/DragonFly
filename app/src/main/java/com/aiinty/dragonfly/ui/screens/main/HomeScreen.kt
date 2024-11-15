@@ -59,20 +59,22 @@ fun HomeScreen() {
     )
 
     Column (
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
     ){
         BalanceSection()
         ActionButtons()
         ConnectCard()
 
         LazyColumn(
-            modifier = Modifier.padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             itemsIndexed(cards) { _, it ->
                 it()
             }
         }
+
         CurrencySection()
     }
 }
