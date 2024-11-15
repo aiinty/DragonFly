@@ -84,19 +84,19 @@ fun HomeScreen() {
                 listOf(
                     {
                         PocketCard(
-                            "lol",
+                            stringResource(R.string.saving_balance),
                             R.drawable.cc1
                         )
                     },
                     {
                         PocketCard(
-                            "lol",
+                            stringResource(R.string.family_balance),
                             R.drawable.cc1
                         )
                     },
                     {
                         PocketCard(
-                            "lol",
+                            stringResource(R.string.investment_balance),
                             R.drawable.cc1
                         )
                     },
@@ -112,11 +112,11 @@ fun HomeScreen() {
 @Composable
 fun BalanceSection() {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text("Your Balance", fontSize = 12.sp, lineHeight = 18.sp, color = Gray)
+        Text(stringResource(R.string.your_balance), fontSize = 12.sp, lineHeight = 18.sp, color = Gray)
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween ) {
-            Text("$ 49,250.00", fontSize = 24.sp, lineHeight = 30.sp, color = Secondary)
-            Icon(ImageVector.vectorResource(R.drawable.eye), "hide balance")
+            Text(stringResource(R.string.user_money), fontSize = 24.sp, lineHeight = 30.sp, color = Secondary)
+            Icon(ImageVector.vectorResource(R.drawable.eye), stringResource(R.string.hide_balance))
         }
     }
 }
@@ -131,21 +131,21 @@ fun ActionButtons() {
             .padding(10.dp),
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-        ActionButton("Send") {
+        ActionButton(stringResource(R.string.send_money)) {
             Icon(
-                ImageVector.vectorResource(R.drawable.money_send), "send money", Modifier.size(31.dp, 18.dp)
+                ImageVector.vectorResource(R.drawable.money_send), stringResource(R.string.send_money), Modifier.size(31.dp, 18.dp)
             )
         }
 
-        ActionButton("Request") {
+        ActionButton(stringResource(R.string.request_money)) {
             Icon(
-                ImageVector.vectorResource(R.drawable.money_recive), "receive money", Modifier.size(31.dp, 18.dp)
+                ImageVector.vectorResource(R.drawable.money_recive), stringResource(R.string.request_money), Modifier.size(31.dp, 18.dp)
             )
         }
 
-        ActionButton("History") {
+        ActionButton(stringResource(R.string.balance_history)) {
             Icon(
-                ImageVector.vectorResource(R.drawable.receipt), "history", Modifier.size(31.dp, 18.dp)
+                ImageVector.vectorResource(R.drawable.receipt), stringResource(R.string.balance_history), Modifier.size(31.dp, 18.dp)
             )
         }
     }
@@ -156,7 +156,9 @@ fun ActionButton(title: String, icon: @Composable () -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(6.dp),
-        modifier = Modifier.clip(RoundedCornerShape(4.dp)).clickable {}
+        modifier = Modifier
+            .clip(RoundedCornerShape(4.dp))
+            .clickable {}
     ) {
         icon()
         Text(title, fontSize = 12.sp, lineHeight = 18.sp)
@@ -170,13 +172,15 @@ fun ConnectCard() {
             .fillMaxWidth()
             .padding(vertical = 8.dp),
     ) {
-        Image(bitmap = ImageBitmap.imageResource(R.drawable.offer), modifier =  Modifier.fillMaxWidth(), contentDescription = "connect offer",
+        Image(bitmap = ImageBitmap.imageResource(R.drawable.offer), modifier =  Modifier.fillMaxWidth(), contentDescription = stringResource(
+            R.string.connect_offer
+        ),
             contentScale = ContentScale.FillWidth
         )
 
         Column(verticalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.padding(32.dp)) {
-            Text("Let's connect", Modifier, Color(0xFF7443FF), style = MaterialTheme.typography.labelMedium, lineHeight = 30.sp)
-            Text("Connect account with marketplace for easy transactions and get \$25 bonus.", Modifier, Gray, style = MaterialTheme.typography.labelMedium.copy(fontSize = 12.sp), lineHeight = 18.sp)
+            Text(stringResource(R.string.connect_card), Modifier, Color(0xFF7443FF), style = MaterialTheme.typography.labelMedium, lineHeight = 30.sp)
+            Text(stringResource(R.string.connect_card_desc), Modifier, Gray, style = MaterialTheme.typography.labelMedium.copy(fontSize = 12.sp), lineHeight = 18.sp)
         }
     }
 }
@@ -187,11 +191,11 @@ fun PocketSection(items: List<@Composable () -> Unit>, onViewMoreClick: () -> Un
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(imageVector = ImageVector.vectorResource(R.drawable.pocket), "my pocket", tint = PrimaryContainer)
+            Icon(imageVector = ImageVector.vectorResource(R.drawable.pocket), stringResource(R.string.my_pocket), tint = PrimaryContainer)
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                Text("My Pocket")
+                Text(stringResource(R.string.my_pocket))
                 TextButton({}, contentPadding = PaddingValues(0.dp)) {
-                    Text("Create", lineHeight = 18.sp, fontSize = 12.sp, color = PrimaryContainer)
+                    Text(stringResource(R.string.create_pocket), lineHeight = 18.sp, fontSize = 12.sp, color = PrimaryContainer)
                 }
             }
         }
@@ -222,7 +226,7 @@ fun PocketSection(items: List<@Composable () -> Unit>, onViewMoreClick: () -> Un
                 .padding(vertical = 8.dp)) {
 
             Text(
-                "View more",
+                stringResource(R.string.view_more),
                 color = Color.Blue)
         }
     }
@@ -231,14 +235,14 @@ fun PocketSection(items: List<@Composable () -> Unit>, onViewMoreClick: () -> Un
 @Composable
 fun PocketCard(title: String, @DrawableRes iconId: Int) {
     Column(Modifier.border(1.dp, ECECEC, RoundedCornerShape(8.dp))) {
-            Image(ImageBitmap.imageResource(iconId), "card", Modifier
+            Image(ImageBitmap.imageResource(iconId), stringResource(R.string.card), Modifier
                 .size(164.dp, 150.dp)
                 .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.FillWidth)
 
         Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Text(title, fontSize = 10.sp, lineHeight = 15.sp)
-            Text("$1,000.00", fontSize = 16.sp, color = PrimaryContainer, style = MaterialTheme.typography.labelMedium)
+            Text(stringResource(R.string.pocket_cost), fontSize = 16.sp, color = PrimaryContainer, style = MaterialTheme.typography.labelMedium)
         }
     }
 }
@@ -249,8 +253,8 @@ fun CurrencySection() {
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Icon(imageVector = ImageVector.vectorResource(R.drawable.coin), "currencies", tint = PrimaryContainer)
-            Text(text = "Currency", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Icon(imageVector = ImageVector.vectorResource(R.drawable.coin), stringResource(R.string.currency), tint = PrimaryContainer)
+            Text(text = stringResource(R.string.currency), fontSize = 18.sp, fontWeight = FontWeight.Bold)
         }
 
         Box(
@@ -260,7 +264,9 @@ fun CurrencySection() {
                 .border(1.dp, ECECEC, RoundedCornerShape(8.dp)),
         ) {
             // Our treasure
-            Column(modifier = Modifier.padding(16.dp).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Column(modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 val currencies = listOf(
                     CurrencyItem("USD", "1.00", "1.00"),
                     CurrencyItem("EURO", "1.00", "0.92"),
@@ -269,30 +275,30 @@ fun CurrencySection() {
                 )
 
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Column(verticalArrangement = Arrangement.SpaceBetween, horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Currency", style = MaterialTheme.typography.labelSmall)
+                    Column(verticalArrangement = Arrangement.spacedBy(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(stringResource(R.string.currency), style = MaterialTheme.typography.labelSmall)
 
                         currencies.forEach { c ->
                             Text(c.name, style = MaterialTheme.typography.bodySmall)
                         }
                     }
-                    Column(verticalArrangement = Arrangement.SpaceBetween, horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Price", style = MaterialTheme.typography.labelSmall)
+                    Column(verticalArrangement = Arrangement.spacedBy(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(stringResource(R.string.price), style = MaterialTheme.typography.labelSmall)
 
                         currencies.forEach { c->
                             Text(c.rate, style = MaterialTheme.typography.bodySmall)
                         }
                     }
 
-                    Column(verticalArrangement = Arrangement.SpaceBetween, horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Rate", style = MaterialTheme.typography.labelSmall)
+                    Column(verticalArrangement = Arrangement.spacedBy(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(stringResource(R.string.rate), style = MaterialTheme.typography.labelSmall)
 
                         currencies.forEach { c ->
                             Text(c.price, style = MaterialTheme.typography.bodySmall)
                         }
                     }
                 }
-                Text(text = "Updated 1 hour ago", fontSize = 12.sp, color = PrimaryContainer)
+                Text(text = stringResource(R.string.pocket_updated), fontSize = 12.sp, color = PrimaryContainer)
             }
         }
     }
@@ -327,7 +333,7 @@ fun HomeHeader(
         {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.scanner),
-                contentDescription = "scanner"
+                contentDescription = stringResource(R.string.scanner)
             )
         }
     )

@@ -50,6 +50,28 @@
     <string name="information_second_desc">To create a virtual account you need to raise your customer status to priority</string>
     <!--HOME-->
     <string name="home">Home</string>
+    <string name="saving_balance">Saving Balance</string>
+    <string name="family_balance">Family Balance</string>
+    <string name="investment_balance">Investment Balance</string>
+    <string name="your_balance">Your Balance</string>
+    <string name="hide_balance">hide balance</string>
+    <string name="user_money">$ 49,250.00</string>
+    <string name="send_money">Send</string>
+    <string name="request_money">Request</string>
+    <string name="balance_history">History</string>
+    <string name="connect_offer">connect offer</string>
+    <string name="connect_card">Let\'s connect</string>
+    <string name="connect_card_desc">Connect account with marketplace for easy transactions and get $25 bonus.</string>
+    <string name="my_pocket">My Pocket</string>
+    <string name="create_pocket">Create</string>
+    <string name="view_more">View more</string>
+    <string name="pocket_cost">$1,000.00</string>
+    <string name="card">card</string>
+    <string name="currency">Currency</string>
+    <string name="price">Price</string>
+    <string name="rate">Rate</string>
+    <string name="pocket_updated">Updated 1 hour ago</string>
+    <string name="scanner">scanner</string>
     <!--POCKET-->
     <string name="pocket">Pocket</string>
     <!--INBOX-->
