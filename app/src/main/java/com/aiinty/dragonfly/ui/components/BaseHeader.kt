@@ -8,7 +8,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -16,7 +15,7 @@ fun BaseHeader(
     modifier: Modifier = Modifier,
     vararg items: @Composable () -> Unit
 ) {
-    Surface(Modifier.shadow(8.dp)) {
+    Surface {
         Row(
             modifier = modifier.fillMaxWidth().padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
