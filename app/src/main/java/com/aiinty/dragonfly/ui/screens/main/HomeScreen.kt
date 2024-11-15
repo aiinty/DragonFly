@@ -43,7 +43,7 @@ import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseHeader
 import com.aiinty.dragonfly.ui.components.PocketCard
 import com.aiinty.dragonfly.ui.components.PocketSection
-import com.aiinty.dragonfly.ui.theme.ECECEC
+import com.aiinty.dragonfly.ui.theme.Outline
 import com.aiinty.dragonfly.ui.theme.Gray
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
 import com.aiinty.dragonfly.ui.theme.Secondary
@@ -131,7 +131,7 @@ fun ActionButtons() {
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
-            .border(1.dp, ECECEC, RoundedCornerShape(8.dp))
+            .border(1.dp, Outline, RoundedCornerShape(8.dp))
             .padding(10.dp),
         horizontalArrangement = Arrangement.SpaceAround
     ) {
@@ -203,7 +203,7 @@ fun CurrencySection() {
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(8.dp))
-                .border(1.dp, ECECEC, RoundedCornerShape(8.dp)),
+                .border(1.dp, Outline, RoundedCornerShape(8.dp)),
         ) {
             // Our treasure
             Column(modifier = Modifier
