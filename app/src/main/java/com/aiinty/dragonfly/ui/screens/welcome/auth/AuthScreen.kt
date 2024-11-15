@@ -81,7 +81,7 @@ fun AuthScreen(
 
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.lock_icon),
-                    contentDescription = "Lock Icon",
+                    contentDescription = stringResource(R.string.lock_icon_desc),
                     tint = Color(0xFF05BE71)
                 )
 

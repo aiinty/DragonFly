@@ -32,9 +32,8 @@ import com.aiinty.dragonfly.ui.theme.PrimaryContainer
 @Composable
 fun PocketSection(items: List<PocketCardItem>, viewMore: Boolean = true, onViewMoreClick: () -> Unit) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-
         items.chunked(2).forEach {  rowItems ->
             Row(
                 modifier = Modifier.fillMaxWidth(),

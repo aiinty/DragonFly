@@ -55,8 +55,6 @@ private fun RegisterEmailScreen(
         )
     }
 
-
-
     LaunchedEffect(email.value) {
         isCorrect.value = android.util.Patterns.EMAIL_ADDRESS.matcher(email.value).matches()
     }
@@ -87,7 +85,7 @@ private fun RegisterEmailScreen(
                 onClick =
                 {
                     viewModel.user.email = email.value
-                    onNextClick();
+                    onNextClick()
                 },
                 enabled = isCorrect.value
             ) {
