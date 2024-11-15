@@ -43,8 +43,8 @@ import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseHeader
 import com.aiinty.dragonfly.ui.components.PocketCard
 import com.aiinty.dragonfly.ui.components.PocketSection
-import com.aiinty.dragonfly.ui.theme.Outline
 import com.aiinty.dragonfly.ui.theme.Gray
+import com.aiinty.dragonfly.ui.theme.Outline
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
 import com.aiinty.dragonfly.ui.theme.Secondary
 import kotlinx.serialization.Serializable
@@ -64,10 +64,8 @@ fun HomeScreen() {
         modifier = Modifier
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(16.dp)
+        contentPadding = PaddingValues(10.dp, 16.dp)
     ) {
-        item { Spacer(Modifier.size(16.dp)) } // FIXME another way pls
-
         item {
             BalanceSection()
         }

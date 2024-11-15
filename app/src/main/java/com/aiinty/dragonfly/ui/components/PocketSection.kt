@@ -71,7 +71,9 @@ fun PocketSection(items: List<@Composable () -> Unit>, viewMore: Boolean = true,
 }
 
 @Composable
-fun PocketCard(title: String, @DrawableRes iconId: Int) {
+fun PocketCard(
+    title: String, @DrawableRes iconId: Int
+) {
     Column(Modifier.border(1.dp, Outline, RoundedCornerShape(8.dp))) {
         Image(
             ImageBitmap.imageResource(iconId), stringResource(R.string.card), Modifier
