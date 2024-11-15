@@ -172,6 +172,7 @@ fun AuthScreen(
                                             "<" -> {
                                                 if (passCode.isNotEmpty()) {
                                                     passCode = passCode.dropLast(1)
+                                                    correctState = PassCodeState.NotFull
                                                 }
                                             }
 

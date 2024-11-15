@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
@@ -54,14 +53,14 @@ fun PocketSection(items: List<PocketCardItem>, viewMore: Boolean = true, onViewM
     }
 
     if (viewMore) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             TextButton({ onViewMoreClick() },
                 modifier = Modifier
                     .padding(vertical = 8.dp)) {
 
                 Text(
                     stringResource(R.string.view_more),
-                    color = Color.Blue)
+                    color = PrimaryContainer)
             }
         }
     }

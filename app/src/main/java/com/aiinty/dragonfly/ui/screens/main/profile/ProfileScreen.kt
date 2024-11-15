@@ -5,11 +5,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -69,7 +71,7 @@ fun ProfileScreen(
     ) {
         Column(
             horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(30.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
@@ -99,6 +101,7 @@ fun ProfileScreen(
                 }
             }
 
+            Spacer(Modifier.size(10.dp))
             ProfileMenuItem(text = { Text(stringResource(id = R.string.personal_data)) }, icon = {
                 Icon(
                     ImageVector.vectorResource(R.drawable.personalcard_icon),
@@ -133,6 +136,39 @@ fun ProfileScreen(
                 text = stringResource(R.string.profile_log_out),
                 style = MaterialTheme.typography.labelSmall,
                 color = Primary
+            )
+        }
+    }
+}
+
+@Composable
+private fun ProfileMenuItem(
+    text: @Composable () -> Unit,
+    icon: @Composable () -> Unit,
+    onClick: () -> Unit
+) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(4.dp))
+            .clickable { onClick() },
+        verticalAlignment = Alignment.Top,
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        icon()
+
+        Column(verticalArrangement = Arrangement.spacedBy(15.dp)) {
+            Row(
+                Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                text()
+
+                Icon(ImageVector.vectorResource(R.drawable.arrow_right), "arrow right")
+
+            }
+
+            Divider(
+                Modifier.fillMaxWidth(), 2.dp
             )
         }
     }
