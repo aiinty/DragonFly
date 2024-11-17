@@ -64,11 +64,9 @@ fun LoginScreen(
     val isRememberMe = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        TopAppBarStateProvider.update(
-            TopAppBarState {
-                DefaultHeader()
-            }
-        )
+        TopAppBarStateProvider.update(TopAppBarState {
+            DefaultHeader()
+        })
     }
 
     Column(
@@ -81,7 +79,7 @@ fun LoginScreen(
                 .padding(10.dp, 16.dp)
                 .weight(1f),
             verticalArrangement = Arrangement.spacedBy(32.dp)
-        ){
+        ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -100,16 +98,12 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                BaseTextField(
-                    value = login.value,
-                    onValueChange = { login.value = it },
-                    label = {
-                        Text(
-                            text = stringResource(id = R.string.login_email_hint),
-                            style = MaterialTheme.typography.labelSmall
-                        )
-                    }
-                )
+                BaseTextField(value = login.value, onValueChange = { login.value = it }, label = {
+                    Text(
+                        text = stringResource(id = R.string.login_email_hint),
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                })
                 BaseTextField(
                     value = password.value,
                     onValueChange = { password.value = it },
@@ -141,8 +135,7 @@ fun LoginScreen(
                         )
                     }
                     TextButton(
-                        onClick = onForgotPassword,
-                        contentPadding = PaddingValues(0.dp)
+                        onClick = onForgotPassword, contentPadding = PaddingValues(0.dp)
                     ) {
                         Text(
                             text = stringResource(id = R.string.login_forgot),
@@ -164,7 +157,7 @@ fun LoginScreen(
                         runBlocking {
                             val user = loginViewModel.getUser() ?: return@runBlocking
 
-                            if ((login.value == user.email || login.value == user.username ) && password.value == user.password) {
+                            if ((login.value == user.email || login.value == user.username) && password.value == user.password) {
                                 if (isRememberMe.value) {
                                     user.rememberMe = true
                                     loginViewModel.saveUser(user)
@@ -192,7 +185,7 @@ fun LoginScreen(
                     border = BorderStroke(1.dp, Outline),
                     colors = ButtonDefaults.buttonColors(containerColor = SecondaryContainer)
                 ) {
-                    Row (
+                    Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Image(
@@ -218,11 +211,8 @@ fun LoginScreen(
             Text(
                 text = stringResource(id = R.string.login_register_hint),
                 style = MaterialTheme.typography.labelSmall
-                )
-            TextButton(
-                contentPadding = PaddingValues(0.dp),
-                onClick = { onRegisterNavigation() }
-            ) {
+            )
+            TextButton(contentPadding = PaddingValues(0.dp), onClick = { onRegisterNavigation() }) {
                 Text(
                     text = stringResource(id = R.string.register),
                     style = MaterialTheme.typography.labelSmall,
@@ -237,9 +227,7 @@ fun NavController.navigateToLogin(navOptions: NavOptionsBuilder.() -> Unit = {})
     navigate(route = LoginRoute, navOptions)
 
 fun NavGraphBuilder.loginScreen(
-    onSuccessfulLogin: () -> Unit,
-    onRegisterNavigation: () -> Unit,
-    onForgotPassword: () -> Unit
+    onSuccessfulLogin: () -> Unit, onRegisterNavigation: () -> Unit, onForgotPassword: () -> Unit
 ) {
     composable<LoginRoute> {
         LoginScreen(
@@ -252,11 +240,15 @@ fun NavGraphBuilder.loginScreen(
 
 @Preview(showBackground = true)
 @Composable
+private fun LoginHeaderPreview() {
+    DefaultHeader()
+}
+
+@Preview(showBackground = true)
+@Composable
 private fun LoginScreenPreview() {
-    LoginScreen(
-        loginViewModel = LoginViewModel(FakeUserRepository()),
+    LoginScreen(loginViewModel = LoginViewModel(FakeUserRepository()),
         onSuccessfulLogin = {},
         onRegisterNavigation = {},
-        onForgotPassword = {}
-    )
+        onForgotPassword = {})
 }

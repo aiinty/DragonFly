@@ -41,6 +41,7 @@ import com.aiinty.dragonfly.ui.TopAppBarState
 import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseButton
 import com.aiinty.dragonfly.ui.components.BaseHeader
+import com.aiinty.dragonfly.ui.theme.Gray
 import com.aiinty.dragonfly.ui.theme.Primary
 import com.aiinty.dragonfly.ui.theme.PrimaryContainer
 import kotlinx.coroutines.runBlocking
@@ -96,8 +97,8 @@ fun ProfileScreen(
                     runBlocking {
                         name = profileViewModel.getUser()!!.username
                     }
-                    Text(name)
-                    Text(stringResource(id = R.string.profile_silver_members))
+                    Text(name, style = MaterialTheme.typography.bodySmall)
+                    Text(stringResource(id = R.string.profile_silver_members), style = MaterialTheme.typography.labelSmall, color = Gray)
                 }
             }
 
