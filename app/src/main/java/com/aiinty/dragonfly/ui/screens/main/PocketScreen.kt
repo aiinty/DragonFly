@@ -4,9 +4,10 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -60,6 +61,7 @@ fun PocketScreen() {
         "Alms",
         "Another other"
     )
+
     val cards = listOf(
         PocketCardItem(
             stringResource(R.string.saving_balance),
@@ -95,13 +97,17 @@ fun PocketScreen() {
         )
     )
 
-    Column(
-        modifier = Modifier.padding(horizontal = 10.dp),
+    LazyColumn(
+        contentPadding = PaddingValues(10.dp, 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        ToggleablePocketChips(chipsTitles)
+        item {
+            ToggleablePocketChips(chipsTitles)
+        }
 
-        PocketSection(cards, viewMore = false) { }
+        item {
+            PocketSection(cards, viewMore = false) { }
+        }
     }
 }
 
@@ -167,6 +173,67 @@ fun NavGraphBuilder.pocketScreen() {
 
 @Preview(showBackground = true)
 @Composable
+private fun PocketHeaderPreview() {
+    PocketHeader()
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ToggleablePreview() {
+    ToggleablePocketChips(listOf(
+        "All",
+        "Saving",
+        "Family",
+        "Investment",
+        "Alms",
+        "Another other"
+    ))
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PocketSectionPreview() {
+    PocketSection(listOf(
+        PocketCardItem(
+            stringResource(R.string.saving_balance),
+            R.drawable.cc1
+        ),
+        PocketCardItem(
+            stringResource(R.string.family_balance),
+            R.drawable.cc2
+        ),
+        PocketCardItem(
+            stringResource(R.string.investment_balance),
+            R.drawable.cc3
+        ),
+        PocketCardItem(
+            stringResource(R.string.alms_balance),
+            R.drawable.cc4
+        ),
+        PocketCardItem(
+            stringResource(R.string.saving_balance),
+            R.drawable.cc1
+        ),
+        PocketCardItem(
+            stringResource(R.string.family_balance),
+            R.drawable.cc2
+        ),
+        PocketCardItem(
+            stringResource(R.string.investment_balance),
+            R.drawable.cc3
+        ),
+        PocketCardItem(
+            stringResource(R.string.alms_balance),
+            R.drawable.cc4
+        )
+    ), false){}
+}
+
+
+@Preview(showBackground = true)
+@Composable
 private fun PocketPreview() {
     PocketScreen()
 }
+
+
