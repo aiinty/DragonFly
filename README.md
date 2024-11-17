@@ -12,3 +12,4 @@ An Android app built with Kotlin and Jetpack Compose.
 - Navigation Compose
 - ViewModel
 - DataStore Preferences
+- Dagger Hilt
