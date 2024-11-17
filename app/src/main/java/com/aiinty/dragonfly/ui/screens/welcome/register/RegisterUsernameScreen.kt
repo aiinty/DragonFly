@@ -1,23 +1,30 @@
 package com.aiinty.dragonfly.ui.screens.welcome.register
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
+import com.aiinty.dragonfly.repositories.FakeUserRepository
 import com.aiinty.dragonfly.ui.TopAppBarState
 import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseButton
@@ -30,26 +37,26 @@ object RegisterUsernameRoute
 
 @Composable
 private fun RegisterUsernameScreen(
-    viewModel: RegisterViewModel,
+    registerViewModel: RegisterViewModel,
     onNextClick: () -> Unit,
     onBackClick: () -> Unit,
     onInformationClick: () -> Unit
 ) {
-    val username = remember { mutableStateOf("") }
+    val username = remember { mutableStateOf(registerViewModel.user.username) }
     val isCorrect = remember { mutableStateOf(false) }
 
-    LaunchedEffect(viewModel.currentRegisterScreenState) {
+    LaunchedEffect(registerViewModel.currentRegisterScreenState) {
         TopAppBarStateProvider.update(
             TopAppBarState {
                 RegisterHeader(
                     state = RegisterScreenState.USERNAME,
-                    previousState = viewModel.currentRegisterScreenState,
+                    previousState = registerViewModel.currentRegisterScreenState,
                     onBackClick = onBackClick,
                     onInformationClick = onInformationClick
                 )
 
                 LaunchedEffect(Unit) {
-                    viewModel.currentRegisterScreenState = RegisterScreenState.USERNAME
+                    registerViewModel.currentRegisterScreenState = RegisterScreenState.USERNAME
                 }
             }
         )
@@ -82,19 +89,35 @@ private fun RegisterUsernameScreen(
                     )
                 }
             )
-            BaseButton(
-                onClick =
-                {
-                    viewModel.user.username = username.value
-                    onNextClick();
-                },
-                enabled = isCorrect.value
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = stringResource(R.string.register_next),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = Primary
-                )
+                AnimatedVisibility(
+                    visible = !isCorrect.value,
+                    modifier = Modifier.padding(8.dp)
+                ) {
+                    Text(
+                        text = "Username should contain english letters and underscore",
+                        style = MaterialTheme.typography.labelSmall,
+                        textAlign = TextAlign.Center,
+                        color = Color(0xFFFE324E)
+                    )
+                }
+                BaseButton(
+                    onClick =
+                    {
+                        registerViewModel.user.username = username.value
+                        onNextClick();
+                    },
+                    enabled = isCorrect.value
+                ) {
+                    Text(
+                        text = stringResource(R.string.register_next),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Primary
+                    )
+                }
             }
         }
     }
@@ -111,7 +134,7 @@ fun NavGraphBuilder.registerUsernameScreen(
 ) {
     composable<RegisterUsernameRoute> {
         RegisterUsernameScreen(
-            viewModel = registerViewModel,
+            registerViewModel = registerViewModel,
             onNextClick = onNextNavigate,
             onBackClick = onPreviousNavigate,
             onInformationClick = onInformationNavigate
@@ -123,7 +146,7 @@ fun NavGraphBuilder.registerUsernameScreen(
 @Composable
 private fun RegisterUsernamePreview() {
     RegisterUsernameScreen(
-        viewModel = hiltViewModel(),
+        registerViewModel = RegisterViewModel(FakeUserRepository()),
         onNextClick = { },
         onBackClick = { }
     ) { }

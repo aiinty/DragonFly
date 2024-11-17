@@ -19,12 +19,12 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.aiinty.dragonfly.R
+import com.aiinty.dragonfly.repositories.FakeUserRepository
 import com.aiinty.dragonfly.ui.TopAppBarState
 import com.aiinty.dragonfly.ui.TopAppBarStateProvider
 import com.aiinty.dragonfly.ui.components.BaseButton
@@ -55,7 +55,7 @@ enum class RegisterScreenState {
 
 @Composable
 fun RegisterScreen(
-    viewModel: RegisterViewModel,
+    registerViewModel: RegisterViewModel,
     onNextNavigate: () -> Unit
 ) {
     LaunchedEffect(Unit) {
@@ -130,7 +130,7 @@ fun NavGraphBuilder.registerScreen(
 ) {
     composable<RegisterRoute> {
         RegisterScreen(
-            viewModel = registerViewModel,
+            registerViewModel = registerViewModel,
             onNextNavigate = onEmailNavigate
         )
     }
@@ -141,7 +141,7 @@ fun NavGraphBuilder.registerScreen(
 @Composable
 private fun LoadingScreenPreview() {
     RegisterScreen(
-        viewModel = hiltViewModel(),
+        registerViewModel = RegisterViewModel(FakeUserRepository()),
         onNextNavigate = { }
     )
 }
